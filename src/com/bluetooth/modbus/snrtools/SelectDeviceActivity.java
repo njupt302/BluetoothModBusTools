@@ -351,11 +351,8 @@ public class SelectDeviceActivity extends BaseActivity {
 					mAlertDialog.cancel();
 					mAlertDialog = null;
 				}
-
 			};
-
 		});
-
 	}
 
 	private void searchDevice() {
