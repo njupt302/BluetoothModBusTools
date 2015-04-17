@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.bluetooth.modbus.snrtools"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="19" />
+    <!-- 权限 -->
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> 
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+　　  <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    
+    <!-- -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
+    <application
+        android:name="com.bluetooth.modbus.snrtools.common.SNRApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.bluetooth.modbus.snrtools.Welcome"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.SelectDeviceActivity" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.SNRMainActivity" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.CheckPasswordActivity" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.ParamSettingActivity" 
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.SelectActivity" 
+            android:theme="@style/DialogActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.InputParamActivity" 
+            android:theme="@style/DialogActivity"
+            android:screenOrientation="portrait">
+        </activity>
+    </application>
+
+</manifest>
