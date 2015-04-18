@@ -32,7 +32,7 @@ public class InputParamActivity extends BaseWriteParamActivity {
 		mTvTitle = (TextView) findViewById(R.id.tvTitle);
 		mEtParam = (EditText) findViewById(R.id.editText1);
 		mTvTitle.setText(getIntent().getStringExtra("title"));
-		mEtParam.setHint(getIntent().getStringExtra("value"));
+		mEtParam.setHint(getIntent().getStringExtra("value")+"(范围"+p.minValue+"~"+p.maxValue+")");
 		if (p.type == 1) {
 			mEtParam.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
 		} else if (p.type == 2) {
@@ -52,6 +52,14 @@ public class InputParamActivity extends BaseWriteParamActivity {
 					int valueIn = 0;
 					valueIn = (int) (Double.parseDouble(mEtParam.getText()
 							.toString().trim()) * Math.pow(10, p.point));
+					if(valueIn>p.maxValue){
+						showToast("数值不能超过"+p.maxValue+"!");
+						return;
+					}
+					if(valueIn<p.minValue){
+						showToast("数值不能小于"+p.minValue+"!");
+						return;
+					}
 					p.valueIn = Integer.toHexString(valueIn);
 					if(p.type == 4 && p.valueIn.toString().length() == 8){
 						p.valueIn = p.valueIn.toString().substring(4, 8);

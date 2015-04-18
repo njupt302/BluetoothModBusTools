@@ -3,7 +3,6 @@ package com.bluetooth.modbus.snrtools;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,76 +16,97 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ab.http.AbHttpUtil;
 import com.bluetooth.modbus.snrtools.manager.ActivityManager;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 import com.bluetooth.modbus.snrtools.thread.ConnectThread;
+import com.bluetooth.modbus.snrtools.view.CustomDialog;
+import com.bluetooth.modbus.snrtools.view.MyAlertDialog;
+import com.bluetooth.modbus.snrtools.view.MyAlertDialog.MyAlertDialogListener;
 
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends Activity
+{
 
 	public Context mContext;
-	private ProgressDialog mPDialog;
+	private CustomDialog mCustomDialog;
+	private MyAlertDialog mDialog, mDialogOne;
+	public AbHttpUtil mAbHttpUtil;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		ActivityManager.getInstances().addActivity(this);
 		mContext = this;
 	}
 
-	public void BackOnClick(View v) {
-		switch (v.getId()) {
-			case R.id.ivBack :
+	public void BackOnClick(View v)
+	{
+		switch (v.getId())
+		{
+			case R.id.ivBack:
 				ActivityManager.getInstances().finishActivity(this);
 		}
 	}
 
-	public void BtnRight(View v) {
+	public void BtnRight(View v)
+	{
 		rightButtonOnClick(v.getId());
 	}
 
 	/**
 	 * 描述：对话框dialog （确认，取消）.
-	 *
-	 * @param title 对话框标题内容
-	 * @param view  对话框提示内容
-	 * @param mOkOnClickListener  点击确认按钮的事件监听
+	 * 
+	 * @param title
+	 *            对话框标题内容
+	 * @param view
+	 *            对话框提示内容
+	 * @param mOkOnClickListener
+	 *            点击确认按钮的事件监听
 	 * @return the alert dialog
 	 */
-	public AlertDialog showDialog(String title,View view,DialogInterface.OnClickListener mOkOnClickListener) {
-		 AlertDialog.Builder builder = new Builder(this);
-		 builder.setTitle(title);
-		 builder.setView(view);
-		 builder.setPositiveButton("确认",mOkOnClickListener);
-		 builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-			   @Override
-			   public void onClick(DialogInterface dialog, int which) {
-				   dialog.dismiss();
-			   }
-		 });
-		 AlertDialog mAlertDialog  = builder.create();
-		 mAlertDialog.show();
-		 return mAlertDialog;
+	public AlertDialog showDialog(String title, View view, DialogInterface.OnClickListener mOkOnClickListener)
+	{
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setTitle(title);
+		builder.setView(view);
+		builder.setPositiveButton("确认", mOkOnClickListener);
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+		{
+			@Override
+			public void onClick(DialogInterface dialog, int which)
+			{
+				dialog.dismiss();
+			}
+		});
+		AlertDialog mAlertDialog = builder.create();
+		mAlertDialog.show();
+		return mAlertDialog;
 	}
-	
+
 	/**
 	 * 描述：对话框dialog （无按钮）.
-	 *
-	 * @param title 对话框标题内容
-	 * @param view  对话框提示内容
+	 * 
+	 * @param title
+	 *            对话框标题内容
+	 * @param view
+	 *            对话框提示内容
 	 * @return the alert dialog
 	 */
-	public AlertDialog showDialog(String title,View view) {
-		 AlertDialog.Builder builder = new Builder(this);
-		 builder.setTitle(title);
-		 builder.setView(view);
-		 builder.create();
-		 AlertDialog mAlertDialog  = builder.create();
-		 mAlertDialog.show();
-		 return mAlertDialog;
+	public AlertDialog showDialog(String title, View view)
+	{
+		AlertDialog.Builder builder = new Builder(this);
+		builder.setTitle(title);
+		builder.setView(view);
+		builder.create();
+		AlertDialog mAlertDialog = builder.create();
+		mAlertDialog.show();
+		return mAlertDialog;
 	}
-	
-	public void showToast(String msg) {
+
+	public void showToast(String msg)
+	{
 		Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
 	}
 
@@ -99,7 +119,8 @@ public abstract class BaseActivity extends Activity {
 	 * @param id
 	 *            按钮的id
 	 */
-	protected void rightButtonOnClick(int id) {
+	protected void rightButtonOnClick(int id)
+	{
 	}
 
 	/**
@@ -110,9 +131,11 @@ public abstract class BaseActivity extends Activity {
 	 * @param id
 	 *            需要隐藏的view的id
 	 */
-	public void hideRightView(int id) {
+	public void hideRightView(int id)
+	{
 		View v = findViewById(id);
-		if (v != null) {
+		if (v != null)
+		{
 			v.setVisibility(View.GONE);
 		}
 	}
@@ -125,9 +148,11 @@ public abstract class BaseActivity extends Activity {
 	 * @param id
 	 *            需要隐藏的view的id
 	 */
-	public void showRightView(int id) {
+	public void showRightView(int id)
+	{
 		View v = findViewById(id);
-		if (v != null) {
+		if (v != null)
+		{
 			v.setVisibility(View.VISIBLE);
 		}
 	}
@@ -139,9 +164,11 @@ public abstract class BaseActivity extends Activity {
 	 * @time: 2014-12-26 上午10:49:52
 	 * @param content
 	 */
-	public void setTitleContent(String content) {
+	public void setTitleContent(String content)
+	{
 		View v = findViewById(R.id.tvTitle);
-		if (v != null && v instanceof TextView) {
+		if (v != null && v instanceof TextView)
+		{
 			((TextView) v).setText(content);
 		}
 	}
@@ -155,98 +182,163 @@ public abstract class BaseActivity extends Activity {
 	 * @param id
 	 *            需要设置的button的id
 	 */
-	public void setRightButtonContent(String content, int id) {
+	public void setRightButtonContent(String content, int id)
+	{
 		View v = findViewById(id);
-		if (v != null && v instanceof Button) {
+		if (v != null && v instanceof Button)
+		{
 			((Button) v).setText(content);
 		}
 	}
-
-	public void showProgressDialog() {
-		showProgressDialog(null, null);
+	
+	public void showDialogOne(String msg, MyAlertDialogListener listener)
+	{
+		if (mDialogOne == null)
+		{
+			mDialogOne = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_ONE, listener);
+		}
+		mDialogOne.setMessage(msg);
+		mDialogOne.setListener(listener);
+		mDialogOne.show();
 	}
 
-	public void showProgressDialog(String msg) {
-		showProgressDialog(null, msg);
+	public void hideDialogOne()
+	{
+		if (mDialogOne != null && mDialogOne.isShowing())
+		{
+			mDialogOne.dismiss();
+		}
 	}
 
-	public void showProgressDialog(String title, String msg) {
-		if (mPDialog == null) {
-			mPDialog = new ProgressDialog(mContext);
+	public void hideDialog()
+	{
+		if (mDialog != null && mDialog.isShowing())
+		{
+			mDialog.dismiss();
 		}
-		if (!TextUtils.isEmpty(title)) {
-			mPDialog.setTitle(title);
+	}
+
+	public void showDialog(String msg, MyAlertDialogListener listener)
+	{
+		if (mDialog == null)
+		{
+			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, listener);
 		}
-		if (!TextUtils.isEmpty(msg)) {
-			mPDialog.setMessage(msg);
+		mDialog.setMessage(msg);
+		mDialog.show();
+	}
+
+	public void showProgressDialog()
+	{
+		showProgressDialog(null, false);
+	}
+
+	public void showProgressDialog(String msg)
+	{
+		showProgressDialog(msg, false);
+	}
+
+	public void showProgressDialog(boolean isCancel)
+	{
+		showProgressDialog(null, isCancel);
+	}
+
+	public void showProgressDialog(String msg, boolean isCancel)
+	{
+		if (mCustomDialog == null)
+		{
+			mCustomDialog = new CustomDialog(mContext);
 		}
-		mPDialog.show();
+		if (!TextUtils.isEmpty(msg))
+		{
+			mCustomDialog.setMessage(msg);
+		}
+		else
+		{
+			mCustomDialog.setTitle("加载中...");
+		}
+		mCustomDialog.show(isCancel);
 	}
 
 	public abstract void reconnectSuccss();
+
 	private AlertDialog dialog;
-	
-	public void showConnectDevice() {
-		if(dialog == null){
-			dialog = new AlertDialog.Builder(this)
-			.setMessage("设备连接已断开，是否重新连接？")
-			.setPositiveButton("重连", new DialogInterface.OnClickListener() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					final BluetoothDevice device = AppStaticVar.mBtAdapter
-							.getRemoteDevice(AppStaticVar.mCurrentAddress);
-					ConnectThread connectThread = new ConnectThread(device,
-							new Handler() {
-								@Override
-								public void handleMessage(Message msg) {
-									switch (msg.what) {
-										case Constans.CONNECTING_DEVICE :
-											showProgressDialog(msg.obj
-													.toString());
-											break;
-										case Constans.CONNECT_DEVICE_SUCCESS :
-											hideProgressDialog();
-											reconnectSuccss();
-											break;
-										case Constans.CONNECT_DEVICE_FAILED :
-											hideProgressDialog();
-											showToast(msg.obj.toString());
-											break;
-									}
-								}
-							});
-					connectThread.start();
+	public void showConnectDevice()
+	{
+		showDialog("设备连接已断开，是否重新连接？", new MyAlertDialogListener()
+		{
+
+			@Override
+			public void onClick(View view)
+			{
+				switch (view.getId())
+				{
+					case R.id.btnCancel:
+						hideDialog();
+						break;
+					case R.id.btnOk:
+						connectDevice(AppStaticVar.mCurrentAddress);
+						break;
 				}
-			})
-			.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+			}
+		});
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-
-				}
-			}).create();
-		}
-		if(!dialog.isShowing()){
-			dialog.show();
-		}
-		
 	}
 
-	public void hideProgressDialog() {
-		if (mPDialog != null && mPDialog.isShowing()) {
-			mPDialog.dismiss();
+	public void connectDevice(String address)
+	{
+		if (!TextUtils.isEmpty(address))
+		{
+			AppStaticVar.mBtAdapter.cancelDiscovery();
+			final BluetoothDevice device = AppStaticVar.mBtAdapter.getRemoteDevice(address);
+			ConnectThread connectThread = new ConnectThread(device, new Handler()
+			{
+				@Override
+				public void handleMessage(Message msg)
+				{
+					switch (msg.what)
+					{
+						case Constans.CONNECTING_DEVICE:
+							showProgressDialog(msg.obj.toString());
+							break;
+						case Constans.CONNECT_DEVICE_SUCCESS:
+							hideProgressDialog();
+							reconnectSuccss();
+							break;
+						case Constans.CONNECT_DEVICE_FAILED:
+							hideProgressDialog();
+							showToast(msg.obj.toString());
+							break;
+					}
+				}
+			});
+			connectThread.start();
+		}
+		else
+		{
+			Toast.makeText(mContext, "连接设备地址不存在 !", Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void hideProgressDialog()
+	{
+		if (mCustomDialog != null && mCustomDialog.isShowing())
+		{
+			mCustomDialog.dismiss();
 		}
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onPause()
+	{
 		hideProgressDialog();
 		super.onPause();
 	}
 
 	@Override
-	protected void onDestroy() {
+	protected void onDestroy()
+	{
 		hideProgressDialog();
 		super.onDestroy();
 	}

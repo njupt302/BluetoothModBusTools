@@ -16,4 +16,18 @@ public class Parameter implements Serializable{
 	public int type;
 	public int point;
 	public List<Selector> selectors;
+	public boolean isGroupTitle = false;
+	public String groupTitle = "";
+	public double maxValue;
+	public double minValue;
+	
+	public Parameter()
+	{
+	}
+	
+	public Parameter(boolean isGroupTitle,String groupTitle)
+	{
+		this.isGroupTitle = isGroupTitle;
+		this.groupTitle = groupTitle;
+	}
 }

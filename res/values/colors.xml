@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <drawable name="cusalertdialog_bk">#00FFFFFF</drawable>
+
     <color name="border_line">#ffd7dadc</color>
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
@@ -144,5 +146,5 @@
     <color name="chat_more_text_color">#60646F</color>
     <!-- 朋友圈底部按钮栏背景 -->
     <color name="friends_bottom_bg">#B21786DB</color>
-    
+
 </resources>

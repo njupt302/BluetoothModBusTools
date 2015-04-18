@@ -139,6 +139,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		Selector selector = null;
 		/********************************** 基本参数 **************************************/
 		/********************************** 参数1--语言 **************************************/
+		mList.add(new Parameter(true, "基本参数"));
 		String param = msg.substring(6, 10);
 		System.out.println("参数1--语言==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
@@ -147,7 +148,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "语言";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "简体中文";
 				break;
@@ -155,7 +156,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "English";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "简体中文";
@@ -178,7 +179,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量单位";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "L/h";
 				break;
@@ -198,7 +199,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "m3/s";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "L/h";
@@ -244,6 +245,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "仪表量程设置";
 		parameter.type = 3;
+		parameter.maxValue = 99999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(18, 22)
 				+ msg.substring(14, 18));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(18, 22)
@@ -259,7 +262,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量方向择项";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "正向";
 				break;
@@ -267,7 +270,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "反向";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "正向";
@@ -290,7 +293,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "反向输出允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -298,7 +301,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -322,7 +325,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量积算单位";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "0.001m3";
 				break;
@@ -348,7 +351,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "1L";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "0.001m3";
@@ -401,7 +404,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "测量阻尼时间(s)";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "1s";
 				break;
@@ -433,7 +436,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "50s";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "1s";
@@ -496,10 +499,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "小信号切除点(%)";
 		parameter.type = 2;
 		parameter.point = 2;
+		parameter.maxValue = 99.99;
+		parameter.minValue = 0.0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"%";
 		mList.add(parameter);
 		/********************************** 参数9--脉冲输出方式 **************************************/
 		param = msg.substring(42, 46);
@@ -510,7 +515,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "脉冲输出方式";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "频率";
 				break;
@@ -518,7 +523,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "脉冲";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "频率";
@@ -541,7 +546,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "脉冲单位当量";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "1.0m3/cp";
 				break;
@@ -567,7 +572,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "0.001L/cp";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "1.0m3/cp";
@@ -620,7 +625,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "脉冲宽度时间";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "4ms";
 				break;
@@ -652,7 +657,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "400ms";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "4ms";
@@ -714,8 +719,10 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0001";
 		parameter.name = "频率输出范围(Hz)";
 		parameter.type = 1;
+		parameter.maxValue = 5999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16);
-		parameter.value = Long.parseLong(param, 16) + "";
+		parameter.value = Long.parseLong(param, 16) + "Hz";
 		mList.add(parameter);
 		/********************************** 参数13--流量零点修正 **************************************/
 		param = msg.substring(58, 62);
@@ -725,6 +732,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0001";
 		parameter.name = "流量零点修正";
 		parameter.type = 4;
+		parameter.maxValue = 9999;
+		parameter.minValue = -9999;
 		parameter.valueIn = Long.parseLong(param, 16) < 0x8000 ? Long
 				.parseLong(param, 16) : Long.parseLong(param, 16) - 65536;
 		parameter.value = (Long.parseLong(param, 16) < 0x8000 ? Long.parseLong(
@@ -739,7 +748,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "背光保持时间";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "15s";
 				break;
@@ -762,7 +771,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "常亮";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "15s";
@@ -809,6 +818,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0001";
 		parameter.name = "通讯地址";
 		parameter.type = 1;
+		parameter.maxValue = 247;
+		parameter.minValue = 1;
 		parameter.valueIn = Long.parseLong(param, 16);
 		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
@@ -821,9 +832,9 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "通讯速率";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 		for (int i = 0; i < 8; i++) {
-			if ((int) parameter.valueIn == i) {
+			if ((Integer) parameter.valueIn == i) {
 				parameter.value = 300 * (int) Math.pow(2, i) + "bps";
 			}
 			selector = new Selector();
@@ -841,11 +852,14 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0001";
 		parameter.name = "设备位号";
 		parameter.type = 1;
+		parameter.maxValue = 9999;
+		parameter.minValue = 1;
 		parameter.valueIn = Long.parseLong(param, 16);
 		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
 		/********************************** 高级参数 **************************************/
 		/********************************** 参数18--测量管道口径 **************************************/
+		mList.add(new Parameter(true, "高级参数"));
 		param = msg.substring(78, 82);
 		System.out.println("参数18--测量管道口径==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
@@ -854,7 +868,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "测量管道口径";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "3mm";
 				break;
@@ -967,7 +981,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "3000mm";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 		selector = new Selector();
 		selector.name = "3mm";
 		selector.value = "0000";
@@ -1164,7 +1178,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "允许切除显示";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1172,7 +1186,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1195,10 +1209,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "传感器系数值";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 5.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"%";
 		mList.add(parameter);
 		/********************************** 参数21--空管报警允许 **************************************/
 		param = msg.substring(90, 94);
@@ -1209,7 +1225,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "空管报警允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1217,7 +1233,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1240,10 +1256,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "空管报警阈值(%)";
 		parameter.type = 2;
 		parameter.point = 2;
+		parameter.maxValue = 599.99;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"%";
 		mList.add(parameter);
 		/********************************** 参数23--流量上限报警允许 **************************************/
 		param = msg.substring(98, 102);
@@ -1254,7 +1272,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量上限报警允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1262,7 +1280,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1285,10 +1303,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量上限报警数值(%)";
 		parameter.type = 2;
 		parameter.point = 2;
+		parameter.maxValue = 599.99;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"%";
 		mList.add(parameter);
 		/********************************** 参数25--流量下限报警允许 **************************************/
 		param = msg.substring(106, 110);
@@ -1299,7 +1319,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量下限报警允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1307,7 +1327,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1330,10 +1350,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量下限报警数值(%)";
 		parameter.type = 2;
 		parameter.point = 2;
+		parameter.maxValue = 599.99;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"%";
 		mList.add(parameter);
 		/********************************** 参数27--励磁报警允许 **************************************/
 		param = msg.substring(114, 118);
@@ -1344,7 +1366,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "励磁报警允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1352,7 +1374,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1376,6 +1398,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "正向总量";
 		parameter.type = 3;
+		parameter.maxValue = 999999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(122, 126)
 				+ msg.substring(118, 122));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(122, 126)
@@ -1392,6 +1416,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "反向总量";
 		parameter.type = 3;
+		parameter.maxValue = 999999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(130, 134)
 				+ msg.substring(126, 130));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(130, 134)
@@ -1408,6 +1434,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "基本参数密码";
 		parameter.type = 3;
+		parameter.maxValue = 999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(138, 142)
 				+ msg.substring(134, 138));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(138, 142)
@@ -1425,6 +1453,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.address = "0022";
 		parameter.count = "0002";
 		parameter.name = "高级参数密码";
+		parameter.maxValue = 999999;
+		parameter.minValue = 0;
 		parameter.type = 3;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(146, 150)
 				+ msg.substring(142, 146));
@@ -1442,6 +1472,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter = new Parameter();
 		parameter.address = "0024";
 		parameter.count = "0002";
+		parameter.maxValue = 999999;
+		parameter.minValue = 0;
 		parameter.name = "总量清零密码";
 		parameter.type = 3;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(154, 158)
@@ -1454,6 +1486,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		mList.add(parameter);
 		/********************************** 传感器参数 **************************************/
 		/********************************** 参数33--流量修正允许 **************************************/
+		mList.add(new Parameter(true, "传感器参数"));
 		param = msg.substring(158, 162);
 		System.out.println("参数33--流量修正允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
@@ -1462,7 +1495,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1470,7 +1503,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1493,10 +1526,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点1(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数35--流量修正值1 **************************************/
 		param = msg.substring(166, 170);
@@ -1507,10 +1542,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值1";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数36--流量修正点2(m/s) **************************************/
 		param = msg.substring(170, 174);
@@ -1521,10 +1558,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点2(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数37--流量修正值2 **************************************/
 		param = msg.substring(174, 178);
@@ -1535,10 +1574,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值2";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数38--流量修正点3(m/s) **************************************/
 		param = msg.substring(178, 182);
@@ -1549,10 +1590,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点3(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数39--流量修正值3 **************************************/
 		param = msg.substring(182, 186);
@@ -1563,10 +1606,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值3";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数40--流量修正点4(m/s) **************************************/
 		param = msg.substring(186, 190);
@@ -1577,10 +1622,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点4(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数41--流量修正值4 **************************************/
 		param = msg.substring(190, 194);
@@ -1591,10 +1638,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值4";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数42--流量修正点5(m/s) **************************************/
 		param = msg.substring(194, 198);
@@ -1605,10 +1654,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点5(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数43--流量修正值5 **************************************/
 		param = msg.substring(198, 202);
@@ -1619,10 +1670,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值5";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数44--流量修正点6(m/s) **************************************/
 		param = msg.substring(202, 206);
@@ -1633,10 +1686,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点6(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数45--流量修正值6 **************************************/
 		param = msg.substring(206, 210);
@@ -1647,10 +1702,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值6";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数46--流量修正点7(m/s) **************************************/
 		param = msg.substring(210, 214);
@@ -1661,10 +1718,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点7(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数47--流量修正值7 **************************************/
 		param = msg.substring(214, 218);
@@ -1675,10 +1734,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正值7";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数48--流量修正点8(m/s) **************************************/
 		param = msg.substring(218, 222);
@@ -1689,10 +1750,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "流量修正点8(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
+		parameter.maxValue = 15;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn)+"m/s";
 		mList.add(parameter);
 		/********************************** 参数49--励磁方式选择 **************************************/
 		param = msg.substring(222, 226);
@@ -1703,7 +1766,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "励磁方式选择";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "1/16工频";
 				break;
@@ -1714,7 +1777,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "1/25工频";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "1/16工频";
@@ -1742,7 +1805,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "励磁电流";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "100mA";
 				break;
@@ -1756,7 +1819,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "500mA";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "100mA";
@@ -1788,7 +1851,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "尖峰抑制允许";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "允许";
 				break;
@@ -1796,7 +1859,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "禁止";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "允许";
@@ -1819,7 +1882,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "尖峰抑制系数";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "0.010m/s";
 				break;
@@ -1851,7 +1914,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "0.800m/s";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "0.010m/s";
@@ -1914,7 +1977,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "尖峰抑制时间(ms)";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
-		switch ((int) parameter.valueIn) {
+		switch ((Integer) parameter.valueIn) {
 			case 0 :
 				parameter.value = "400ms";
 				break;
@@ -1931,7 +1994,7 @@ public class CheckPasswordActivity extends BaseActivity {
 				parameter.value = "2500ms";
 				break;
 		}
-		selectorList = new ArrayList<>();
+		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
 		selector.name = "400ms";
@@ -1970,6 +2033,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "传感器编码";
 		parameter.type = 3;
+		parameter.maxValue = 99999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(246, 250)
 				+ msg.substring(242, 246));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(246, 250)
@@ -1986,6 +2051,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "传感器参数密码";
 		parameter.type = 3;
+		parameter.maxValue = 999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(254, 258)
 				+ msg.substring(250, 254));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(254, 258)
@@ -1996,6 +2063,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		mList.add(parameter);
 		/********************************** 转换器参数 **************************************/
 		/********************************** 参数56--转换器标定系数 **************************************/
+		mList.add(new Parameter(true, "转换器参数"));
 		param = msg.substring(258, 262);
 		System.out.println("参数56--转换器标定系数==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
@@ -2004,10 +2072,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "转换器标定系数";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 5.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数57--电流零点修正 **************************************/
 		param = msg.substring(262, 266);
@@ -2018,10 +2088,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "电流零点修正";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 1.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数58--电流满度修正 **************************************/
 		param = msg.substring(266, 270);
@@ -2032,10 +2104,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.name = "电流满度修正";
 		parameter.type = 2;
 		parameter.point = 4;
+		parameter.maxValue = 3.9999;
+		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16)
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f",
-				(double) parameter.valueIn);
+				(Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数59--仪表编码 **************************************/
 		param = msg.substring(270, 278);
@@ -2047,6 +2121,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "仪表编码";
 		parameter.type = 3;
+		parameter.maxValue = 99999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(274, 278)
 				+ msg.substring(270, 274));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(274, 278)
@@ -2063,6 +2139,8 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.count = "0002";
 		parameter.name = "转换器密码";
 		parameter.type = 3;
+		parameter.maxValue = 999999;
+		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(282, 286)
 				+ msg.substring(278, 282));
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(282, 286)

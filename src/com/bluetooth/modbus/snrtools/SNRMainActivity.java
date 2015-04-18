@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
@@ -70,8 +71,7 @@ public class SNRMainActivity extends BaseActivity {
 		mParam7 = (TextView) findViewById(R.id.param7);
 		mTvAlarm = (NoFocuseTextview) findViewById(R.id.tvAlarm);
 		mTvAlarm.setVisibility(View.GONE);
-		// mTvAlarm.startAnimation(AnimationUtils.loadAnimation(mContext,
-		// R.anim.anim_alpha));
+		mTvAlarm.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.anim_alpha));
 	}
 
 	private void hasAlarm(String s) {

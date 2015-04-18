@@ -3,6 +3,7 @@
 
     <item android:drawable="@drawable/shape_r_s_0d9bf9_press" android:state_focused="true"></item>
     <item android:drawable="@drawable/shape_r_s_0d9bf9_press" android:state_pressed="true"></item>
+    <item android:drawable="@drawable/shape_r_s_0d9bf9_enable" android:state_enabled="false"></item>
     <item android:drawable="@drawable/shape_r_s_0d9bf9"></item>
 
 </selector>

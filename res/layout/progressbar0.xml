@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/body"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/wq_dialog_bg"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="14dip" >
+
+    <include
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        layout="@layout/no_message_progressbar" />
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="11dp"
+        android:textColor="#4d4d4d"
+        android:textSize="13sp" />
+
+</LinearLayout>

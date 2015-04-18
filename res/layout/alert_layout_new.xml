@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentPanel"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="36dp"
+    android:layout_marginRight="36dp"
+    android:background="@drawable/wq_dialog_bg"
+    android:orientation="vertical"
+    android:paddingTop="9dip" >
+
+    <!-- 为了兼容以前的图标， icon置为gone -->
+
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/contentPanel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/message"
+                style="?android:attr/textAppearanceMedium"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="10dp"
+                android:paddingLeft="20dip"
+                android:paddingRight="20dip"
+                android:textColor="#4d4d4d"
+                android:textSize="15sp" />
+        </ScrollView>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:background="#e5e5e5" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/btnCancel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/alertdialog_btn_left"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="取消"
+            android:textColor="#4d4d4d"
+            android:textSize="15sp" />
+
+        <View
+            android:id="@+id/id_dialog_divider"
+            android:layout_width="0.5dp"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center_horizontal"
+            android:background="#e5e5e5" />
+
+        <TextView
+            android:id="@+id/btnOk"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/alertdialog_btn_right"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="确定"
+            android:textColor="#4d4d4d"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/btnOkOne"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/alertdialog_btn_one"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="确定"
+            android:textColor="#4d4d4d"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

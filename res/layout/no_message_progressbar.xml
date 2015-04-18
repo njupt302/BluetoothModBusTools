@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="30dip"
+    android:layout_height="30dip" >
+
+    <ProgressBar
+        android:id="@+id/progress"
+        style="@style/ProgressBar"
+        android:indeterminateBehavior="repeat"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_gravity="center"/>
+
+</RelativeLayout>
