@@ -1,7 +1,11 @@
 package com.bluetooth.modbus.snrtools.manager;
 
+import java.util.List;
+
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
+
+import com.bluetooth.modbus.snrtools.bean.Parameter;
 
 public class AppStaticVar {
 	/** 取得默认的蓝牙适配器 */
@@ -14,5 +18,22 @@ public class AppStaticVar {
 	public static BluetoothSocket mSocket;
 	/** 密码等级*/
 	public static int PASSWORD_LEVEAL = -1;
-	
+	/** 密码等级1查看参数个数*/
+	public static int PASSWORD_LEVEAL1_COUNT = 0;
+	/** 密码等级2查看参数个数*/
+	public static int PASSWORD_LEVEAL2_COUNT = 0;
+	/** 密码等级3查看参数个数*/
+	public static int PASSWORD_LEVEAL3_COUNT = 0;
+	/** 密码等级4查看参数个数*/
+	public static int PASSWORD_LEVEAL4_COUNT= 0;
+	/** 密码等级5查看参数个数*/
+	public static int PASSWORD_LEVEAL5_COUNT = 0;
+	/** 参数列表*/
+	public static List<Parameter> mParamList;
+	/** 正向总量参数位置*/
+	public static int ZXZLPosition = -1;
+	/** 反向总量参数位置*/
+	public static int FXZLPosition = -1;
+	/** 是否是主动断开*/
+	public static boolean isExit = false;
 }

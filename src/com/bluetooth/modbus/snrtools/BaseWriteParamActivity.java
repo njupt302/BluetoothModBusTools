@@ -5,13 +5,14 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.bluetooth.modbus.snrtools.bean.Parameter;
+import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 import com.bluetooth.modbus.snrtools.uitls.ModbusUtils;
 
 public abstract class BaseWriteParamActivity extends BaseActivity {
 
 	private Handler mHandler, mHandler1;
 	private Thread mThread;
-	public  int RECONNECT_TIME = 3, RECONNECT_TIME1 = 3;
+	public int RECONNECT_TIME = 3, RECONNECT_TIME1 = 3;
 	private Parameter mParameter;
 
 	@Override
@@ -35,7 +36,8 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 			@Override
 			public void run() {
 				if (RECONNECT_TIME > 0) {
-					ModbusUtils.writeParameter(mContext.getClass().getSimpleName(),mHandler, mParameter);
+					ModbusUtils.writeParameter(mContext.getClass()
+							.getSimpleName(), mHandler, mParameter);
 					System.out.println("===RECONNECT_TIME===" + RECONNECT_TIME);
 					RECONNECT_TIME--;
 				}
@@ -49,7 +51,32 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 
 			@Override
 			public void run() {
-				ModbusUtils.write2Device(mContext.getClass().getSimpleName(),mHandler1);
+				ModbusUtils.write2Device(mContext.getClass().getSimpleName(),
+						mHandler1);
+			}
+		});
+		mThread.start();
+	}
+
+	private void inputZXZL() {
+		mThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				ModbusUtils.inputZXZL(mContext.getClass().getSimpleName(),
+						mHandler1);
+			}
+		});
+		mThread.start();
+	}
+
+	private void inputFXZL() {
+		mThread = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				ModbusUtils.inputFXZL(mContext.getClass().getSimpleName(),
+						mHandler1);
 			}
 		});
 		mThread.start();
@@ -122,7 +149,13 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 						if (msg.obj.toString().length() != 16) {
 							return;
 						}
-						startWrite2Device();
+						if (getIntent().getIntExtra("position", -1) == AppStaticVar.ZXZLPosition) {
+							inputZXZL();
+						} else if (getIntent().getIntExtra("position", -1) == AppStaticVar.FXZLPosition) {
+							inputFXZL();
+						} else {
+							startWrite2Device();
+						}
 						break;
 					case Constans.CONNECT_IS_CLOSED :
 						System.out.println("=====参数连接断开");

@@ -2,17 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#38523B"
+    android:background="#168FF2"
     android:orientation="vertical" >
 
     <Button
         android:id="@+id/textView1"
-        android:layout_width="100dp"
+        android:layout_width="130dp"
         android:layout_height="40dp"
         android:background="@drawable/bg_titlebar"
-        android:gravity="center"
+        android:gravity="left|center_vertical"
         android:onClick="onClick"
+        android:paddingLeft="5dp"
+        android:text="新功能介绍"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#B9FFE6" />
+
+    <Button
+        android:id="@+id/textView2"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_titlebar"
+        android:gravity="left|center_vertical"
+        android:onClick="onClick"
+        android:paddingLeft="5dp"
+        android:text="关于仪表助手"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#B9FFE6" />
+
+    <Button
+        android:id="@+id/textView3"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_titlebar"
+        android:gravity="left|center_vertical"
+        android:onClick="onClick"
+        android:paddingLeft="5dp"
         android:text="版本升级"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#B9FFE6" />
+
+    <Button
+        android:id="@+id/textView4"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_titlebar"
+        android:gravity="left|center_vertical"
+        android:onClick="onClick"
+        android:paddingLeft="5dp"
+        android:text="退出"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 

@@ -3,11 +3,9 @@ package com.bluetooth.modbus.snrtools;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.method.DigitsKeyListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -33,14 +31,14 @@ public class InputParamActivity extends BaseWriteParamActivity {
 		mEtParam = (EditText) findViewById(R.id.editText1);
 		mTvTitle.setText(getIntent().getStringExtra("title"));
 		mEtParam.setHint(getIntent().getStringExtra("value")+"(·¶Î§"+p.minValue+"~"+p.maxValue+")");
-		if (p.type == 1) {
-			mEtParam.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-		} else if (p.type == 2) {
-			mEtParam.setInputType(EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
-			mEtParam.setKeyListener(new DigitsKeyListener(false, true));
-		} else if (p.type == 3) {
-			mEtParam.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-		}
+//		if (p.type == 1) {
+//			mEtParam.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+//		} else if (p.type == 2) {
+//			mEtParam.setInputType(EditorInfo.TYPE_NUMBER_FLAG_DECIMAL);
+//			mEtParam.setKeyListener(new DigitsKeyListener(false, true));
+//		} else if (p.type == 3) {
+//			mEtParam.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+//		}
 	}
 
 	public void onClick(View v) {

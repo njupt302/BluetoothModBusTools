@@ -46,6 +46,7 @@
             android:paddingLeft="5dp"
             android:textColor="#1a1a1a"
             android:textColorHint="#d9d9d9"
+            android:inputType="numberDecimal"
             android:textSize="22sp" >
 
         </EditText>

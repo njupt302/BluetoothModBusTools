@@ -52,6 +52,7 @@ public class ParameterAdapter extends BaseAdapter
 			holder.tvName = (TextView) convertView.findViewById(R.id.tvName);
 			holder.tvValue = (TextView) convertView.findViewById(R.id.tvValue);
 			holder.tvGroupName = (TextView) convertView.findViewById(R.id.tvGroupName);
+			holder.ll = convertView.findViewById(R.id.ll);
 			convertView.setTag(holder);
 		}
 		else
@@ -63,11 +64,13 @@ public class ParameterAdapter extends BaseAdapter
 		if (mList.get(position).isGroupTitle)
 		{
 			holder.tvGroupName.setVisibility(View.VISIBLE);
+			holder.ll.setVisibility(View.GONE);
 			holder.tvGroupName.setText(mList.get(position).groupTitle);
 		}
 		else
 		{
 			holder.tvGroupName.setVisibility(View.GONE);
+			holder.ll.setVisibility(View.VISIBLE);
 		}
 		return convertView;
 	}
@@ -77,5 +80,6 @@ public class ParameterAdapter extends BaseAdapter
 		TextView tvName;
 		TextView tvValue;
 		TextView tvGroupName;
+		View ll;
 	}
 }

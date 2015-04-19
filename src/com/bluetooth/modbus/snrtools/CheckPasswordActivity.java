@@ -1,6 +1,5 @@
 package com.bluetooth.modbus.snrtools;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,9 +21,10 @@ import com.bluetooth.modbus.snrtools.uitls.NumberBytes;
 public class CheckPasswordActivity extends BaseActivity {
 	private Handler mHandler;
 	private Thread mThread;
-	private EditText editText1;
+	private EditText editText1,editText2;
 	private List<Parameter> mList;
 	private int reconnectCount = 3;
+	private boolean isClear = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +36,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		hideRightView(R.id.view2);
 		initHandler();
 		editText1 = (EditText) findViewById(R.id.editText1);
+		editText2 = (EditText) findViewById(R.id.editText2);
 		startReadParam();
 	}
 
@@ -51,16 +53,33 @@ public class CheckPasswordActivity extends BaseActivity {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.button2 :
-				checkPsw(Long.parseLong(editText1.getText().toString()));
+				if(AppStaticVar.mParamList == null || AppStaticVar.mParamList.size()==0){
+					showToast("获取参数失败,请返回重试!");
+					return;
+				}
+				if(TextUtils.isEmpty(editText1.getText().toString().trim())){
+					showToast("请输入密码!");
+					return;
+				}
+				checkPsw(Long.parseLong(editText1.getText().toString().trim()));
 				if (AppStaticVar.PASSWORD_LEVEAL != -1) {
-					Intent intent = new Intent(mContext,
-							ParamSettingActivity.class);
-					intent.putExtra("list", (Serializable) mList);
+					Intent intent = new Intent(mContext,ParamSettingActivity.class);
 					startActivity(intent);
 					finish();
 				} else {
-					Toast.makeText(mContext, "密码不正确!", Toast.LENGTH_SHORT)
-							.show();
+					Toast.makeText(mContext, "密码不正确!", Toast.LENGTH_SHORT).show();
+				}
+				break;
+			case R.id.button3:
+				if(TextUtils.isEmpty(editText2.getText().toString().trim())){
+					showToast("请输入密码!");
+					return;
+				}
+				if(Constans.PasswordLevel.LEVEL_6 == Long.parseLong(editText2.getText().toString())) {
+					isClear = true;
+					ModbusUtils.clearZL("总量清零", mHandler);
+				} else {
+					Toast.makeText(mContext, "总量清零密码不正确!", Toast.LENGTH_SHORT).show();
 				}
 				break;
 		}
@@ -92,7 +111,17 @@ public class CheckPasswordActivity extends BaseActivity {
 					case Constans.DEVICE_RETURN_MSG :
 						hideProgressDialog();
 						System.out.println("参数收到的数据=====" + msg.obj.toString());
-						dealReturnMsg(msg.obj.toString());
+						
+						if(isClear){
+							isClear = false;
+							if (msg.obj.toString().length() != 16) {
+								showToast("总量清零失败，请重试!");
+								return;
+							}
+							showToast("总量清零成功!");
+						}else{
+							dealReturnMsg(msg.obj.toString());
+						}
 						break;
 					case Constans.CONNECT_IS_CLOSED :
 						System.out.println("=====参数连接断开");
@@ -130,7 +159,7 @@ public class CheckPasswordActivity extends BaseActivity {
 	}
 
 	private void dealReturnMsg(String msg) {
-		if (msg.length() != 290) {
+		if (msg.length() != 298) {
 			return;
 		}
 		mList.clear();
@@ -857,6 +886,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.valueIn = Long.parseLong(param, 16);
 		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
+		AppStaticVar.PASSWORD_LEVEAL1_COUNT = mList.size();
 		/********************************** 高级参数 **************************************/
 		/********************************** 参数18--测量管道口径 **************************************/
 		mList.add(new Parameter(true, "高级参数"));
@@ -1405,6 +1435,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(122, 126)
 				+ msg.substring(118, 122))
 				+ "";
+		AppStaticVar.ZXZLPosition = mList.size();
 		mList.add(parameter);
 		/********************************** 参数29--反向总量 **************************************/
 		param = msg.substring(126, 134);
@@ -1423,6 +1454,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(130, 134)
 				+ msg.substring(126, 130))
 				+ "";
+		AppStaticVar.FXZLPosition = mList.size();
 		mList.add(parameter);
 		/********************************** 参数30--基本参数密码 **************************************/
 		param = msg.substring(134, 142);
@@ -1484,6 +1516,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		Constans.PasswordLevel.LEVEL_6 = NumberBytes.hexStrToLong(msg
 				.substring(154, 158) + msg.substring(150, 154));
 		mList.add(parameter);
+		AppStaticVar.PASSWORD_LEVEAL2_COUNT = mList.size();
 		/********************************** 传感器参数 **************************************/
 		/********************************** 参数33--流量修正允许 **************************************/
 		mList.add(new Parameter(true, "传感器参数"));
@@ -2061,6 +2094,7 @@ public class CheckPasswordActivity extends BaseActivity {
 		Constans.PasswordLevel.LEVEL_3 = NumberBytes.hexStrToLong(msg
 				.substring(254, 258) + msg.substring(250, 254));
 		mList.add(parameter);
+		AppStaticVar.PASSWORD_LEVEAL3_COUNT = mList.size();
 		/********************************** 转换器参数 **************************************/
 		/********************************** 参数56--转换器标定系数 **************************************/
 		mList.add(new Parameter(true, "转换器参数"));
@@ -2079,11 +2113,42 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.value = String.format("%." + parameter.point + "f",
 				(Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数57--电流零点修正 **************************************/
+		/********************************** 参数57--转换器标定零点 **************************************/
 		param = msg.substring(262, 266);
-		System.out.println("参数57--电流零点修正==" + Long.parseLong(param, 16));
+		System.out.println("参数57--转换器标定零点==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
 		parameter.address = "0040";
+		parameter.count = "0001";
+		parameter.name = "转换器标定零点";
+		parameter.type = 4;
+		parameter.point = 4;
+		parameter.maxValue = 9999;
+		parameter.minValue = -9999;
+		parameter.valueIn = Long.parseLong(param, 16) < 0x8000 ? Long
+				.parseLong(param, 16)/ Math.pow(10, parameter.point) : (Long.parseLong(param, 16) - 65536)/ Math.pow(10, parameter.point);
+		parameter.value = String.format("%." + parameter.point + "f",
+				(Double) parameter.valueIn);
+		mList.add(parameter);
+		/********************************** 参数58--空管检测零点 **************************************/
+		param = msg.substring(266, 270);
+		System.out.println("参数58--空管检测零点 ==" + Long.parseLong(param, 16));
+		parameter = new Parameter();
+		parameter.address = "0041";
+		parameter.count = "0001";
+		parameter.name = "空管检测零点 ";
+		parameter.type = 1;
+		parameter.maxValue = 59999;
+		parameter.minValue = 0;
+		parameter.point = 5;
+		parameter.valueIn = Long.parseLong(param, 16)/ Math.pow(10, parameter.point);
+		parameter.value = String.format("%." + parameter.point + "f",
+				(Double) parameter.valueIn);
+		mList.add(parameter);
+		/********************************** 参数59--电流零点修正 **************************************/
+		param = msg.substring(270, 274);
+		System.out.println("参数59--电流零点修正==" + Long.parseLong(param, 16));
+		parameter = new Parameter();
+		parameter.address = "0042";
 		parameter.count = "0001";
 		parameter.name = "电流零点修正";
 		parameter.type = 2;
@@ -2095,11 +2160,11 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.value = String.format("%." + parameter.point + "f",
 				(Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数58--电流满度修正 **************************************/
-		param = msg.substring(266, 270);
-		System.out.println("参数58--电流满度修正==" + Long.parseLong(param, 16));
+		/********************************** 参数60--电流满度修正 **************************************/
+		param = msg.substring(274, 278);
+		System.out.println("参数60--电流满度修正==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0041";
+		parameter.address = "0043";
 		parameter.count = "0001";
 		parameter.name = "电流满度修正";
 		parameter.type = 2;
@@ -2111,31 +2176,31 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.value = String.format("%." + parameter.point + "f",
 				(Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数59--仪表编码 **************************************/
-		param = msg.substring(270, 278);
-		System.out.println("参数59--仪表编码=="
-				+ NumberBytes.hexStrToLong(msg.substring(274, 278)
-						+ msg.substring(270, 274)));
+		/********************************** 参数61--仪表编码 **************************************/
+		param = msg.substring(278, 286);
+		System.out.println("参数61--仪表编码=="
+				+ NumberBytes.hexStrToLong(msg.substring(282, 286)
+						+ msg.substring(278, 282)));
 		parameter = new Parameter();
-		parameter.address = "0042";
+		parameter.address = "0044";
 		parameter.count = "0002";
 		parameter.name = "仪表编码";
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(274, 278)
-				+ msg.substring(270, 274));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(274, 278)
-				+ msg.substring(270, 274))
+		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(282, 286)
+				+ msg.substring(278, 282));
+		parameter.value = NumberBytes.hexStrToLong(msg.substring(282, 286)
+				+ msg.substring(278, 282))
 				+ "";
 		mList.add(parameter);
-		/********************************** 参数60--转换器密码 **************************************/
-		param = msg.substring(278, 286);
-		System.out.println("参数60--转换器密码=="
+		/********************************** 参数62--转换器密码 **************************************/
+		param = msg.substring(286, 294);
+		System.out.println("参数62--转换器密码=="
 				+ NumberBytes.hexStrToLong(msg.substring(282, 286)
 						+ msg.substring(278, 282)));
 		parameter = new Parameter();
-		parameter.address = "0044";
+		parameter.address = "0046";
 		parameter.count = "0002";
 		parameter.name = "转换器密码";
 		parameter.type = 3;
@@ -2146,10 +2211,12 @@ public class CheckPasswordActivity extends BaseActivity {
 		parameter.value = NumberBytes.hexStrToLong(msg.substring(282, 286)
 				+ msg.substring(278, 282))
 				+ "";
-		Constans.PasswordLevel.LEVEL_4 = NumberBytes.hexStrToLong(msg
-				.substring(282, 286) + msg.substring(278, 282));
+		Constans.PasswordLevel.LEVEL_4 = NumberBytes.hexStrToLong(msg.substring(282, 286)
+				+ msg.substring(278, 282));
 		mList.add(parameter);
-
+		AppStaticVar.PASSWORD_LEVEAL4_COUNT = mList.size();
+		AppStaticVar.PASSWORD_LEVEAL5_COUNT= mList.size();
+		AppStaticVar.mParamList = mList;
 	}
 
 	private void checkPsw(long psw) {

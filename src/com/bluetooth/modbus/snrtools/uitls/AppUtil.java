@@ -138,6 +138,9 @@ public class AppUtil {
 			public void run() {
 				InputStream mmInStream = null;
 				try {
+					if(AppStaticVar.mSocket == null){
+						return;
+					}
 					mmInStream = AppStaticVar.mSocket.getInputStream();
 					byte[] buffer = new byte[10240];
 					int bytes;

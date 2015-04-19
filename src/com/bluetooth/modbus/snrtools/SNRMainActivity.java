@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.bluetooth.modbus.snrtools.bean.ZFLJDW;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 import com.bluetooth.modbus.snrtools.uitls.ModbusUtils;
 import com.bluetooth.modbus.snrtools.uitls.NumberBytes;
@@ -24,6 +25,7 @@ public class SNRMainActivity extends BaseActivity {
 			mParam7;
 	private NoFocuseTextview mTvAlarm;
 	private boolean isPause = false;
+	private boolean isSetting = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +44,11 @@ public class SNRMainActivity extends BaseActivity {
 		switch (id) {
 			case R.id.btnRight1 :
 				isPause = true;
+				isSetting = true;
+				showProgressDialog("设备通讯中,请稍后...");
 				break;
 		}
 	}
-
 
 	private void startReadParam() {
 		mThread = new Thread(new Runnable() {
@@ -71,7 +74,8 @@ public class SNRMainActivity extends BaseActivity {
 		mParam7 = (TextView) findViewById(R.id.param7);
 		mTvAlarm = (NoFocuseTextview) findViewById(R.id.tvAlarm);
 		mTvAlarm.setVisibility(View.GONE);
-		mTvAlarm.startAnimation(AnimationUtils.loadAnimation(mContext, R.anim.anim_alpha));
+		mTvAlarm.startAnimation(AnimationUtils.loadAnimation(mContext,
+				R.anim.anim_alpha));
 	}
 
 	private void hasAlarm(String s) {
@@ -110,30 +114,38 @@ public class SNRMainActivity extends BaseActivity {
 		return dw;
 	}
 
-	private String getZFDw(String s) {
+	private ZFLJDW getZFDw(String s) {
 		System.out.println("正反累积单位====" + s);
-		String dw = "";
+		ZFLJDW dw = null;
 		s = s.replace("0", "");
 		if ("".equals(s)) {
-			dw = "L";
+			dw = new ZFLJDW("m3", 3);
 		} else if ("1".equals(s)) {
-			dw = "";
+			dw = new ZFLJDW("m3", 2);
 		} else if ("2".equals(s)) {
-			dw = "";
+			dw = new ZFLJDW("m3", 1);
 		} else if ("3".equals(s)) {
-			dw = "m3";
+			dw = new ZFLJDW("m3", 0);
+		} else if ("4".equals(s)) {
+			dw = new ZFLJDW("L", 3);
+		} else if ("5".equals(s)) {
+			dw = new ZFLJDW("L", 2);
+		} else if ("6".equals(s)) {
+			dw = new ZFLJDW("L", 1);
+		} else if ("7".equals(s)) {
+			dw = new ZFLJDW("L", 0);
 		}
 		return dw;
 	}
 
 	private void dealReturnMsg(String msg) {
-		if (msg.length() != 126) {
+		if (msg.length() != 114) {
 			return;
 		}
 		// 瞬时流量浮点值
 		String ssllH = msg.substring(10, 14);
 		String ssllL = msg.substring(6, 10);
-		String sslldw = msg.substring(70, 74);
+		String sslldw = msg.substring(86, 90);
 		System.out.println("瞬时流量==" + NumberBytes.hexStrToFloat(ssllH + ssllL));
 		System.out.println("瞬时流量单位==" + sslldw);
 		String ssllT = NumberBytes.hexStrToFloat(ssllH + ssllL) + " "
@@ -162,7 +174,7 @@ public class SNRMainActivity extends BaseActivity {
 		// 正向累积数值整数值
 		String zxljintH = msg.substring(42, 46);
 		String zxljintL = msg.substring(38, 42);
-		String zxljIntString = Long.parseLong(zxljintH + zxljintL, 16) + "";
+		long zxljLong = Long.parseLong(zxljintH + zxljintL, 16);
 		System.out.println("正向累积数值整数值=="
 				+ Long.parseLong(zxljintH + zxljintL, 16));
 		// 正向累积数值小数值
@@ -170,71 +182,98 @@ public class SNRMainActivity extends BaseActivity {
 		String zxljfloatL = msg.substring(46, 50);
 		System.out.println("正向累积数值小数值=="
 				+ NumberBytes.hexStrToFloat(zxljfloatH + zxljfloatL));
-		String zxljFloatString = NumberBytes.hexStrToFloat(zxljfloatH
-				+ zxljfloatL)
-				+ "";
+		float zxljFloat = NumberBytes.hexStrToFloat(zxljfloatH
+				+ zxljfloatL);
 		// 反向累积数值整数值
 		String fxljintH = msg.substring(58, 62);
 		String fxljintL = msg.substring(54, 58);
 		System.out.println("反向累积数值整数值=="
 				+ Long.parseLong(fxljintH + fxljintL, 16));
-		String fxljIntString = Long.parseLong(fxljintH + fxljintL, 16) + "";
+		long fxljLong = Long.parseLong(fxljintH + fxljintL, 16);
 		// 反向累积数值小数值
 		String fxljfloatH = msg.substring(66, 70);
 		String fxljfloatL = msg.substring(62, 66);
 		System.out.println("反向累积数值小数值=="
 				+ NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL));
-		String fxljFloatString = NumberBytes.hexStrToFloat(fxljfloatH
-				+ fxljfloatL)
-				+ "";
+		float fxljFloat = NumberBytes.hexStrToFloat(fxljfloatH+ fxljfloatL);
+
+		// 正反向累积差值整数值
+		String zfljintH = msg.substring(74, 78);
+		String zfljintL = msg.substring(70, 74);
+		System.out.println("正反向累积差值整数值=="
+				+ Long.parseLong(zfljintH + zfljintL, 16));
+		long zfljLong = Long.parseLong(zfljintH + zfljintL, 16);
+		// 正反向累积差值小数值
+		String zfljfloatH = msg.substring(82, 86);
+		String zfljfloatL = msg.substring(78, 82);
+		System.out.println("正反向累积差值小数值=="
+				+ NumberBytes.hexStrToFloat(zfljfloatH + zfljfloatL));
+		float zfljFloat = NumberBytes.hexStrToFloat(zfljfloatH+ zfljfloatL);
+
 		// 正向，反向累积单位
-		String ljdw = msg.substring(74, 78);
+		String ljdw = msg.substring(90, 94);
 		System.out.println("正向，反向累积单位==" + ljdw);
-		String zxljT = zxljIntString
-				+ zxljFloatString.substring(zxljFloatString.indexOf(".")) + " "
-				+ getZFDw(ljdw);
+		ZFLJDW zfljdw = getZFDw(ljdw);
+		if(zfljdw == null){
+			zfljdw = new ZFLJDW("", 3);
+		}
+		
+//		String zxljT = zxljIntString
+//				+ zxljFloatString.substring(zxljFloatString.indexOf(".")) + " "
+//				+ getZFDw(ljdw);
+		String zxljT = zxljLong + (zfljdw.point==0?"":String.format("%."+zfljdw.point+"f", zxljFloat).substring(String.format("%."+zfljdw.point+"f", zxljFloat).indexOf(".")))
+				+ zfljdw.dw;
 		mParam5.setText(zxljT);
-		String fxljt = fxljIntString
-				+ fxljFloatString.substring(fxljFloatString.indexOf(".")) + " "
-				+ getZFDw(ljdw);
+		String fxljt = fxljLong + (zfljdw.point==0?"":String.format("%."+zfljdw.point+"f", fxljFloat).substring(String.format("%."+zfljdw.point+"f", fxljFloat).indexOf(".")))
+				+ zfljdw.dw;
+//		String fxljt = fxljIntString
+//				+ fxljFloatString.substring(fxljFloatString.indexOf(".")) + " "
+//				+ getZFDw(ljdw);
 		mParam6.setText(fxljt);
 
-		mParam7.setText(String.format(
-				"%.3f",
-				Long.parseLong(fxljintH + fxljintL, 16)
-						+ NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL)
-						- Long.parseLong(fxljintH + fxljintL, 16)
-						- NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL))
-				+ " " + getZFDw(ljdw));
+		String zfljt = zfljLong + (zfljdw.point==0?"":String.format("%."+zfljdw.point+"f", zfljFloat).substring(String.format("%."+zfljdw.point+"f", zfljFloat).indexOf(".")))
+				+ zfljdw.dw;
+//		String zfljt = zfljIntString
+//				+ zfljFloatString.substring(zfljFloatString.indexOf(".")) + " "
+//				+ getZFDw(ljdw);
+		mParam7.setText(zfljt);
+
+		// mParam7.setText(String.format(
+		// "%.3f",
+		// Long.parseLong(fxljintH + fxljintL, 16)
+		// + NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL)
+		// - Long.parseLong(fxljintH + fxljintL, 16)
+		// - NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL))
+		// + " " + getZFDw(ljdw));
 
 		// 流量上限报警
-		String llsxbj = msg.substring(78, 82);
+		String llsxbj = msg.substring(94, 98);
 		System.out.println("流量上限报警==" + llsxbj);
-		if (Integer.parseInt(llsxbj) == 1) {
+		if (Long.parseLong(llsxbj, 16) == 1) {
 			hasAlarm("流量上限");
 		} else {
 			hasNoAlarm("流量上限");
 		}
 		// 流量下限报警
-		String llxxbj = msg.substring(82, 86);
+		String llxxbj = msg.substring(98, 102);
 		System.out.println("流量下限报警==" + llxxbj);
-		if (Integer.parseInt(llxxbj) == 1) {
+		if (Long.parseLong(llxxbj, 16) == 1) {
 			hasAlarm("流量下限");
 		} else {
 			hasNoAlarm("流量下限");
 		}
 		// 励磁异常报警
-		String lcbj = msg.substring(86, 90);
+		String lcbj = msg.substring(102, 106);
 		System.out.println("励磁异常报警==" + lcbj);
-		if (Integer.parseInt(lcbj) == 1) {
-			hasAlarm("励磁异常励磁异常励磁异常");
+		if (Long.parseLong(lcbj, 16) == 1) {
+			hasAlarm("励磁异常");
 		} else {
-			hasNoAlarm("励磁异常励磁异常励磁异常");
+			hasNoAlarm("励磁异常");
 		}
 		// 空管报警
-		String kgbj = msg.substring(90, 94);
+		String kgbj = msg.substring(106, 110);
 		System.out.println("空管报警==" + kgbj);
-		if (Integer.parseInt(kgbj) == 1) {
+		if (Long.parseLong(kgbj, 16) == 1) {
 			hasAlarm("空管报警");
 		} else {
 			hasNoAlarm("空管报警");
@@ -256,7 +295,9 @@ public class SNRMainActivity extends BaseActivity {
 					case Constans.DEVICE_RETURN_MSG :
 						System.out.println("主页面收到数据=====" + msg.obj.toString());
 						dealReturnMsg(msg.obj.toString());
-						if (isPause) {
+						if (isPause && isSetting) {
+							hideProgressDialog();
+							isSetting = false;
 							Intent setting = new Intent(mContext,
 									CheckPasswordActivity.class);
 							startActivity(setting);
@@ -277,6 +318,7 @@ public class SNRMainActivity extends BaseActivity {
 						if (mThread != null && !mThread.isInterrupted()) {
 							mThread.interrupt();
 						}
+						showToast("连接设备超时!");
 						startReadParam();
 						break;
 				}
@@ -305,6 +347,7 @@ public class SNRMainActivity extends BaseActivity {
 
 	@Override
 	protected void onDestroy() {
+		AppStaticVar.isExit = true;
 		AppStaticVar.mCurrentAddress = null;
 		AppStaticVar.mCurrentName = null;
 		if (AppStaticVar.mSocket != null) {

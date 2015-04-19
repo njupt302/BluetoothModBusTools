@@ -63,6 +63,7 @@ public class CustomDialog extends AlertDialog
 
 		WindowManager.LayoutParams lp=getWindow().getAttributes();
 		lp.dimAmount=0.25f;
+		lp.width = (int) (getWindow().getWindowManager().getDefaultDisplay().getWidth()*0.7);
 		getWindow().setAttributes(lp);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
 		if (isBlock)

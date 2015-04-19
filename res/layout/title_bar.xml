@@ -105,7 +105,6 @@
                     android:layout_height="40dp"
                     android:layout_centerInParent="true"
                     android:layout_marginRight="10dp"
-                    android:onClick="BtnRight"
                     android:src="@drawable/more" />
             </RelativeLayout>
         </LinearLayout>

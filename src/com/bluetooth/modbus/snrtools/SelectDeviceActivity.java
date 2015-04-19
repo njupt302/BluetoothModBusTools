@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Set;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -42,8 +43,7 @@ import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 import com.bluetooth.modbus.snrtools.uitls.AppUtil;
 import com.bluetooth.modbus.snrtools.view.MyAlertDialog.MyAlertDialogListener;
 
-public class SelectDeviceActivity extends BaseActivity
-{
+public class SelectDeviceActivity extends BaseActivity {
 
 	private static final String NO_DEVICE_CAN_CONNECT = "没有可以连接的设备";
 	private ListView mListView;
@@ -58,8 +58,7 @@ public class SelectDeviceActivity extends BaseActivity
 	private AlertDialog mAlertDialog = null;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
-	{
+	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		mAbHttpUtil = AbHttpUtil.getInstance(this);
@@ -68,31 +67,39 @@ public class SelectDeviceActivity extends BaseActivity
 		setRightButtonContent("搜索", R.id.btnRight1);
 		init();
 		showRightView(R.id.rlMenu);
+		if (AppUtil.checkBluetooth(mContext)) {
+			searchDevice();
+		}
 	}
 
 	@Override
-	public void reconnectSuccss()
-	{
+	public void reconnectSuccss() {
+		hideDialog();
 		Intent intent = new Intent(mContext, SNRMainActivity.class);
 		startActivity(intent);
 	}
 
-	private void init()
-	{
+	@Override
+	public void BackOnClick(View v) {
+		switch (v.getId()) {
+			case R.id.ivBack :
+				onBackPressed();
+		}
+	}
+
+	private void init() {
 		list = new ArrayList<SiriListItem>();
 		mAdapter = new DeviceListAdapter(this, list);
 		mListView = (ListView) findViewById(R.id.list);
 		mListView.setAdapter(mAdapter);
 		mListView.setFastScrollEnabled(true);
-		mListView.setOnItemClickListener(new OnItemClickListener()
-		{
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-			{
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
 				SiriListItem item = list.get(arg2);
 				String info = item.getMessage();
-				if (NO_DEVICE_CAN_CONNECT.equals(info))
-				{
+				if (NO_DEVICE_CAN_CONNECT.equals(info)) {
 					return;
 				}
 				String address = info.substring(info.length() - 17);
@@ -100,26 +107,25 @@ public class SelectDeviceActivity extends BaseActivity
 				AppStaticVar.mCurrentAddress = address;
 				AppStaticVar.mCurrentName = name;
 
-				showDialog("是否连接" + item.getMessage(), new MyAlertDialogListener()
-				{
+				showDialog("是否连接" + item.getMessage(),
+						new MyAlertDialogListener() {
 
-					@Override
-					public void onClick(View view)
-					{
-						switch (view.getId())
-						{
-							case R.id.btnCancel:
-								AppStaticVar.mCurrentAddress = null;
-								AppStaticVar.mCurrentName = null;
-								hideDialog();
-								break;
-							case R.id.btnOk:
-								setRightButtonContent("搜索", R.id.btnRight1);
-								connectDevice(AppStaticVar.mCurrentAddress);
-								break;
-						}
-					}
-				});
+							@Override
+							public void onClick(View view) {
+								switch (view.getId()) {
+									case R.id.btnCancel :
+										AppStaticVar.mCurrentAddress = null;
+										AppStaticVar.mCurrentName = null;
+										hideDialog();
+										break;
+									case R.id.btnOk :
+										setRightButtonContent("搜索",
+												R.id.btnRight1);
+										connectDevice(AppStaticVar.mCurrentAddress);
+										break;
+								}
+							}
+						});
 			}
 		});
 
@@ -130,160 +136,148 @@ public class SelectDeviceActivity extends BaseActivity
 	}
 
 	@Override
-	protected void rightButtonOnClick(int id)
-	{
-		switch (id)
-		{
-			case R.id.btnRight1:
-				searchDevice();
+	protected void rightButtonOnClick(int id) {
+		switch (id) {
+			case R.id.btnRight1 :
+				if (AppUtil.checkBluetooth(mContext)) {
+					searchDevice();
+				}
 				break;
-			case R.id.ivMenu:
-				showMenu(findViewById(id));
+			case R.id.rlMenu :
+				 showMenu(findViewById(id));
 				break;
 		}
 	}
 
-	public void onClick(View v)
-	{
-		switch (v.getId())
-		{
-			case R.id.textView1:
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.textView1 :// 新功能
+				hideMenu();
+				showDialogOne("实时监视，参数设置", null);
+				break;
+			case R.id.textView2 :// 关于
+				hideMenu();
+				showDialogOne("电话 :025-58008686\n传真 :025-86167199\n邮箱 :sinier@sinier.com.cn\n地址 :南京市江宁区谷里科技产业园兴谷路6号 ", null);
+				break;
+			case R.id.textView3 :// 版本更新
 				hideMenu();
 				downloadXml();
 				break;
+			case R.id.textView4 :// 退出
+				hideMenu();
+				onBackPressed();
+				break;
 		}
 	}
 
-	private void showMenu(View v)
-	{
-		if (mPop == null)
-		{
+	private void showMenu(View v) {
+		if (mPop == null) {
 			View contentView = View.inflate(this, R.layout.main_menu, null);
-			mPop = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			mPop = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
 			mPop.setBackgroundDrawable(new BitmapDrawable());
 			mPop.setOutsideTouchable(true);
 			mPop.setFocusable(true);
 		}
-		mPop.showAsDropDown(v, R.dimen.menu_x, 15);
+		mPop.showAsDropDown(v, R.dimen.menu_x, 20);
 	}
 
-	private void hideMenu()
-	{
-		if (mPop != null && mPop.isShowing())
-		{
+	private void hideMenu() {
+		if (mPop != null && mPop.isShowing()) {
 			mPop.dismiss();
 		}
 	}
 
-	private void downloadXml()
-	{
-		String url = "http://192.168.1.100:18086/snrtools/version.xml";
-		mAbHttpUtil.get(url, new AbFileHttpResponseListener(url)
-		{
+	private void downloadXml() {
+		String url = "http://www.sinier.com.cn/download/version.xml";
+		mAbHttpUtil.get(url, new AbFileHttpResponseListener(url) {
 			// 获取数据成功会调用这里
 			@Override
-			public void onSuccess(int statusCode, File file)
-			{
+			public void onSuccess(int statusCode, File file) {
 				int version = 0;
 				String url = "";
 				String md5 = "";
 				XmlPullParser xpp = Xml.newPullParser();
-				try
-				{
+				try {
 					xpp.setInput(new FileInputStream(file), "utf-8");
 
 					int eventType = xpp.getEventType();
-					while (eventType != XmlPullParser.END_DOCUMENT)
-					{
-						switch (eventType)
-						{
-							case XmlPullParser.START_TAG:
-								if ("version".equals(xpp.getName()))
-								{
-									try
-									{
-										version = Integer.parseInt(xpp.nextText());
-									}
-									catch (NumberFormatException e1)
-									{
+					while (eventType != XmlPullParser.END_DOCUMENT) {
+						switch (eventType) {
+							case XmlPullParser.START_TAG :
+								if ("version".equals(xpp.getName())) {
+									try {
+										version = Integer.parseInt(xpp
+												.nextText());
+									} catch (NumberFormatException e1) {
 										e1.printStackTrace();
 										showToast("服务器更新版本号出错！");
 									}
 								}
-								if ("url".equals(xpp.getName()))
-								{
+								if ("url".equals(xpp.getName())) {
 									url = xpp.nextText();
 								}
-								if ("MD5".equals(xpp.getName()))
-								{
+								if ("MD5".equals(xpp.getName())) {
 									md5 = xpp.nextText();
 								}
 								break;
-							default:
+							default :
 								break;
 						}
 						eventType = xpp.next();
 					}
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				PackageManager manager;
 				PackageInfo info = null;
 				manager = getPackageManager();
-				try
-				{
+				try {
 					info = manager.getPackageInfo(getPackageName(), 0);
-				}
-				catch (NameNotFoundException e)
-				{
+				} catch (NameNotFoundException e) {
 					e.printStackTrace();
 				}
-				if (version > info.versionCode)
-				{
+				if (version != info.versionCode) {
 					String fileName = url.substring(url.lastIndexOf("/") + 1);
 					File apk = new File(Constans.Directory.DOWNLOAD + fileName);
-					if (md5.equals(AppUtil.getFileMD5(apk)))
-					{
+					if (md5.equals(AppUtil.getFileMD5(apk))) {
 						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setDataAndType(Uri.fromFile(apk), "application/vnd.android.package-archive");
+						intent.setDataAndType(Uri.fromFile(apk),
+								"application/vnd.android.package-archive");
 						startActivity(intent);
 						return;
 					}
-					try
-					{
-						if (!apk.getParentFile().exists())
-						{
+					try {
+						if (!apk.getParentFile().exists()) {
 							apk.getParentFile().mkdirs();
 						}
 						apk.createNewFile();
-					}
-					catch (IOException e)
-					{
+					} catch (IOException e) {
 						e.printStackTrace();
 					}
-					mAbHttpUtil.get(url, new AbFileHttpResponseListener(apk)
-					{
-						public void onSuccess(int statusCode, File file)
-						{
+					mAbHttpUtil.get(url, new AbFileHttpResponseListener(apk) {
+						public void onSuccess(int statusCode, File file) {
 							Intent intent = new Intent(Intent.ACTION_VIEW);
-							intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+							intent.setDataAndType(Uri.fromFile(file),
+									"application/vnd.android.package-archive");
 							startActivity(intent);
 						};
 
 						// 开始执行前
 						@Override
-						public void onStart()
-						{
+						public void onStart() {
 							// 打开进度框
-							View v = LayoutInflater.from(mContext).inflate(R.layout.progress_bar_horizontal, null,
+							View v = LayoutInflater.from(mContext).inflate(
+									R.layout.progress_bar_horizontal, null,
 									false);
-							mAbProgressBar = (AbHorizontalProgressBar) v.findViewById(R.id.horizontalProgressBar);
-							numberText = (TextView) v.findViewById(R.id.numberText);
+							mAbProgressBar = (AbHorizontalProgressBar) v
+									.findViewById(R.id.horizontalProgressBar);
+							numberText = (TextView) v
+									.findViewById(R.id.numberText);
 							maxText = (TextView) v.findViewById(R.id.maxText);
 
-							maxText.setText(progress + "/" + String.valueOf(max));
+							maxText.setText(progress + "/"
+									+ String.valueOf(max));
 							mAbProgressBar.setMax(max);
 							mAbProgressBar.setProgress(progress);
 
@@ -292,34 +286,36 @@ public class SelectDeviceActivity extends BaseActivity
 
 						// 失败，调用
 						@Override
-						public void onFailure(int statusCode, String content, Throwable error)
-						{
+						public void onFailure(int statusCode, String content,
+								Throwable error) {
 							showToast(error.getMessage());
 						}
 
 						// 下载进度
 						@Override
-						public void onProgress(long bytesWritten, long totalSize)
-						{
-							maxText.setText(bytesWritten / (totalSize / max) + "/" + max);
-							mAbProgressBar.setProgress((int) (bytesWritten / (totalSize / max)));
+						public void onProgress(long bytesWritten, long totalSize) {
+							if (totalSize / max == 0) {
+								onFinish();
+								showToast("下载失败!");
+								return;
+							}
+							maxText.setText(bytesWritten / (totalSize / max)
+									+ "/" + max);
+							mAbProgressBar
+									.setProgress((int) (bytesWritten / (totalSize / max)));
 						}
 
 						// 完成后调用，失败，成功
-						public void onFinish()
-						{
+						public void onFinish() {
 							// 下载完成取消进度框
-							if (mAlertDialog != null)
-							{
+							if (mAlertDialog != null) {
 								mAlertDialog.cancel();
 								mAlertDialog = null;
 							}
 
 						};
 					});
-				}
-				else
-				{
+				} else {
 					showToast("已经是最新版！");
 				}
 
@@ -327,11 +323,12 @@ public class SelectDeviceActivity extends BaseActivity
 
 			// 开始执行前
 			@Override
-			public void onStart()
-			{
+			public void onStart() {
 				// 打开进度框
-				View v = LayoutInflater.from(mContext).inflate(R.layout.progress_bar_horizontal, null, false);
-				mAbProgressBar = (AbHorizontalProgressBar) v.findViewById(R.id.horizontalProgressBar);
+				View v = LayoutInflater.from(mContext).inflate(
+						R.layout.progress_bar_horizontal, null, false);
+				mAbProgressBar = (AbHorizontalProgressBar) v
+						.findViewById(R.id.horizontalProgressBar);
 				numberText = (TextView) v.findViewById(R.id.numberText);
 				maxText = (TextView) v.findViewById(R.id.maxText);
 
@@ -344,25 +341,23 @@ public class SelectDeviceActivity extends BaseActivity
 
 			// 失败，调用
 			@Override
-			public void onFailure(int statusCode, String content, Throwable error)
-			{
+			public void onFailure(int statusCode, String content,
+					Throwable error) {
 				showToast(error.getMessage());
 			}
 
 			// 下载进度
 			@Override
-			public void onProgress(long bytesWritten, long totalSize)
-			{
+			public void onProgress(long bytesWritten, long totalSize) {
 				maxText.setText(bytesWritten / (totalSize / max) + "/" + max);
-				mAbProgressBar.setProgress((int) (bytesWritten / (totalSize / max)));
+				mAbProgressBar
+						.setProgress((int) (bytesWritten / (totalSize / max)));
 			}
 
 			// 完成后调用，失败，成功
-			public void onFinish()
-			{
+			public void onFinish() {
 				// 下载完成取消进度框
-				if (mAlertDialog != null)
-				{
+				if (mAlertDialog != null) {
 					mAlertDialog.cancel();
 					mAlertDialog = null;
 				}
@@ -370,31 +365,32 @@ public class SelectDeviceActivity extends BaseActivity
 		});
 	}
 
-	private void searchDevice()
-	{
-		if (AppStaticVar.mBtAdapter.isDiscovering())
-		{
+	private void searchDevice() {
+		if (AppStaticVar.mBtAdapter.isDiscovering()) {
 			AppStaticVar.mBtAdapter.cancelDiscovery();
 			setRightButtonContent("搜索", R.id.btnRight1);
-		}
-		else
-		{
-			showProgressDialog("设备搜索中...",true);
+		} else {
+			showProgressDialog("设备搜索中...", true);
 			list.clear();
 			mAdapter.notifyDataSetChanged();
 
-			Set<BluetoothDevice> pairedDevices = AppStaticVar.mBtAdapter.getBondedDevices();
-			if (pairedDevices.size() > 0)
-			{
-				for (BluetoothDevice device : pairedDevices)
-				{
-					list.add(new SiriListItem(device.getName() + "\n" + device.getAddress(), true));
-					mAdapter.notifyDataSetChanged();
-					mListView.setSelection(list.size() - 1);
+			Set<BluetoothDevice> pairedDevices = AppStaticVar.mBtAdapter
+					.getBondedDevices();
+			if (pairedDevices.size() > 0) {
+				for (BluetoothDevice device : pairedDevices) {
+					if (device
+							.getName()
+							.toUpperCase(Locale.ENGLISH)
+							.startsWith(
+									Constans.DEVICE_NAME_START
+											.toUpperCase(Locale.ENGLISH))) {
+						list.add(new SiriListItem(device.getName() + "\n"
+								+ device.getAddress(), true));
+						mAdapter.notifyDataSetChanged();
+						mListView.setSelection(list.size() - 1);
+					}
 				}
-			}
-			else
-			{
+			} else {
 				list.add(new SiriListItem(NO_DEVICE_CAN_CONNECT, true));
 				mAdapter.notifyDataSetChanged();
 				mListView.setSelection(list.size() - 1);
@@ -406,19 +402,15 @@ public class SelectDeviceActivity extends BaseActivity
 	}
 
 	@Override
-	public void onBackPressed()
-	{
-		showDialog("是否要退出程序？", new MyAlertDialogListener()
-		{
+	public void onBackPressed() {
+		showDialog("是否要退出程序？", new MyAlertDialogListener() {
 			@Override
-			public void onClick(View view)
-			{
-				switch (view.getId())
-				{
-					case R.id.btnCancel:
+			public void onClick(View view) {
+				switch (view.getId()) {
+					case R.id.btnCancel :
 						hideDialog();
 						break;
-					case R.id.btnOk:
+					case R.id.btnOk :
 						AppUtil.closeBluetooth();
 						finish();
 						break;
@@ -428,62 +420,51 @@ public class SelectDeviceActivity extends BaseActivity
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu)
-	{
+	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main, menu);
 		return true;
 	}
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
+	public boolean onOptionsItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		if (id == R.id.action_settings)
-		{
+		if (id == R.id.action_settings) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
-	protected void onResume()
-	{
-		if (AppUtil.checkBluetooth(mContext))
-		{
-			searchDevice();
-		}
-		super.onResume();
-	}
-
-	@Override
-	protected void onDestroy()
-	{
+	protected void onDestroy() {
 		this.unregisterReceiver(mReceiver);
 		super.onDestroy();
 	}
 
-	private final BroadcastReceiver mReceiver = new BroadcastReceiver()
-	{
+	private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
 		@Override
-		public void onReceive(Context context, Intent intent)
-		{
+		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
-			if (BluetoothDevice.ACTION_FOUND.equals(action))
-			{
-				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				if (device.getBondState() != BluetoothDevice.BOND_BONDED)
-				{
-					list.add(new SiriListItem(device.getName() + "\n" + device.getAddress(), false));
-					mAdapter.notifyDataSetChanged();
-					mListView.setSelection(list.size() - 1);
+			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+				BluetoothDevice device = intent
+						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
+					if (device
+							.getName()
+							.toUpperCase(Locale.ENGLISH)
+							.startsWith(
+									Constans.DEVICE_NAME_START
+											.toUpperCase(Locale.ENGLISH))) {
+						list.add(new SiriListItem(device.getName() + "\n"
+								+ device.getAddress(), false));
+						mAdapter.notifyDataSetChanged();
+						mListView.setSelection(list.size() - 1);
+					}
 				}
-			}
-			else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action))
-			{
+			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
+					.equals(action)) {
 				hideProgressDialog();
 				setProgressBarIndeterminateVisibility(false);
-				if (mListView.getCount() == 0)
-				{
+				if (mListView.getCount() == 0) {
 					list.add(new SiriListItem("没有发现蓝牙设备", false));
 					mAdapter.notifyDataSetChanged();
 					mListView.setSelection(list.size() - 1);

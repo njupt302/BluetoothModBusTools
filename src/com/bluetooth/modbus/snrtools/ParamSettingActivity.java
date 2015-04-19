@@ -36,7 +36,8 @@ public class ParamSettingActivity extends BaseActivity {
 		} else {
 			setTitleContent("设置参数");
 		}
-		mList = (List<Parameter>) getIntent().getSerializableExtra("list");
+		// mList = (List<Parameter>) getIntent().getSerializableExtra("list");
+		mList = AppStaticVar.mParamList;
 		hideRightView(R.id.btnRight1);
 		hideRightView(R.id.view2);
 		initUI();
@@ -49,23 +50,23 @@ public class ParamSettingActivity extends BaseActivity {
 
 	private void setListeners() {
 		switch (AppStaticVar.PASSWORD_LEVEAL) {
-		case 1 :// 可以设置1-24
-			mCount = 17;
-			break;
-		case 2 :// 可以设置1-25
-			mCount = 32;
-			break;
-		case 3 :// 可以设置1-38
-			mCount = 55;
-			break;
-		case 4 :// 可以设置1-60
+			case 1 :// 可以设置1-24
+				mCount = AppStaticVar.PASSWORD_LEVEAL1_COUNT;
+				break;
+			case 2 :// 可以设置1-25
+				mCount = AppStaticVar.PASSWORD_LEVEAL2_COUNT;
+				break;
+			case 3 :// 可以设置1-38
+				mCount = AppStaticVar.PASSWORD_LEVEAL3_COUNT;
+				break;
+			case 4 :// 可以设置1-60
 
-			mCount = 60;
-			break;
-		case 5 :// // 超级密码
-			mCount = mList.size();
-			break;
-	}
+				mCount = AppStaticVar.PASSWORD_LEVEAL4_COUNT;
+				break;
+			case 5 :// // 超级密码
+				mCount = mList.size();
+				break;
+		}
 		mDataList = new ArrayList<Parameter>();
 		mDataList.addAll(mList.subList(0, mCount));
 		mAdapter = new ParameterAdapter(mContext, mDataList);
@@ -75,7 +76,7 @@ public class ParamSettingActivity extends BaseActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				if(mAdapter.getItem(position).isGroupTitle){
+				if (mAdapter.getItem(position).isGroupTitle) {
 					return;
 				}
 				Intent intent = new Intent();
@@ -132,7 +133,6 @@ public class ParamSettingActivity extends BaseActivity {
 			}
 		}
 	}
-
 
 	@Override
 	protected void onDestroy() {

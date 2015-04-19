@@ -18,7 +18,7 @@ public class ModbusUtils {
 		read.setStartAddressH("10");
 		read.setStartAddressL("10");
 		read.setCountH("00");
-		read.setCountL("1D");
+		read.setCountL("1A");
 		AppUtil.modbusWrite( className,handler, read,TIME_OUT);
 	}
 
@@ -29,7 +29,7 @@ public class ModbusUtils {
 		read.setStartAddressH("00");
 		read.setStartAddressL("00");
 		read.setCountH("00");
-		read.setCountL("46");
+		read.setCountL("48");
 		AppUtil.modbusWrite( className,handler, read,TIME_OUT);
 	}
 
@@ -62,7 +62,7 @@ public class ModbusUtils {
 		write.setDeviceId("01");
 		write.setCommandNo("10");
 		write.setStartAddressH("00");
-		write.setStartAddressL("46");
+		write.setStartAddressL("48");
 		write.setCountH("00");
 		write.setCountL("01");
 		write.setByteCount("02");
@@ -73,4 +73,66 @@ public class ModbusUtils {
 		AppUtil.modbusWrite( className,handler, write,TIME_OUT);
 	}
 
+	/**
+	 * 总量清零
+	 * @param className
+	 * @param handler
+	 */
+	public static void clearZL(String className,Handler handler) {
+		CommandWrite write = new CommandWrite();
+		write.setDeviceId("01");
+		write.setCommandNo("10");
+		write.setStartAddressH("00");
+		write.setStartAddressL("48");
+		write.setCountH("00");
+		write.setCountL("01");
+		write.setByteCount("02");
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("0", "00");
+		map.put("1", "02");
+		write.setContentMap(map);
+		AppUtil.modbusWrite( className,handler, write,TIME_OUT);
+	}
+	
+	/**
+	 * 正向总量写入标志
+	 * @param className
+	 * @param handler
+	 */
+	public static void inputZXZL(String className,Handler handler) {
+		CommandWrite write = new CommandWrite();
+		write.setDeviceId("01");
+		write.setCommandNo("10");
+		write.setStartAddressH("00");
+		write.setStartAddressL("48");
+		write.setCountH("00");
+		write.setCountL("01");
+		write.setByteCount("02");
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("0", "00");
+		map.put("1", "03");
+		write.setContentMap(map);
+		AppUtil.modbusWrite( className,handler, write,TIME_OUT);
+	}
+	
+	/**
+	 * 反向总量写入标志
+	 * @param className
+	 * @param handler
+	 */
+	public static void inputFXZL(String className,Handler handler) {
+		CommandWrite write = new CommandWrite();
+		write.setDeviceId("01");
+		write.setCommandNo("10");
+		write.setStartAddressH("00");
+		write.setStartAddressL("48");
+		write.setCountH("00");
+		write.setCountL("01");
+		write.setByteCount("02");
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("0", "00");
+		map.put("1", "04");
+		write.setContentMap(map);
+		AppUtil.modbusWrite( className,handler, write,TIME_OUT);
+	}
 }
