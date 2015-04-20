@@ -3,6 +3,7 @@ package com.bluetooth.modbus.snrtools;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -44,12 +45,14 @@ public class InputParamActivity extends BaseWriteParamActivity {
 	public void onClick(View v) {
 		switch (v.getId()) {
 			case R.id.button2 :
-
+				if(TextUtils.isEmpty(mEtParam.getText().toString().trim())){
+					showToast("请输入数值!");
+					return;
+				}
 				if (p != null) {
 					// TODO 根据输入的数据类型，转换成对应的十六进制字符串
-					int valueIn = 0;
-					valueIn = (int) (Double.parseDouble(mEtParam.getText()
-							.toString().trim()) * Math.pow(10, p.point));
+					double valueIn = 0;
+					valueIn = Double.parseDouble(mEtParam.getText().toString().trim());
 					if(valueIn>p.maxValue){
 						showToast("数值不能超过"+p.maxValue+"!");
 						return;
@@ -58,7 +61,7 @@ public class InputParamActivity extends BaseWriteParamActivity {
 						showToast("数值不能小于"+p.minValue+"!");
 						return;
 					}
-					p.valueIn = Integer.toHexString(valueIn);
+					p.valueIn = Integer.toHexString((int)(valueIn * Math.pow(10, p.point)));
 					if(p.type == 4 && p.valueIn.toString().length() == 8){
 						p.valueIn = p.valueIn.toString().substring(4, 8);
 					}

@@ -223,13 +223,16 @@ public abstract class BaseActivity extends Activity {
 						public void handleMessage(Message msg) {
 							switch (msg.what) {
 								case Constans.CONNECTING_DEVICE :
+									System.out.println("=====开始连接=====");
 									showProgressDialog(msg.obj.toString());
 									break;
 								case Constans.CONNECT_DEVICE_SUCCESS :
+									System.out.println("=====连接成功=====");
 									hideProgressDialog();
 									reconnectSuccss();
 									break;
 								case Constans.CONNECT_DEVICE_FAILED :
+									System.out.println("=====连接失败=====");
 									hideProgressDialog();
 									showToast(msg.obj.toString());
 									break;

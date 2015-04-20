@@ -29,7 +29,7 @@
             android:id="@+id/tvName"
             android:layout_width="0dp"
             android:layout_height="30dp"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:gravity="right|center_vertical"
             android:textColor="#6BADF6"
             android:textSize="18sp" />
@@ -39,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="30dp"
             android:layout_marginLeft="5dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:gravity="left|center_vertical"
             android:textColor="#1a1a1a"
             android:textSize="18sp" />

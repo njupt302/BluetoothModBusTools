@@ -291,6 +291,7 @@ public class SNRMainActivity extends BaseActivity {
 				break;
 			case Constans.NO_DEVICE_CONNECTED :
 				System.out.println(name+"连接失败=====");
+				showConnectDevice();
 				break;
 			case Constans.DEVICE_RETURN_MSG :
 				System.out.println(name+"收到数据=====" + msg.obj.toString());
