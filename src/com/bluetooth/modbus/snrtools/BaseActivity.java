@@ -1,5 +1,7 @@
 package com.bluetooth.modbus.snrtools;
 
+import java.lang.ref.WeakReference;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -30,6 +32,7 @@ public abstract class BaseActivity extends Activity {
 	private CustomDialog mCustomDialog;
 	private MyAlertDialog mDialog, mDialogOne;
 	public AbHttpUtil mAbHttpUtil;
+	public InnerHandler mInnerHandler;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -310,5 +313,30 @@ public abstract class BaseActivity extends Activity {
 		hideDialog();
 		hideDialogOne();
 		super.onDestroy();
+	}
+	
+	public void handleMessage(Activity activity,Message msg,String name){
+		
+	}
+	
+	static class InnerHandler extends Handler{
+		private WeakReference<Activity> wr;
+		private String name;
+		public InnerHandler(Activity activity,String name)
+		{
+			wr = new WeakReference<Activity>(activity);
+			this.name = name;
+		}
+		
+		@Override
+		public void handleMessage(Message msg)
+		{
+			super.handleMessage(msg);
+			Activity a = wr.get();
+			if(a == null){
+				return;
+			}
+			((BaseActivity)a).handleMessage(a,msg,name);
+		}
 	}
 }

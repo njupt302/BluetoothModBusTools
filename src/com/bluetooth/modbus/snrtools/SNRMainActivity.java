@@ -2,9 +2,9 @@ package com.bluetooth.modbus.snrtools;
 
 import java.io.IOException;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
@@ -19,7 +19,7 @@ import com.bluetooth.modbus.snrtools.view.NoFocuseTextview;
 
 public class SNRMainActivity extends BaseActivity {
 
-	private Handler mHandler;
+//	private Handler mHandler;
 	private Thread mThread;
 	private TextView mParam1, mParam2, mParam3, mParam4, mParam5, mParam6,
 			mParam7;
@@ -33,7 +33,6 @@ public class SNRMainActivity extends BaseActivity {
 		setContentView(R.layout.snr_main_activity);
 		initUI();
 		setTitleContent(AppStaticVar.mCurrentName);
-		// hideRightView(R.id.btnRight1);
 		setRightButtonContent("设置", R.id.btnRight1);
 		hideRightView(R.id.view2);
 		initHandler();
@@ -57,7 +56,7 @@ public class SNRMainActivity extends BaseActivity {
 			public void run() {
 				if (!isPause) {
 					ModbusUtils.readStatus(mContext.getClass().getSimpleName(),
-							mHandler);
+							mInnerHandler);
 				}
 			}
 		});
@@ -280,50 +279,54 @@ public class SNRMainActivity extends BaseActivity {
 		}
 
 	}
+	
+	@Override
+	public void handleMessage(Activity activity, Message msg, String name)
+	{
+		super.handleMessage(activity, msg, name);
+
+		switch (msg.what) {
+			case Constans.CONTACT_START :
+				System.out.println(name+"开始读取数据=====");
+				break;
+			case Constans.NO_DEVICE_CONNECTED :
+				System.out.println(name+"连接失败=====");
+				break;
+			case Constans.DEVICE_RETURN_MSG :
+				System.out.println(name+"收到数据=====" + msg.obj.toString());
+				dealReturnMsg(msg.obj.toString());
+				if (isPause && isSetting) {
+					hideProgressDialog();
+					isSetting = false;
+					Intent setting = new Intent(mContext,
+							CheckPasswordActivity.class);
+					startActivity(setting);
+				} else {
+					startReadParam();
+				}
+				break;
+			case Constans.CONNECT_IS_CLOSED :
+				System.out.println(name+"连接关闭=====");
+				isPause = true;
+				showConnectDevice();
+			case Constans.ERROR_START :
+				System.out.println(name+"接收数据错误=====");
+				startReadParam();
+				break;
+			case Constans.TIME_OUT :
+				System.out.println(name+"连接超时=====");
+				if (mThread != null && !mThread.isInterrupted()) {
+					mThread.interrupt();
+				}
+				showToast("连接设备超时!");
+				startReadParam();
+				break;
+		}
+	
+	}
 
 	private void initHandler() {
-		mHandler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				switch (msg.what) {
-					case Constans.CONTACT_START :
-						System.out.println("主页面开始读取数据=====");
-						break;
-					case Constans.NO_DEVICE_CONNECTED :
-						System.out.println("主页面连接失败=====");
-						break;
-					case Constans.DEVICE_RETURN_MSG :
-						System.out.println("主页面收到数据=====" + msg.obj.toString());
-						dealReturnMsg(msg.obj.toString());
-						if (isPause && isSetting) {
-							hideProgressDialog();
-							isSetting = false;
-							Intent setting = new Intent(mContext,
-									CheckPasswordActivity.class);
-							startActivity(setting);
-						} else {
-							startReadParam();
-						}
-						break;
-					case Constans.CONNECT_IS_CLOSED :
-						System.out.println("主页面连接关闭=====");
-						isPause = true;
-						showConnectDevice();
-					case Constans.ERROR_START :
-						System.out.println("主页面接收数据错误=====");
-						startReadParam();
-						break;
-					case Constans.TIME_OUT :
-						System.out.println("主页面连接超时=====");
-						if (mThread != null && !mThread.isInterrupted()) {
-							mThread.interrupt();
-						}
-						showToast("连接设备超时!");
-						startReadParam();
-						break;
-				}
-			}
-		};
+		mInnerHandler = new InnerHandler(this, "主页面");
 	}
 
 	@Override

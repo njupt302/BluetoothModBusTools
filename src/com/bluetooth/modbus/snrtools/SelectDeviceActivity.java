@@ -98,12 +98,15 @@ public class SelectDeviceActivity extends BaseActivity {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
 				SiriListItem item = list.get(arg2);
+				if(item == null){
+					return;
+				}
 				String info = item.getMessage();
 				if (NO_DEVICE_CAN_CONNECT.equals(info)) {
 					return;
 				}
-				String address = info.substring(info.length() - 17);
-				String name = info.substring(0, info.length() - 17);
+				String address = info.substring((info.length() - 17)>0?info.length() - 17:0);
+				String name = info.substring(0, (info.length() - 17)>0?info.length() - 17:0);
 				AppStaticVar.mCurrentAddress = address;
 				AppStaticVar.mCurrentName = name;
 
@@ -131,6 +134,7 @@ public class SelectDeviceActivity extends BaseActivity {
 
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(BluetoothDevice.ACTION_FOUND);
+		filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 		filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 		this.registerReceiver(mReceiver, filter);
 	}
@@ -207,8 +211,7 @@ public class SelectDeviceActivity extends BaseActivity {
 							case XmlPullParser.START_TAG :
 								if ("version".equals(xpp.getName())) {
 									try {
-										version = Integer.parseInt(xpp
-												.nextText());
+										version = Integer.parseInt(xpp.nextText());
 									} catch (NumberFormatException e1) {
 										e1.printStackTrace();
 										showToast("服务器更新版本号出错！");
@@ -272,12 +275,10 @@ public class SelectDeviceActivity extends BaseActivity {
 									false);
 							mAbProgressBar = (AbHorizontalProgressBar) v
 									.findViewById(R.id.horizontalProgressBar);
-							numberText = (TextView) v
-									.findViewById(R.id.numberText);
+							numberText = (TextView) v.findViewById(R.id.numberText);
 							maxText = (TextView) v.findViewById(R.id.maxText);
 
-							maxText.setText(progress + "/"
-									+ String.valueOf(max));
+							maxText.setText(progress + "/"+ String.valueOf(max)+"%");
 							mAbProgressBar.setMax(max);
 							mAbProgressBar.setProgress(progress);
 
@@ -300,7 +301,7 @@ public class SelectDeviceActivity extends BaseActivity {
 								return;
 							}
 							maxText.setText(bytesWritten / (totalSize / max)
-									+ "/" + max);
+									+ "/" + max+"%");
 							mAbProgressBar
 									.setProgress((int) (bytesWritten / (totalSize / max)));
 						}
@@ -332,7 +333,7 @@ public class SelectDeviceActivity extends BaseActivity {
 				numberText = (TextView) v.findViewById(R.id.numberText);
 				maxText = (TextView) v.findViewById(R.id.maxText);
 
-				maxText.setText(progress + "/" + String.valueOf(max));
+				maxText.setText(progress + "/" + String.valueOf(max)+"%");
 				mAbProgressBar.setMax(max);
 				mAbProgressBar.setProgress(progress);
 
@@ -341,17 +342,20 @@ public class SelectDeviceActivity extends BaseActivity {
 
 			// 失败，调用
 			@Override
-			public void onFailure(int statusCode, String content,
-					Throwable error) {
+			public void onFailure(int statusCode, String content,Throwable error) {
 				showToast(error.getMessage());
 			}
 
 			// 下载进度
 			@Override
 			public void onProgress(long bytesWritten, long totalSize) {
-				maxText.setText(bytesWritten / (totalSize / max) + "/" + max);
-				mAbProgressBar
-						.setProgress((int) (bytesWritten / (totalSize / max)));
+				if (totalSize / max == 0) {
+					onFinish();
+					showToast("下载失败!");
+					return;
+				}
+				maxText.setText(bytesWritten / (totalSize / max) + "/" + max+"%");
+				mAbProgressBar.setProgress((int) (bytesWritten / (totalSize / max)));
 			}
 
 			// 完成后调用，失败，成功
@@ -378,14 +382,9 @@ public class SelectDeviceActivity extends BaseActivity {
 					.getBondedDevices();
 			if (pairedDevices.size() > 0) {
 				for (BluetoothDevice device : pairedDevices) {
-					if (device
-							.getName()
-							.toUpperCase(Locale.ENGLISH)
-							.startsWith(
-									Constans.DEVICE_NAME_START
-											.toUpperCase(Locale.ENGLISH))) {
-						list.add(new SiriListItem(device.getName() + "\n"
-								+ device.getAddress(), true));
+					if (device.getName().toUpperCase(Locale.ENGLISH)
+							.startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
+						list.add(new SiriListItem(device.getName() + "\n"+ device.getAddress(), true));
 						mAdapter.notifyDataSetChanged();
 						mListView.setSelection(list.size() - 1);
 					}
@@ -413,6 +412,7 @@ public class SelectDeviceActivity extends BaseActivity {
 					case R.id.btnOk :
 						AppUtil.closeBluetooth();
 						finish();
+						System.exit(0);
 						break;
 				}
 			}
@@ -448,20 +448,20 @@ public class SelectDeviceActivity extends BaseActivity {
 				BluetoothDevice device = intent
 						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-					if (device
-							.getName()
-							.toUpperCase(Locale.ENGLISH)
-							.startsWith(
-									Constans.DEVICE_NAME_START
-											.toUpperCase(Locale.ENGLISH))) {
-						list.add(new SiriListItem(device.getName() + "\n"
-								+ device.getAddress(), false));
+					if (device.getName().toUpperCase(Locale.ENGLISH)
+							.startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
+						list.add(new SiriListItem(device.getName() + "\n"+ device.getAddress(), false));
 						mAdapter.notifyDataSetChanged();
 						mListView.setSelection(list.size() - 1);
 					}
 				}
-			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED
-					.equals(action)) {
+			} else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)){
+				if(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON){
+					if (AppUtil.checkBluetooth(mContext)) {
+						searchDevice();
+					}
+				}
+			} else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
 				hideProgressDialog();
 				setProgressBarIndeterminateVisibility(false);
 				if (mListView.getCount() == 0) {

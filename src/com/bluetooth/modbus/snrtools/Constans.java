@@ -1,5 +1,7 @@
 package com.bluetooth.modbus.snrtools;
 
+import android.os.Environment;
+
 public class Constans {
 	
 	/** 指定型号名称起始字段*/
@@ -45,6 +47,7 @@ public class Constans {
 	}
 	
 	public static class Directory{
-		public static final String DOWNLOAD = "/sdcard/Sinier/update/";
+		public static final String DOWNLOAD = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Sinier/update/";
+		public static final String LOG = Environment.getExternalStorageDirectory().getAbsolutePath()+"/Sinier/log/";
 	}
 }

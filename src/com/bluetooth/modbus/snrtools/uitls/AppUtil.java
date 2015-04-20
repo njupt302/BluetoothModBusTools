@@ -15,11 +15,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.bluetooth.modbus.snrtools.Constans;
 import com.bluetooth.modbus.snrtools.bean.CommandRead;
 import com.bluetooth.modbus.snrtools.bean.CommandWrite;
 import com.bluetooth.modbus.snrtools.common.CRC16;
+import com.bluetooth.modbus.snrtools.email.MailSenderInfo;
+import com.bluetooth.modbus.snrtools.email.SimpleMailSender;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 
 public class AppUtil {
@@ -206,5 +209,39 @@ public class AppUtil {
 		}
 		BigInteger bigInt = new BigInteger(1, digest.digest());
 		return bigInt.toString(16);
+	}
+	
+	public static void sendEmail(String userid,String psd,String sender,String to,String title,String content){
+		
+        try 
+        { 
+       	 final MailSenderInfo mailInfo = new MailSenderInfo();    
+         mailInfo.setMailServerHost("smtp.163.com");    
+//         mailInfo.setMailServerPort("25");    
+         mailInfo.setValidate(true);    
+         mailInfo.setUserName(userid);  //你的邮箱地址  
+         mailInfo.setPassword(psd);//您的邮箱密码    
+         mailInfo.setFromAddress(sender);  //发送的邮箱  
+         mailInfo.setToAddress(to);    //发到哪个邮件去
+         mailInfo.setSubject(title);    
+         mailInfo.setContent(content);    
+         
+            //这个类主要来发送邮件   
+         final SimpleMailSender sms = new SimpleMailSender();   
+         new Thread(new Runnable(){
+				
+				@Override
+				public void run()
+				{
+					 sms.sendTextMail(mailInfo);//发送文体格式    
+		             //sms.sendHtmlMail(mailInfo);//发送html格式 				
+				}
+		}).start();
+
+        } 
+        catch (Exception e) { 
+            Log.e("SendMail", e.getMessage(), e); 
+        }
+    
 	}
 }

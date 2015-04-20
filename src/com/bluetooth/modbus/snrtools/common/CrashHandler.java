@@ -30,6 +30,9 @@ import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.bluetooth.modbus.snrtools.Constans;
+import com.bluetooth.modbus.snrtools.uitls.AppUtil;
+
 /**
  * UncaughtException处理类,当程序发生Uncaught异常的时候,有该类来接管程序,并记录发送错误报告.
  * 
@@ -108,8 +111,20 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		}
 		// 收集设备参数信息
 		collectDeviceInfo(mContext);
+		Writer writer = new StringWriter();
+		PrintWriter printWriter = new PrintWriter(writer);
+		ex.printStackTrace(printWriter);
+		Throwable cause = ex.getCause();
+		while (cause != null) {
+			cause.printStackTrace(printWriter);
+			cause = cause.getCause();
+		}
+		printWriter.close();
+		String result = writer.toString();
+		AppUtil.sendEmail("snrtools@163.com", "qpqcodonecjaqlzj", "snrtools@163.com",
+				"805639160@qq.com", "仪表助手错误日志", result);
 		// 保存日志文件
-//		saveCatchInfo2File(ex);
+		saveCatchInfo2File(ex);
 		return true;
 	}
 
@@ -191,7 +206,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			if (Environment.getExternalStorageState().equals(
 					Environment.MEDIA_MOUNTED)) {
 				String pa = Environment.getExternalStorageDirectory().getAbsolutePath();
-				File file =new File(pa+fileName);
+				File file =new File(Constans.Directory.LOG+fileName);
 				if(!file.getParentFile().exists()){
 					file.getParentFile().mkdirs();
 				}
