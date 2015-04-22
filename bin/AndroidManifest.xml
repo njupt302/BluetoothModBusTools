@@ -58,6 +58,8 @@
             android:theme="@style/DialogActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.bluetooth.modbus.snrtools.MainActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>

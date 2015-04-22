@@ -16,6 +16,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.bluetooth.modbus.snrtools.Constans;
 import com.bluetooth.modbus.snrtools.bean.CommandRead;
@@ -36,6 +37,10 @@ public class AppUtil {
 		// If BT is not on, request that it be enabled.
 		if (AppStaticVar.mBtAdapter == null) {
 			AppStaticVar.mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+		}
+		if (AppStaticVar.mBtAdapter == null){
+			Toast.makeText(context, "未检测到蓝牙设备，请开关蓝牙后重试！", Toast.LENGTH_LONG).show();
+			return false;
 		}
 		if (!AppStaticVar.mBtAdapter.isEnabled()) {
 			Intent enableIntent = new Intent(
