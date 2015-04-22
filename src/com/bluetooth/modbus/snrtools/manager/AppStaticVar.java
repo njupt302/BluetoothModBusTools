@@ -5,6 +5,7 @@ import java.util.List;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothSocket;
 
+import com.bluetooth.modbus.snrtools.MyObservable;
 import com.bluetooth.modbus.snrtools.bean.Parameter;
 
 public class AppStaticVar {
@@ -36,4 +37,6 @@ public class AppStaticVar {
 	public static int FXZLPosition = -1;
 	/** 是否是主动断开*/
 	public static boolean isExit = false;
+	/** 用于通知密码页面开始发送指令*/
+	public static MyObservable mObservable;
 }

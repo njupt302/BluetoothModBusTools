@@ -9,5 +9,31 @@
         android:layout_height="match_parent"
         android:scaleType="centerInside"
         android:src="@drawable/welcome" />
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/textView11"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:text="仪表助手"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/tvVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
 
 </RelativeLayout>

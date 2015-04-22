@@ -1,72 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <include
+        android:id="@+id/titlebar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         layout="@layout/title_bar" />
 
-    <EditText
-        android:id="@+id/editText1"
+    <LinearLayout
+        android:id="@+id/setparam"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/edittext_bg"
-        android:ems="10"
-        android:hint="请输入密码"
-        android:inputType="numberPassword"
-        android:textColor="#1a1a1a"
-        android:textColorHint="#d9d9d9"
-        android:textSize="22sp" >
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlebar"
+        android:orientation="vertical" >
 
-    </EditText>
+        <ListView
+            android:id="@+id/listView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:cacheColorHint="#00000000"
+            android:fadingEdge="none" >
+        </ListView>
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/button2"
+    <LinearLayout
+        android:id="@+id/checkpsd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_0d9bf9_bg"
-        android:onClick="onClick"
-        android:text="确定"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/titlebar"
+        android:background="#FFFFFF"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
         <EditText
-        android:id="@+id/editText2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/edittext_bg"
-        android:ems="10"
-        android:hint="总量清零密码"
-        android:inputType="numberPassword"
-        android:textColor="#1a1a1a"
-        android:textColorHint="#d9d9d9"
-        android:textSize="22sp" >
+            android:id="@+id/editText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/edittext_bg"
+            android:ems="10"
+            android:hint="请输入密码"
+            android:inputType="numberPassword"
+            android:textColor="#1a1a1a"
+            android:textColorHint="#d9d9d9"
+            android:textSize="22sp" >
+        </EditText>
 
-    </EditText>
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_0d9bf9_bg"
+            android:onClick="onClick"
+            android:text="确定"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/btn_0d9bf9_bg"
-        android:onClick="onClick"
-        android:text="总量清零"
-        android:textColor="@color/white"
-        android:textSize="18sp" />
-    
-</LinearLayout>
+        <EditText
+            android:id="@+id/editText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/edittext_bg"
+            android:ems="10"
+            android:hint="总量清零密码"
+            android:inputType="numberPassword"
+            android:textColor="#1a1a1a"
+            android:textColorHint="#d9d9d9"
+            android:textSize="22sp" >
+        </EditText>
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/btn_0d9bf9_bg"
+            android:onClick="onClick"
+            android:text="总量清零"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

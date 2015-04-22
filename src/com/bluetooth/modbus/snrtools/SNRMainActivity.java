@@ -1,9 +1,6 @@
 package com.bluetooth.modbus.snrtools;
 
-import java.io.IOException;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
@@ -35,6 +32,7 @@ public class SNRMainActivity extends BaseActivity {
 		setTitleContent(AppStaticVar.mCurrentName);
 		setRightButtonContent("设置", R.id.btnRight1);
 		hideRightView(R.id.view2);
+		hideRightView(R.id.btnRight1);
 		initHandler();
 	}
 
@@ -291,17 +289,17 @@ public class SNRMainActivity extends BaseActivity {
 				break;
 			case Constans.NO_DEVICE_CONNECTED :
 				System.out.println(name+"连接失败=====");
-				showConnectDevice();
+				if (isPause) {
+					AppStaticVar.mObservable.notifyObservers();
+				} else {
+					showConnectDevice();
+				}
 				break;
 			case Constans.DEVICE_RETURN_MSG :
 				System.out.println(name+"收到数据=====" + msg.obj.toString());
 				dealReturnMsg(msg.obj.toString());
-				if (isPause && isSetting) {
-					hideProgressDialog();
-					isSetting = false;
-					Intent setting = new Intent(mContext,
-							CheckPasswordActivity.class);
-					startActivity(setting);
+				if (isPause) {
+					AppStaticVar.mObservable.notifyObservers();
 				} else {
 					startReadParam();
 				}
@@ -312,7 +310,11 @@ public class SNRMainActivity extends BaseActivity {
 				showConnectDevice();
 			case Constans.ERROR_START :
 				System.out.println(name+"接收数据错误=====");
-				startReadParam();
+				if (isPause) {
+					AppStaticVar.mObservable.notifyObservers();
+				} else {
+					startReadParam();
+				}
 				break;
 			case Constans.TIME_OUT :
 				System.out.println(name+"连接超时=====");
@@ -349,19 +351,4 @@ public class SNRMainActivity extends BaseActivity {
 		super.onPause();
 	}
 
-	@Override
-	protected void onDestroy() {
-		AppStaticVar.isExit = true;
-		AppStaticVar.mCurrentAddress = null;
-		AppStaticVar.mCurrentName = null;
-		if (AppStaticVar.mSocket != null) {
-			try {
-				AppStaticVar.mSocket.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			AppStaticVar.mSocket = null;
-		}
-		super.onDestroy();
-	}
 }

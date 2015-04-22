@@ -75,7 +75,8 @@ public class SelectDeviceActivity extends BaseActivity {
 	@Override
 	public void reconnectSuccss() {
 		hideDialog();
-		Intent intent = new Intent(mContext, SNRMainActivity.class);
+		Intent intent = new Intent(mContext, MainActivity.class);
+//		Intent intent = new Intent(mContext, SNRMainActivity.class);
 		startActivity(intent);
 	}
 

@@ -8,6 +8,7 @@ import android.app.AlertDialog.Builder;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,8 +46,8 @@ public abstract class BaseActivity extends Activity {
 
 	public void BackOnClick(View v) {
 		switch (v.getId()) {
-			case R.id.ivBack :
-				ActivityManager.getInstances().finishActivity(this);
+		case R.id.ivBack:
+			ActivityManager.getInstances().finishActivity(this);
 		}
 	}
 
@@ -132,8 +133,7 @@ public abstract class BaseActivity extends Activity {
 
 	public void showDialogOne(String msg, MyAlertDialogListener listener) {
 		if (mDialogOne == null) {
-			mDialogOne = new MyAlertDialog(this, "", msg,
-					MyAlertDialog.TYPE_ONE, listener);
+			mDialogOne = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_ONE, listener);
 		}
 		mDialogOne.setMessage(msg);
 		mDialogOne.setListener(listener);
@@ -156,8 +156,7 @@ public abstract class BaseActivity extends Activity {
 
 	public void showDialog(String msg, MyAlertDialogListener listener) {
 		if (mDialog == null) {
-			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO,
-					listener);
+			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, listener);
 		}
 		mDialog.setMessage(msg);
 		mDialog.show();
@@ -192,20 +191,27 @@ public abstract class BaseActivity extends Activity {
 	private AlertDialog dialog;
 
 	public void showConnectDevice() {
-		if(AppStaticVar.isExit){
+		if (AppStaticVar.isExit) {
 			return;
 		}
-		showDialog("设备连接已断开，是否重新连接？", new MyAlertDialogListener() {
+		showDialogOne("设备连接已断开，请重新连接", new MyAlertDialogListener() {
 
 			@Override
 			public void onClick(View view) {
 				switch (view.getId()) {
-					case R.id.btnCancel :
-						hideDialog();
-						break;
-					case R.id.btnOk :
-						connectDevice(AppStaticVar.mCurrentAddress);
-						break;
+				case R.id.btnOkOne:
+					// finish();
+					Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+					System.exit(0);
+					break;
+				// case R.id.btnCancel :
+				// hideDialog();
+				// break;
+				// case R.id.btnOk :
+				// connectDevice(AppStaticVar.mCurrentAddress);
+				// break;
 				}
 			}
 		});
@@ -215,36 +221,34 @@ public abstract class BaseActivity extends Activity {
 	public void connectDevice(String address) {
 		if (!TextUtils.isEmpty(address)) {
 			AppStaticVar.mBtAdapter.cancelDiscovery();
-			final BluetoothDevice device = AppStaticVar.mBtAdapter
-					.getRemoteDevice(address);
-			ConnectThread connectThread = new ConnectThread(device,
-					new Handler() {
-						@Override
-						public void handleMessage(Message msg) {
-							switch (msg.what) {
-								case Constans.CONNECTING_DEVICE :
-									System.out.println("=====开始连接=====");
-									showProgressDialog(msg.obj.toString());
-									break;
-								case Constans.CONNECT_DEVICE_SUCCESS :
-									System.out.println("=====连接成功=====");
-									hideProgressDialog();
-									reconnectSuccss();
-									break;
-								case Constans.CONNECT_DEVICE_FAILED :
-									System.out.println("=====连接失败=====");
-									hideProgressDialog();
-									showToast(msg.obj.toString());
-									break;
-							}
-						}
-					});
+			final BluetoothDevice device = AppStaticVar.mBtAdapter.getRemoteDevice(address);
+			ConnectThread connectThread = new ConnectThread(device, new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					switch (msg.what) {
+					case Constans.CONNECTING_DEVICE:
+						System.out.println("=====开始连接=====");
+						showProgressDialog(msg.obj.toString());
+						break;
+					case Constans.CONNECT_DEVICE_SUCCESS:
+						System.out.println("=====连接成功=====");
+						hideProgressDialog();
+						reconnectSuccss();
+						break;
+					case Constans.CONNECT_DEVICE_FAILED:
+						System.out.println("=====连接失败=====");
+						hideProgressDialog();
+						showToast(msg.obj.toString());
+						break;
+					}
+				}
+			});
 			connectThread.start();
 		} else {
 			Toast.makeText(mContext, "连接设备地址不存在 !", Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
 	/**
 	 * 描述：对话框dialog （确认，取消）.
 	 * 
@@ -256,17 +260,14 @@ public abstract class BaseActivity extends Activity {
 	 *            点击确认按钮的事件监听
 	 * @return the alert dialog
 	 */
-	public AlertDialog showDialog(String title, View view, DialogInterface.OnClickListener mOkOnClickListener)
-	{
+	public AlertDialog showDialog(String title, View view, DialogInterface.OnClickListener mOkOnClickListener) {
 		AlertDialog.Builder builder = new Builder(this);
 		builder.setTitle(title);
 		builder.setView(view);
 		builder.setPositiveButton("确认", mOkOnClickListener);
-		builder.setNegativeButton("取消", new DialogInterface.OnClickListener()
-		{
+		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
 			@Override
-			public void onClick(DialogInterface dialog, int which)
-			{
+			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
 			}
 		});
@@ -284,8 +285,7 @@ public abstract class BaseActivity extends Activity {
 	 *            对话框提示内容
 	 * @return the alert dialog
 	 */
-	public AlertDialog showDialog(String title, View view)
-	{
+	public AlertDialog showDialog(String title, View view) {
 		AlertDialog.Builder builder = new Builder(this);
 		builder.setTitle(title);
 		builder.setView(view);
@@ -317,29 +317,28 @@ public abstract class BaseActivity extends Activity {
 		hideDialogOne();
 		super.onDestroy();
 	}
-	
-	public void handleMessage(Activity activity,Message msg,String name){
-		
+
+	public void handleMessage(Activity activity, Message msg, String name) {
+
 	}
-	
-	static class InnerHandler extends Handler{
+
+	static class InnerHandler extends Handler {
 		private WeakReference<Activity> wr;
 		private String name;
-		public InnerHandler(Activity activity,String name)
-		{
+
+		public InnerHandler(Activity activity, String name) {
 			wr = new WeakReference<Activity>(activity);
 			this.name = name;
 		}
-		
+
 		@Override
-		public void handleMessage(Message msg)
-		{
+		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			Activity a = wr.get();
-			if(a == null){
+			if (a == null) {
 				return;
 			}
-			((BaseActivity)a).handleMessage(a,msg,name);
+			((BaseActivity) a).handleMessage(a, msg, name);
 		}
 	}
 }
