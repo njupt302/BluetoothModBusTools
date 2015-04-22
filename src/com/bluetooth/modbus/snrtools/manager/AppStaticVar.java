@@ -9,6 +9,7 @@ import com.bluetooth.modbus.snrtools.MyObservable;
 import com.bluetooth.modbus.snrtools.bean.Parameter;
 
 public class AppStaticVar {
+	public final static Byte[] locks = new Byte[0]; 
 	/** 取得默认的蓝牙适配器 */
 	public static BluetoothAdapter mBtAdapter;
 	/** 当前连接的蓝牙地址*/

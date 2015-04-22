@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.widget.TextView;
 
+import com.ab.util.AbAppUtil;
 import com.bluetooth.modbus.snrtools.manager.ActivityManager;
 
 /**
@@ -21,6 +23,7 @@ public class Welcome extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		final View view = View.inflate(this, R.layout.welcome_page, null);
 		setContentView(view);
+		((TextView)findViewById(R.id.tvVersion)).setText(AbAppUtil.getPackageInfo(this).versionName);
 		AlphaAnimation aa = new AlphaAnimation(0.3f, 1.0f);
 		aa.setDuration(1000);
 		view.startAnimation(aa);

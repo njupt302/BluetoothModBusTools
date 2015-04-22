@@ -62,6 +62,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		setListeners();
 		AppStaticVar.mObservable.addObserver(this);
 		showProgressDialog("与设备通讯中...");
+		startReadParam();
 	}
 
 	public void onClick(View v) {
