@@ -122,6 +122,7 @@ public class AppUtil {
 				message.obj = "与设备通讯堵塞，通讯失败！";
 				handler.sendMessage(message);
 				e.printStackTrace();
+				return;
 			}
 
 			final Timer timer = new Timer();
@@ -133,6 +134,7 @@ public class AppUtil {
 					message.what = Constans.TIME_OUT;
 					message.obj = "连接超时！";
 					handler.sendMessage(message);
+					return;
 				}
 			}, waittime);
 

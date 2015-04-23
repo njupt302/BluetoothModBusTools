@@ -199,20 +199,23 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	}
 
 	private void dealReturnMsg(String msg) {
-		if (msg.length() != 298) {
+		if (msg.length() != ModbusUtils.MSG_PARAM_COUNT) {
 			return;
 		}
 		mList.clear();
 		Parameter parameter = null;
 		ArrayList<Selector> selectorList = null;
 		Selector selector = null;
+		int paramIndex = 0;
+		int paramCountLabel = 1;
+		String param1,param2,param3 = "";
 		/********************************** 基本参数 **************************************/
 		/********************************** 参数1--语言 **************************************/
 		mList.add(new Parameter(true, "基本参数"));
-		String param = msg.substring(6, 10);
-		System.out.println("参数1--语言==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0000";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0000";
+		String param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--语言==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
 		parameter.name = "语言";
 		parameter.type = 1;
@@ -240,11 +243,11 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数2--流量单位 **************************************/
-		param = msg.substring(10, 14);
-		System.out.println("参数2--流量单位 ==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0001";
-		parameter.count = "0001";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0001";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量单位 ==" + Integer.parseInt(param, 16));
+		parameter.count = "0001";//		parameter.count = "0001";
 		parameter.name = "流量单位";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
@@ -304,24 +307,24 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		mList.add(parameter);
 
 		/********************************** 参数3--仪表量程设置 **************************************/
-		param = msg.substring(14, 22);
-		System.out.println("仪表量程设置========" + param);
-		System.out.println("参数3--仪表量程设置==" + NumberBytes.hexStrToLong(msg.substring(18, 22) + msg.substring(14, 18)));
 		parameter = new Parameter();
-		parameter.address = "0002";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0002";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--仪表量程设置==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "仪表量程设置";
 		parameter.type = 3;
 		parameter.maxValue = 99999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(18, 22) + msg.substring(14, 18));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(18, 22) + msg.substring(14, 18)) + "";
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		mList.add(parameter);
 		/********************************** 参数4--流量方向择项 **************************************/
-		param = msg.substring(22, 26);
-		System.out.println("参数4--流量方向择项==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0004";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0004";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量方向择项==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量方向择项";
 		parameter.type = 1;
@@ -349,10 +352,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数5--反向输出允许 **************************************/
-		param = msg.substring(26, 30);
-		System.out.println("参数13--反向输出允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0005";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0005";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--反向输出允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "反向输出允许";
 		parameter.type = 1;
@@ -381,10 +384,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		mList.add(parameter);
 
 		/********************************** 参数6--流量积算单位 **************************************/
-		param = msg.substring(30, 34);
-		System.out.println("参数6--流量积算单位==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0006";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0006";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量积算单位==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量积算单位";
 		parameter.type = 1;
@@ -460,10 +463,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数7--测量阻尼时间(s) **************************************/
-		param = msg.substring(34, 38);
-		System.out.println("参数7--测量阻尼时间(s) ==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0007";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0007";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--测量阻尼时间(s) ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "测量阻尼时间(s)";
 		parameter.type = 1;
@@ -555,10 +558,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数8--小信号切除点(%) **************************************/
-		param = msg.substring(38, 42);
-		System.out.println("参数8--小信号切除点(%)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0008";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0007";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--小信号切除点(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "小信号切除点(%)";
 		parameter.type = 2;
@@ -569,10 +572,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
 		/********************************** 参数9--脉冲输出方式 **************************************/
-		param = msg.substring(42, 46);
-		System.out.println("参数9--脉冲输出方式==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0009";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0009";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--脉冲输出方式==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "脉冲输出方式";
 		parameter.type = 1;
@@ -600,10 +603,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数10--脉冲单位当量 **************************************/
-		param = msg.substring(46, 50);
-		System.out.println("参数10--脉冲单位当量==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "000A";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000A";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--脉冲单位当量==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "脉冲单位当量";
 		parameter.type = 1;
@@ -679,10 +682,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数11--脉冲宽度时间 **************************************/
-		param = msg.substring(50, 54);
-		System.out.println("参数11--脉冲宽度时间==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "000B";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000B";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--脉冲宽度时间==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "脉冲宽度时间";
 		parameter.type = 1;
@@ -774,10 +777,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数12--频率输出范围(Hz) **************************************/
-		param = msg.substring(54, 58);
-		System.out.println("参数12--频率输出范围(Hz)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "000C";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000C";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--频率输出范围(Hz)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "频率输出范围(Hz)";
 		parameter.type = 1;
@@ -787,10 +790,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = Long.parseLong(param, 16) + "Hz";
 		mList.add(parameter);
 		/********************************** 参数13--流量零点修正 **************************************/
-		param = msg.substring(58, 62);
-		System.out.println("参数13--流量零点修正==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
-		parameter.address = "000D";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000D";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量零点修正==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量零点修正";
 		parameter.type = 4;
@@ -800,10 +803,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = (Long.parseLong(param, 16) < 0x8000 ? Long.parseLong(param, 16) : Long.parseLong(param, 16) - 65536) + "";
 		mList.add(parameter);
 		/********************************** 参数14--背光保持时间 **************************************/
-		param = msg.substring(62, 66);
-		System.out.println("参数14--背光保持时间==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "000E";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//	parameter.address = "000E";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--背光保持时间==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "背光保持时间";
 		parameter.type = 1;
@@ -871,10 +874,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数15--通讯地址 **************************************/
-		param = msg.substring(66, 70);
-		System.out.println("参数15--通讯地址==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "000F";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000F";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--通讯地址==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "通讯地址";
 		parameter.type = 1;
@@ -884,10 +887,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
 		/********************************** 参数16--通讯速率 **************************************/
-		param = msg.substring(70, 74);
-		System.out.println("参数16--通讯速率==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0010";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0010";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--通讯速率==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "通讯速率";
 		parameter.type = 1;
@@ -905,10 +908,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数17--设备位号 **************************************/
-		param = msg.substring(74, 78);
-		System.out.println("参数15--设备位号==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0011";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0011";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--设备位号==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "设备位号";
 		parameter.type = 1;
@@ -921,10 +924,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		/********************************** 高级参数 **************************************/
 		/********************************** 参数18--测量管道口径 **************************************/
 		mList.add(new Parameter(true, "高级参数"));
-		param = msg.substring(78, 82);
-		System.out.println("参数18--测量管道口径==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0012";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0012";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--测量管道口径==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "测量管道口径";
 		parameter.type = 1;
@@ -1231,10 +1234,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数19--允许切除显示 **************************************/
-		param = msg.substring(82, 86);
-		System.out.println("参数19--允许切除显示==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0013";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0013";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--允许切除显示==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "允许切除显示";
 		parameter.type = 1;
@@ -1262,10 +1265,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数20--传感器系数值 **************************************/
-		param = msg.substring(86, 90);
-		System.out.println("参数20--传感器系数值==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0014";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0014";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--传感器系数值==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "传感器系数值";
 		parameter.type = 2;
@@ -1276,10 +1279,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
 		/********************************** 参数21--空管报警允许 **************************************/
-		param = msg.substring(90, 94);
-		System.out.println("参数21--空管报警允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0015";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0015";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--空管报警允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "空管报警允许";
 		parameter.type = 1;
@@ -1307,10 +1310,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数22--空管报警阈值(%) **************************************/
-		param = msg.substring(94, 98);
-		System.out.println("参数22--空管报警阈值(%)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0016";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0016";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--空管报警阈值(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "空管报警阈值(%)";
 		parameter.type = 2;
@@ -1321,10 +1324,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
 		/********************************** 参数23--流量上限报警允许 **************************************/
-		param = msg.substring(98, 102);
-		System.out.println("参数23--流量上限报警允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0017";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0017";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量上限报警允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量上限报警允许";
 		parameter.type = 1;
@@ -1352,10 +1355,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数24--流量上限报警数值(%) **************************************/
-		param = msg.substring(102, 106);
-		System.out.println("参数24--流量上限报警数值(%)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0018";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0018";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量上限报警数值(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量上限报警数值(%)";
 		parameter.type = 2;
@@ -1366,10 +1369,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
 		/********************************** 参数25--流量下限报警允许 **************************************/
-		param = msg.substring(106, 110);
-		System.out.println("参数25--流量下限报警允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0019";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0019";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量下限报警允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量下限报警允许";
 		parameter.type = 1;
@@ -1397,10 +1400,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数26--流量下限报警数值(%) **************************************/
-		param = msg.substring(110, 114);
-		System.out.println("参数26--流量下限报警数值(%)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "001A";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001A";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量下限报警数值(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量下限报警数值(%)";
 		parameter.type = 2;
@@ -1411,10 +1414,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
 		/********************************** 参数27--励磁报警允许 **************************************/
-		param = msg.substring(114, 118);
-		System.out.println("参数27--励磁报警允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "001B";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001B";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--励磁报警允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "励磁报警允许";
 		parameter.type = 1;
@@ -1442,83 +1445,88 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数28--正向总量 **************************************/
-		param = msg.substring(118, 126);
-		System.out.println("参数28--正向总量==" + NumberBytes.hexStrToLong(msg.substring(122, 126) + msg.substring(118, 122)));
 		parameter = new Parameter();
-		parameter.address = "001C";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001C";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--正向总量==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "正向总量";
 		parameter.type = 3;
 		parameter.maxValue = 999999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(122, 126) + msg.substring(118, 122));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(122, 126) + msg.substring(118, 122)) + "";
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		AppStaticVar.ZXZLPosition = mList.size();
 		mList.add(parameter);
 		/********************************** 参数29--反向总量 **************************************/
-		param = msg.substring(126, 134);
-		System.out.println("参数29--反向总量==" + NumberBytes.hexStrToLong(msg.substring(130, 134) + msg.substring(126, 130)));
 		parameter = new Parameter();
-		parameter.address = "001E";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001E";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--反向总量==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "反向总量";
 		parameter.type = 3;
 		parameter.maxValue = 999999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(130, 134) + msg.substring(126, 130));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(130, 134) + msg.substring(126, 130)) + "";
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		AppStaticVar.FXZLPosition = mList.size();
 		mList.add(parameter);
 		/********************************** 参数30--基本参数密码 **************************************/
-		param = msg.substring(134, 142);
-		System.out.println("参数30--基本参数密码==" + NumberBytes.hexStrToLong(msg.substring(138, 142) + msg.substring(134, 138)));
 		parameter = new Parameter();
-		parameter.address = "0020";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0020";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--基本参数密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "基本参数密码";
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(138, 142) + msg.substring(134, 138));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(138, 142) + msg.substring(134, 138)) + "";
-		Constans.PasswordLevel.LEVEL_1 = NumberBytes.hexStrToLong(msg.substring(138, 142) + msg.substring(134, 138));
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
+		Constans.PasswordLevel.LEVEL_1 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		/********************************** 参数31--高级参数密码 **************************************/
-		param = msg.substring(142, 150);
-		System.out.println("参数31--高级参数密码==" + NumberBytes.hexStrToLong(msg.substring(146, 150) + msg.substring(142, 146)));
 		parameter = new Parameter();
-		parameter.address = "0022";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0022";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--高级参数密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "高级参数密码";
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
 		parameter.type = 3;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(146, 150) + msg.substring(142, 146));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(146, 150) + msg.substring(142, 146)) + "";
-		Constans.PasswordLevel.LEVEL_2 = NumberBytes.hexStrToLong(msg.substring(146, 150) + msg.substring(142, 146));
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
+		Constans.PasswordLevel.LEVEL_2 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		/********************************** 参数32--总量清零密码 **************************************/
-		param = msg.substring(150, 158);
-		System.out.println("参数32--总量清零密码==" + NumberBytes.hexStrToLong(msg.substring(154, 158) + msg.substring(150, 154)));
 		parameter = new Parameter();
-		parameter.address = "0024";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0024";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--总量清零密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
 		parameter.name = "总量清零密码";
 		parameter.type = 3;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(154, 158) + msg.substring(150, 154));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(154, 158) + msg.substring(150, 154)) + "";
-		Constans.PasswordLevel.LEVEL_6 = NumberBytes.hexStrToLong(msg.substring(154, 158) + msg.substring(150, 154));
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
+		Constans.PasswordLevel.LEVEL_6 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		AppStaticVar.PASSWORD_LEVEAL2_COUNT = mList.size();
 		/********************************** 传感器参数 **************************************/
 		/********************************** 参数33--流量修正允许 **************************************/
 		mList.add(new Parameter(true, "传感器参数"));
-		param = msg.substring(158, 162);
-		System.out.println("参数33--流量修正允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0026";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0026";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正允许";
 		parameter.type = 1;
@@ -1546,10 +1554,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数34--流量修正点1(m/s) **************************************/
-		param = msg.substring(162, 166);
-		System.out.println("参数34--流量修正点1(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0027";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0027";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点1(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点1(m/s)";
 		parameter.type = 2;
@@ -1560,10 +1568,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数35--流量修正值1 **************************************/
-		param = msg.substring(166, 170);
-		System.out.println("参数35--流量修正值1==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0028";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0028";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值1==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值1";
 		parameter.type = 2;
@@ -1574,10 +1582,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数36--流量修正点2(m/s) **************************************/
-		param = msg.substring(170, 174);
-		System.out.println("参数36--流量修正点2(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0029";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0029";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点2(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点2(m/s)";
 		parameter.type = 2;
@@ -1588,10 +1596,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数37--流量修正值2 **************************************/
-		param = msg.substring(174, 178);
-		System.out.println("参数37--流量修正值2==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "002A";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002A";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值2==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值2";
 		parameter.type = 2;
@@ -1602,10 +1610,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数38--流量修正点3(m/s) **************************************/
-		param = msg.substring(178, 182);
-		System.out.println("参数38--流量修正点3(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "002B";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002B";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点3(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点3(m/s)";
 		parameter.type = 2;
@@ -1616,10 +1624,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数39--流量修正值3 **************************************/
-		param = msg.substring(182, 186);
-		System.out.println("参数39--流量修正值3==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "002C";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002C";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值3==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值3";
 		parameter.type = 2;
@@ -1630,10 +1638,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数40--流量修正点4(m/s) **************************************/
-		param = msg.substring(186, 190);
-		System.out.println("参数40--流量修正点4(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "002D";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002D";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点4(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点4(m/s)";
 		parameter.type = 2;
@@ -1644,10 +1652,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数41--流量修正值4 **************************************/
-		param = msg.substring(190, 194);
-		System.out.println("参数41--流量修正值4==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "002E";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002E";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值4==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值4";
 		parameter.type = 2;
@@ -1658,10 +1666,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数42--流量修正点5(m/s) **************************************/
-		param = msg.substring(194, 198);
-		System.out.println("参数42--流量修正点5(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "002F";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002F";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点5(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点5(m/s)";
 		parameter.type = 2;
@@ -1672,10 +1680,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数43--流量修正值5 **************************************/
-		param = msg.substring(198, 202);
-		System.out.println("参数43--流量修正值5==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0030";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0030";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值5==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值5";
 		parameter.type = 2;
@@ -1686,10 +1694,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数44--流量修正点6(m/s) **************************************/
-		param = msg.substring(202, 206);
-		System.out.println("参数44--流量修正点6(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0031";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0031";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点6(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点6(m/s)";
 		parameter.type = 2;
@@ -1700,10 +1708,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数45--流量修正值6 **************************************/
-		param = msg.substring(206, 210);
-		System.out.println("参数45--流量修正值6==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0032";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0032";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值6==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值6";
 		parameter.type = 2;
@@ -1714,10 +1722,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数46--流量修正点7(m/s) **************************************/
-		param = msg.substring(210, 214);
-		System.out.println("参数46--流量修正点7(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0033";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0033";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点7(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点7(m/s)";
 		parameter.type = 2;
@@ -1728,10 +1736,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数47--流量修正值7 **************************************/
-		param = msg.substring(214, 218);
-		System.out.println("参数47--流量修正值7==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0034";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0034";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值7==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正值7";
 		parameter.type = 2;
@@ -1742,10 +1750,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数48--流量修正点8(m/s) **************************************/
-		param = msg.substring(218, 222);
-		System.out.println("参数48--流量修正点8(m/s)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0035";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0035";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点8(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "流量修正点8(m/s)";
 		parameter.type = 2;
@@ -1756,10 +1764,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
 		/********************************** 参数49--励磁方式选择 **************************************/
-		param = msg.substring(222, 226);
-		System.out.println("参数49--励磁方式选择==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0036";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0036";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--励磁方式选择==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "励磁方式选择";
 		parameter.type = 1;
@@ -1795,10 +1803,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数50--励磁电流 **************************************/
-		param = msg.substring(226, 230);
-		System.out.println("参数50--励磁电流==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0037";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0037";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--励磁电流==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "励磁电流";
 		parameter.type = 1;
@@ -1841,10 +1849,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数51--尖峰抑制允许 **************************************/
-		param = msg.substring(230, 234);
-		System.out.println("参数51--尖峰抑制允许==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0038";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0038";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--尖峰抑制允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "尖峰抑制允许";
 		parameter.type = 1;
@@ -1872,10 +1880,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数52--尖峰抑制系数 **************************************/
-		param = msg.substring(234, 238);
-		System.out.println("参数52--尖峰抑制系数==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0039";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0039";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--尖峰抑制系数==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "尖峰抑制系数";
 		parameter.type = 1;
@@ -1967,10 +1975,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数53--尖峰抑制时间(ms) **************************************/
-		param = msg.substring(238, 242);
-		System.out.println("参数53--尖峰抑制时间(ms)==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "003A";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003A";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--尖峰抑制时间(ms)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "尖峰抑制时间(ms)";
 		parameter.type = 1;
@@ -2022,40 +2030,42 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 		/********************************** 参数54--传感器编码 **************************************/
-		param = msg.substring(242, 250);
-		System.out.println("参数54--传感器编码==" + NumberBytes.hexStrToLong(msg.substring(246, 250) + msg.substring(242, 246)));
 		parameter = new Parameter();
-		parameter.address = "003B";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003B";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--传感器编码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "传感器编码";
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(246, 250) + msg.substring(242, 246));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(246, 250) + msg.substring(242, 246)) + "";
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		mList.add(parameter);
 		/********************************** 参数55--传感器参数密码 **************************************/
-		param = msg.substring(250, 258);
-		System.out.println("参数55--传感器参数密码==" + NumberBytes.hexStrToLong(msg.substring(254, 258) + msg.substring(250, 254)));
 		parameter = new Parameter();
-		parameter.address = "003D";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003D";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--传感器参数密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "传感器参数密码";
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(254, 258) + msg.substring(250, 254));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(254, 258) + msg.substring(250, 254)) + "";
-		Constans.PasswordLevel.LEVEL_3 = NumberBytes.hexStrToLong(msg.substring(254, 258) + msg.substring(250, 254));
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
+		Constans.PasswordLevel.LEVEL_3 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		AppStaticVar.PASSWORD_LEVEAL3_COUNT = mList.size();
 		/********************************** 转换器参数 **************************************/
 		/********************************** 参数56--转换器标定系数 **************************************/
 		mList.add(new Parameter(true, "转换器参数"));
-		param = msg.substring(258, 262);
-		System.out.println("参数56--转换器标定系数==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "003F";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003F";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--转换器标定系数==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "转换器标定系数";
 		parameter.type = 2;
@@ -2066,10 +2076,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数57--转换器标定零点 **************************************/
-		param = msg.substring(262, 266);
-		System.out.println("参数57--转换器标定零点==" + Integer.parseInt(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0040";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//	parameter.address = "0040";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--转换器标定零点==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
 		parameter.name = "转换器标定零点";
 		parameter.type = 4;
@@ -2081,10 +2091,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数58--空管检测零点 **************************************/
-		param = msg.substring(266, 270);
-		System.out.println("参数58--空管检测零点 ==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0041";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0041";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--空管检测零点 ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "空管检测零点 ";
 		parameter.type = 1;
@@ -2095,10 +2105,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数59--电流零点修正 **************************************/
-		param = msg.substring(270, 274);
-		System.out.println("参数59--电流零点修正==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0042";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0042";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--电流零点修正==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "电流零点修正";
 		parameter.type = 2;
@@ -2109,10 +2119,10 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数60--电流满度修正 **************************************/
-		param = msg.substring(274, 278);
-		System.out.println("参数60--电流满度修正==" + Long.parseLong(param, 16));
 		parameter = new Parameter();
-		parameter.address = "0043";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0043";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--电流满度修正==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = "电流满度修正";
 		parameter.type = 2;
@@ -2123,31 +2133,33 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
 		/********************************** 参数61--仪表编码 **************************************/
-		param = msg.substring(278, 286);
-		System.out.println("参数61--仪表编码==" + NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282)));
 		parameter = new Parameter();
-		parameter.address = "0044";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0044";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--仪表编码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "仪表编码";
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282)) + "";
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		mList.add(parameter);
 		/********************************** 参数62--转换器密码 **************************************/
-		param = msg.substring(286, 294);
-		System.out.println("参数62--转换器密码==" + NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282)));
 		parameter = new Parameter();
-		parameter.address = "0046";
+		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0046";
+		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("参数"+ paramCountLabel++ +"--转换器密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.name = "转换器密码";
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
-		parameter.valueIn = NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282));
-		parameter.value = NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282)) + "";
-		Constans.PasswordLevel.LEVEL_4 = NumberBytes.hexStrToLong(msg.substring(282, 286) + msg.substring(278, 282));
+		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
+		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
+		Constans.PasswordLevel.LEVEL_4 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		AppStaticVar.PASSWORD_LEVEAL4_COUNT = mList.size();
 		AppStaticVar.PASSWORD_LEVEAL5_COUNT = mList.size();

@@ -21,6 +21,7 @@ public class SNRMainActivity extends BaseActivity {
 	private TextView mParam1, mParam2, mParam3, mParam4, mParam5, mParam6,
 			mParam7;
 	private NoFocuseTextview mTvAlarm;
+	private View mViewMore;
 	private boolean isPause = false;
 	private boolean isSetting = false;
 
@@ -60,6 +61,18 @@ public class SNRMainActivity extends BaseActivity {
 		});
 		mThread.start();
 	}
+	
+	public void onClick(View v){
+		switch(v.getId()){
+			case R.id.btnMore:
+				if(mViewMore.getVisibility() == View.VISIBLE){
+					mViewMore.setVisibility(View.GONE);
+				}else{
+					mViewMore.setVisibility(View.VISIBLE);
+				}
+				break;
+		}
+	}
 
 	private void initUI() {
 		mParam1 = (TextView) findViewById(R.id.param1);
@@ -69,6 +82,7 @@ public class SNRMainActivity extends BaseActivity {
 		mParam5 = (TextView) findViewById(R.id.param5);
 		mParam6 = (TextView) findViewById(R.id.param6);
 		mParam7 = (TextView) findViewById(R.id.param7);
+		mViewMore = findViewById(R.id.llMore);
 		mTvAlarm = (NoFocuseTextview) findViewById(R.id.tvAlarm);
 		mTvAlarm.setVisibility(View.GONE);
 		mTvAlarm.startAnimation(AnimationUtils.loadAnimation(mContext,
@@ -136,79 +150,80 @@ public class SNRMainActivity extends BaseActivity {
 	}
 
 	private void dealReturnMsg(String msg) {
-		if (msg.length() != 114) {
+		if (msg.length() != ModbusUtils.MSG_STATUS_COUNT) {
 			return;
 		}
+		int paramIndex = 0;
 		// 瞬时流量浮点值
-		String ssllH = msg.substring(10, 14);
-		String ssllL = msg.substring(6, 10);
-		String sslldw = msg.substring(86, 90);
+		String ssllL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String ssllH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("瞬时流量==" + NumberBytes.hexStrToFloat(ssllH + ssllL));
-		System.out.println("瞬时流量单位==" + sslldw);
-		String ssllT = NumberBytes.hexStrToFloat(ssllH + ssllL) + " "
-				+ getSsllDw(sslldw);
-		mParam1.setText(ssllT);
 		// 瞬时流速浮点值
-		String sslsH = msg.substring(18, 22);
-		String sslsL = msg.substring(14, 18);
+		String sslsL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String sslsH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("瞬时流速==" + NumberBytes.hexStrToFloat(sslsH + sslsL));
 		String sslsT = NumberBytes.hexStrToFloat(sslsH + sslsL) + " m/s";
 		mParam2.setText(sslsT);
 		// 流量百分比浮点值
-		String llbfbH = msg.substring(26, 30);
-		String llbfbL = msg.substring(22, 26);
+		String llbfbL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String llbfbH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("流量百分比=="
 				+ NumberBytes.hexStrToFloat(llbfbH + llbfbL));
 		String llbfbT = NumberBytes.hexStrToFloat(llbfbH + llbfbL) + " %";
 		mParam3.setText(llbfbT);
 		// 流体电导比浮点值
-		String ltddbH = msg.substring(34, 38);
-		String ltddbL = msg.substring(30, 34);
+		String ltddbL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String ltddbH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("流体电导比=="
 				+ NumberBytes.hexStrToFloat(ltddbH + ltddbL));
 		String ltddbT = NumberBytes.hexStrToFloat(ltddbH + ltddbL) + " %";
 		mParam4.setText(ltddbT);
 		// 正向累积数值整数值
-		String zxljintH = msg.substring(42, 46);
-		String zxljintL = msg.substring(38, 42);
+		String zxljintL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String zxljintH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		long zxljLong = Long.parseLong(zxljintH + zxljintL, 16);
 		System.out.println("正向累积数值整数值=="
 				+ Long.parseLong(zxljintH + zxljintL, 16));
 		// 正向累积数值小数值
-		String zxljfloatH = msg.substring(50, 54);
-		String zxljfloatL = msg.substring(46, 50);
+		String zxljfloatL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String zxljfloatH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("正向累积数值小数值=="
 				+ NumberBytes.hexStrToFloat(zxljfloatH + zxljfloatL));
 		float zxljFloat = NumberBytes.hexStrToFloat(zxljfloatH
 				+ zxljfloatL);
 		// 反向累积数值整数值
-		String fxljintH = msg.substring(58, 62);
-		String fxljintL = msg.substring(54, 58);
+		String fxljintL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String fxljintH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("反向累积数值整数值=="
 				+ Long.parseLong(fxljintH + fxljintL, 16));
 		long fxljLong = Long.parseLong(fxljintH + fxljintL, 16);
 		// 反向累积数值小数值
-		String fxljfloatH = msg.substring(66, 70);
-		String fxljfloatL = msg.substring(62, 66);
+		String fxljfloatL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String fxljfloatH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("反向累积数值小数值=="
 				+ NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL));
 		float fxljFloat = NumberBytes.hexStrToFloat(fxljfloatH+ fxljfloatL);
 
 		// 正反向累积差值整数值
-		String zfljintH = msg.substring(74, 78);
-		String zfljintL = msg.substring(70, 74);
+		String zfljintL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String zfljintH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("正反向累积差值整数值=="
 				+ Long.parseLong(zfljintH + zfljintL, 16));
 		long zfljLong = Long.parseLong(zfljintH + zfljintL, 16);
 		// 正反向累积差值小数值
-		String zfljfloatH = msg.substring(82, 86);
-		String zfljfloatL = msg.substring(78, 82);
+		String zfljfloatL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		String zfljfloatH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("正反向累积差值小数值=="
 				+ NumberBytes.hexStrToFloat(zfljfloatH + zfljfloatL));
 		float zfljFloat = NumberBytes.hexStrToFloat(zfljfloatH+ zfljfloatL);
 
+		String sslldw = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
+		System.out.println("瞬时流量单位==" + sslldw);
+		String ssllT = NumberBytes.hexStrToFloat(ssllH + ssllL) + " "
+				+ getSsllDw(sslldw);
+		mParam1.setText(ssllT);
 		// 正向，反向累积单位
-		String ljdw = msg.substring(90, 94);
+		String ljdw = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("正向，反向累积单位==" + ljdw);
 		ZFLJDW zfljdw = getZFDw(ljdw);
 		if(zfljdw == null){
@@ -244,7 +259,7 @@ public class SNRMainActivity extends BaseActivity {
 		// + " " + getZFDw(ljdw));
 
 		// 流量上限报警
-		String llsxbj = msg.substring(94, 98);
+		String llsxbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("流量上限报警==" + llsxbj);
 		if (Long.parseLong(llsxbj, 16) == 1) {
 			hasAlarm("流量上限");
@@ -252,7 +267,7 @@ public class SNRMainActivity extends BaseActivity {
 			hasNoAlarm("流量上限");
 		}
 		// 流量下限报警
-		String llxxbj = msg.substring(98, 102);
+		String llxxbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("流量下限报警==" + llxxbj);
 		if (Long.parseLong(llxxbj, 16) == 1) {
 			hasAlarm("流量下限");
@@ -260,7 +275,7 @@ public class SNRMainActivity extends BaseActivity {
 			hasNoAlarm("流量下限");
 		}
 		// 励磁异常报警
-		String lcbj = msg.substring(102, 106);
+		String lcbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("励磁异常报警==" + lcbj);
 		if (Long.parseLong(lcbj, 16) == 1) {
 			hasAlarm("励磁异常");
@@ -268,7 +283,7 @@ public class SNRMainActivity extends BaseActivity {
 			hasNoAlarm("励磁异常");
 		}
 		// 空管报警
-		String kgbj = msg.substring(106, 110);
+		String kgbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("空管报警==" + kgbj);
 		if (Long.parseLong(kgbj, 16) == 1) {
 			hasAlarm("空管报警");

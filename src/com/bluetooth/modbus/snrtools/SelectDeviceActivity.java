@@ -20,7 +20,6 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Xml;
 import android.view.LayoutInflater;
@@ -36,6 +35,7 @@ import android.widget.TextView;
 
 import com.ab.http.AbFileHttpResponseListener;
 import com.ab.http.AbHttpUtil;
+import com.ab.util.AbAppUtil;
 import com.ab.view.progress.AbHorizontalProgressBar;
 import com.bluetooth.modbus.snrtools.adapter.DeviceListAdapter;
 import com.bluetooth.modbus.snrtools.bean.SiriListItem;
@@ -245,10 +245,11 @@ public class SelectDeviceActivity extends BaseActivity {
 					String fileName = url.substring(url.lastIndexOf("/") + 1);
 					File apk = new File(Constans.Directory.DOWNLOAD + fileName);
 					if (md5.equals(AppUtil.getFileMD5(apk))) {
-						Intent intent = new Intent(Intent.ACTION_VIEW);
-						intent.setDataAndType(Uri.fromFile(apk),
-								"application/vnd.android.package-archive");
-						startActivity(intent);
+//						Intent intent = new Intent(Intent.ACTION_VIEW);
+//						intent.setDataAndType(Uri.fromFile(apk),
+//								"application/vnd.android.package-archive");
+//						startActivity(intent);
+						AbAppUtil.installApk(mContext, file);
 						return;
 					}
 					try {
@@ -261,10 +262,11 @@ public class SelectDeviceActivity extends BaseActivity {
 					}
 					mAbHttpUtil.get(url, new AbFileHttpResponseListener(apk) {
 						public void onSuccess(int statusCode, File file) {
-							Intent intent = new Intent(Intent.ACTION_VIEW);
-							intent.setDataAndType(Uri.fromFile(file),
-									"application/vnd.android.package-archive");
-							startActivity(intent);
+//							Intent intent = new Intent(Intent.ACTION_VIEW);
+//							intent.setDataAndType(Uri.fromFile(file),
+//									"application/vnd.android.package-archive");
+//							startActivity(intent);
+							AbAppUtil.installApk(mContext, file);
 						};
 
 						// 开始执行前

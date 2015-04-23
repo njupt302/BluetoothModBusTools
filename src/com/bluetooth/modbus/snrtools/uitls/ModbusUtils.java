@@ -10,6 +10,8 @@ import com.bluetooth.modbus.snrtools.bean.Parameter;
 
 public class ModbusUtils {
 	private static final int TIME_OUT = 10000;
+	public static int MSG_STATUS_COUNT = 0;
+	public static int MSG_PARAM_COUNT = 0;
 
 	public static void readStatus(String className,Handler handler) {
 		CommandRead read = new CommandRead();
@@ -19,6 +21,7 @@ public class ModbusUtils {
 		read.setStartAddressL("10");
 		read.setCountH("00");
 		read.setCountL("1A");
+		MSG_STATUS_COUNT = Integer.parseInt("001A", 16);
 		AppUtil.modbusWrite( className,handler, read,TIME_OUT);
 	}
 
@@ -30,6 +33,7 @@ public class ModbusUtils {
 		read.setStartAddressL("00");
 		read.setCountH("00");
 		read.setCountL("48");
+		MSG_PARAM_COUNT = Integer.parseInt("0048", 16);
 		AppUtil.modbusWrite( className,handler, read,TIME_OUT);
 	}
 

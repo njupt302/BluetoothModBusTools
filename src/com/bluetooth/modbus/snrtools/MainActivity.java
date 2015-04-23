@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TextView;
 
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 
@@ -42,6 +43,7 @@ public class MainActivity extends TabActivity {
 				}
 			}
 		});
+		((TextView)tabHost.getChildAt(0)).setTextSize(20);
 	}
 
 	@Override
