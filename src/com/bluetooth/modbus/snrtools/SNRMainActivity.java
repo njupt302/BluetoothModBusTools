@@ -6,6 +6,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.bluetooth.modbus.snrtools.bean.ZFLJDW;
@@ -31,7 +32,7 @@ public class SNRMainActivity extends BaseActivity {
 		setContentView(R.layout.snr_main_activity);
 		initUI();
 		setTitleContent(AppStaticVar.mCurrentName);
-		setRightButtonContent("ÉèÖÃ", R.id.btnRight1);
+		setRightButtonContent("è®¾ç½®", R.id.btnRight1);
 		hideRightView(R.id.view2);
 		hideRightView(R.id.btnRight1);
 		initHandler();
@@ -43,7 +44,7 @@ public class SNRMainActivity extends BaseActivity {
 			case R.id.btnRight1 :
 				isPause = true;
 				isSetting = true;
-				showProgressDialog("Éè±¸Í¨Ñ¶ÖĞ,ÇëÉÔºó...");
+				showProgressDialog("è®¾å¤‡é€šè®¯ä¸­,è¯·ç¨å...");
 				break;
 		}
 	}
@@ -67,8 +68,10 @@ public class SNRMainActivity extends BaseActivity {
 			case R.id.btnMore:
 				if(mViewMore.getVisibility() == View.VISIBLE){
 					mViewMore.setVisibility(View.GONE);
+					((Button)v).setText("æ›´å¤š");
 				}else{
 					mViewMore.setVisibility(View.VISIBLE);
+					((Button)v).setText("æ”¶èµ·");
 				}
 				break;
 		}
@@ -106,7 +109,7 @@ public class SNRMainActivity extends BaseActivity {
 	}
 
 	private String getSsllDw(String s) {
-		System.out.println("Ë²Ê±Á÷Á¿µ¥Î»====" + s);
+		System.out.println("ç¬æ—¶æµé‡å•ä½====" + s);
 		String dw = "";
 		s = s.replace("0", "");
 		if ("".equals(s)) {
@@ -116,27 +119,27 @@ public class SNRMainActivity extends BaseActivity {
 		} else if ("2".equals(s)) {
 			dw = "L/s";
 		} else if ("3".equals(s)) {
-			dw = "m3/h";
+			dw = "mÂ³/h";
 		} else if ("4".equals(s)) {
-			dw = "m3/m";
+			dw = "mÂ³/m";
 		} else if ("5".equals(s)) {
-			dw = "m3/s";
+			dw = "mÂ³/s";
 		}
 		return dw;
 	}
 
 	private ZFLJDW getZFDw(String s) {
-		System.out.println("Õı·´ÀÛ»ıµ¥Î»====" + s);
+		System.out.println("æ­£åç´¯ç§¯å•ä½====" + s);
 		ZFLJDW dw = null;
 		s = s.replace("0", "");
 		if ("".equals(s)) {
-			dw = new ZFLJDW("m3", 3);
+			dw = new ZFLJDW("mÂ³", 3);
 		} else if ("1".equals(s)) {
-			dw = new ZFLJDW("m3", 2);
+			dw = new ZFLJDW("mÂ³", 2);
 		} else if ("2".equals(s)) {
-			dw = new ZFLJDW("m3", 1);
+			dw = new ZFLJDW("mÂ³", 1);
 		} else if ("3".equals(s)) {
-			dw = new ZFLJDW("m3", 0);
+			dw = new ZFLJDW("mÂ³", 0);
 		} else if ("4".equals(s)) {
 			dw = new ZFLJDW("L", 3);
 		} else if ("5".equals(s)) {
@@ -154,77 +157,77 @@ public class SNRMainActivity extends BaseActivity {
 			return;
 		}
 		int paramIndex = 0;
-		// Ë²Ê±Á÷Á¿¸¡µãÖµ
+		// ç¬æ—¶æµé‡æµ®ç‚¹å€¼
 		String ssllL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String ssllH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Ë²Ê±Á÷Á¿==" + NumberBytes.hexStrToFloat(ssllH + ssllL));
-		// Ë²Ê±Á÷ËÙ¸¡µãÖµ
+		System.out.println("ç¬æ—¶æµé‡==" + NumberBytes.hexStrToFloat(ssllH + ssllL));
+		// ç¬æ—¶æµé€Ÿæµ®ç‚¹å€¼
 		String sslsL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String sslsH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Ë²Ê±Á÷ËÙ==" + NumberBytes.hexStrToFloat(sslsH + sslsL));
+		System.out.println("ç¬æ—¶æµé€Ÿ==" + NumberBytes.hexStrToFloat(sslsH + sslsL));
 		String sslsT = NumberBytes.hexStrToFloat(sslsH + sslsL) + " m/s";
 		mParam2.setText(sslsT);
-		// Á÷Á¿°Ù·Ö±È¸¡µãÖµ
+		// æµé‡ç™¾åˆ†æ¯”æµ®ç‚¹å€¼
 		String llbfbL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String llbfbH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Á÷Á¿°Ù·Ö±È=="
+		System.out.println("æµé‡ç™¾åˆ†æ¯”=="
 				+ NumberBytes.hexStrToFloat(llbfbH + llbfbL));
 		String llbfbT = NumberBytes.hexStrToFloat(llbfbH + llbfbL) + " %";
 		mParam3.setText(llbfbT);
-		// Á÷Ìåµçµ¼±È¸¡µãÖµ
+		// æµä½“ç”µå¯¼æ¯”æµ®ç‚¹å€¼
 		String ltddbL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String ltddbH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Á÷Ìåµçµ¼±È=="
+		System.out.println("æµä½“ç”µå¯¼æ¯”=="
 				+ NumberBytes.hexStrToFloat(ltddbH + ltddbL));
 		String ltddbT = NumberBytes.hexStrToFloat(ltddbH + ltddbL) + " %";
 		mParam4.setText(ltddbT);
-		// ÕıÏòÀÛ»ıÊıÖµÕûÊıÖµ
+		// æ­£å‘ç´¯ç§¯æ•°å€¼æ•´æ•°å€¼
 		String zxljintL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String zxljintH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		long zxljLong = Long.parseLong(zxljintH + zxljintL, 16);
-		System.out.println("ÕıÏòÀÛ»ıÊıÖµÕûÊıÖµ=="
+		System.out.println("æ­£å‘ç´¯ç§¯æ•°å€¼æ•´æ•°å€¼=="
 				+ Long.parseLong(zxljintH + zxljintL, 16));
-		// ÕıÏòÀÛ»ıÊıÖµĞ¡ÊıÖµ
+		// æ­£å‘ç´¯ç§¯æ•°å€¼å°æ•°å€¼
 		String zxljfloatL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String zxljfloatH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("ÕıÏòÀÛ»ıÊıÖµĞ¡ÊıÖµ=="
+		System.out.println("æ­£å‘ç´¯ç§¯æ•°å€¼å°æ•°å€¼=="
 				+ NumberBytes.hexStrToFloat(zxljfloatH + zxljfloatL));
 		float zxljFloat = NumberBytes.hexStrToFloat(zxljfloatH
 				+ zxljfloatL);
-		// ·´ÏòÀÛ»ıÊıÖµÕûÊıÖµ
+		// åå‘ç´¯ç§¯æ•°å€¼æ•´æ•°å€¼
 		String fxljintL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String fxljintH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("·´ÏòÀÛ»ıÊıÖµÕûÊıÖµ=="
+		System.out.println("åå‘ç´¯ç§¯æ•°å€¼æ•´æ•°å€¼=="
 				+ Long.parseLong(fxljintH + fxljintL, 16));
 		long fxljLong = Long.parseLong(fxljintH + fxljintL, 16);
-		// ·´ÏòÀÛ»ıÊıÖµĞ¡ÊıÖµ
+		// åå‘ç´¯ç§¯æ•°å€¼å°æ•°å€¼
 		String fxljfloatL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String fxljfloatH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("·´ÏòÀÛ»ıÊıÖµĞ¡ÊıÖµ=="
+		System.out.println("åå‘ç´¯ç§¯æ•°å€¼å°æ•°å€¼=="
 				+ NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL));
 		float fxljFloat = NumberBytes.hexStrToFloat(fxljfloatH+ fxljfloatL);
 
-		// Õı·´ÏòÀÛ»ı²îÖµÕûÊıÖµ
+		// æ­£åå‘ç´¯ç§¯å·®å€¼æ•´æ•°å€¼
 		String zfljintL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String zfljintH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Õı·´ÏòÀÛ»ı²îÖµÕûÊıÖµ=="
+		System.out.println("æ­£åå‘ç´¯ç§¯å·®å€¼æ•´æ•°å€¼=="
 				+ Long.parseLong(zfljintH + zfljintL, 16));
 		long zfljLong = Long.parseLong(zfljintH + zfljintL, 16);
-		// Õı·´ÏòÀÛ»ı²îÖµĞ¡ÊıÖµ
+		// æ­£åå‘ç´¯ç§¯å·®å€¼å°æ•°å€¼
 		String zfljfloatL = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		String zfljfloatH = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Õı·´ÏòÀÛ»ı²îÖµĞ¡ÊıÖµ=="
+		System.out.println("æ­£åå‘ç´¯ç§¯å·®å€¼å°æ•°å€¼=="
 				+ NumberBytes.hexStrToFloat(zfljfloatH + zfljfloatL));
 		float zfljFloat = NumberBytes.hexStrToFloat(zfljfloatH+ zfljfloatL);
 
 		String sslldw = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Ë²Ê±Á÷Á¿µ¥Î»==" + sslldw);
+		System.out.println("ç¬æ—¶æµé‡å•ä½==" + sslldw);
 		String ssllT = NumberBytes.hexStrToFloat(ssllH + ssllL) + " "
 				+ getSsllDw(sslldw);
 		mParam1.setText(ssllT);
-		// ÕıÏò£¬·´ÏòÀÛ»ıµ¥Î»
+		// æ­£å‘ï¼Œåå‘ç´¯ç§¯å•ä½
 		String ljdw = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("ÕıÏò£¬·´ÏòÀÛ»ıµ¥Î»==" + ljdw);
+		System.out.println("æ­£å‘ï¼Œåå‘ç´¯ç§¯å•ä½==" + ljdw);
 		ZFLJDW zfljdw = getZFDw(ljdw);
 		if(zfljdw == null){
 			zfljdw = new ZFLJDW("", 3);
@@ -258,37 +261,37 @@ public class SNRMainActivity extends BaseActivity {
 		// - NumberBytes.hexStrToFloat(fxljfloatH + fxljfloatL))
 		// + " " + getZFDw(ljdw));
 
-		// Á÷Á¿ÉÏÏŞ±¨¾¯
+		// æµé‡ä¸Šé™æŠ¥è­¦
 		String llsxbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Á÷Á¿ÉÏÏŞ±¨¾¯==" + llsxbj);
+		System.out.println("æµé‡ä¸Šé™æŠ¥è­¦==" + llsxbj);
 		if (Long.parseLong(llsxbj, 16) == 1) {
-			hasAlarm("Á÷Á¿ÉÏÏŞ");
+			hasAlarm("æµé‡ä¸Šé™");
 		} else {
-			hasNoAlarm("Á÷Á¿ÉÏÏŞ");
+			hasNoAlarm("æµé‡ä¸Šé™");
 		}
-		// Á÷Á¿ÏÂÏŞ±¨¾¯
+		// æµé‡ä¸‹é™æŠ¥è­¦
 		String llxxbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Á÷Á¿ÏÂÏŞ±¨¾¯==" + llxxbj);
+		System.out.println("æµé‡ä¸‹é™æŠ¥è­¦==" + llxxbj);
 		if (Long.parseLong(llxxbj, 16) == 1) {
-			hasAlarm("Á÷Á¿ÏÂÏŞ");
+			hasAlarm("æµé‡ä¸‹é™");
 		} else {
-			hasNoAlarm("Á÷Á¿ÏÂÏŞ");
+			hasNoAlarm("æµé‡ä¸‹é™");
 		}
-		// Àø´ÅÒì³£±¨¾¯
+		// åŠ±ç£å¼‚å¸¸æŠ¥è­¦
 		String lcbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("Àø´ÅÒì³£±¨¾¯==" + lcbj);
+		System.out.println("åŠ±ç£å¼‚å¸¸æŠ¥è­¦==" + lcbj);
 		if (Long.parseLong(lcbj, 16) == 1) {
-			hasAlarm("Àø´ÅÒì³£");
+			hasAlarm("åŠ±ç£å¼‚å¸¸");
 		} else {
-			hasNoAlarm("Àø´ÅÒì³£");
+			hasNoAlarm("åŠ±ç£å¼‚å¸¸");
 		}
-		// ¿Õ¹Ü±¨¾¯
+		// ç©ºç®¡æŠ¥è­¦
 		String kgbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("¿Õ¹Ü±¨¾¯==" + kgbj);
+		System.out.println("ç©ºç®¡æŠ¥è­¦==" + kgbj);
 		if (Long.parseLong(kgbj, 16) == 1) {
-			hasAlarm("¿Õ¹Ü±¨¾¯");
+			hasAlarm("ç©ºç®¡æŠ¥è­¦");
 		} else {
-			hasNoAlarm("¿Õ¹Ü±¨¾¯");
+			hasNoAlarm("ç©ºç®¡æŠ¥è­¦");
 		}
 
 	}
@@ -300,10 +303,10 @@ public class SNRMainActivity extends BaseActivity {
 
 		switch (msg.what) {
 			case Constans.CONTACT_START :
-				System.out.println(name+"¿ªÊ¼¶ÁÈ¡Êı¾İ=====");
+				System.out.println(name+"å¼€å§‹è¯»å–æ•°æ®=====");
 				break;
 			case Constans.NO_DEVICE_CONNECTED :
-				System.out.println(name+"Á¬½ÓÊ§°Ü=====");
+				System.out.println(name+"è¿æ¥å¤±è´¥=====");
 				if (isPause) {
 					AppStaticVar.mObservable.notifyObservers();
 				} else {
@@ -311,7 +314,7 @@ public class SNRMainActivity extends BaseActivity {
 				}
 				break;
 			case Constans.DEVICE_RETURN_MSG :
-				System.out.println(name+"ÊÕµ½Êı¾İ=====" + msg.obj.toString());
+				System.out.println(name+"æ”¶åˆ°æ•°æ®=====" + msg.obj.toString());
 				dealReturnMsg(msg.obj.toString());
 				if (isPause) {
 					AppStaticVar.mObservable.notifyObservers();
@@ -320,11 +323,11 @@ public class SNRMainActivity extends BaseActivity {
 				}
 				break;
 			case Constans.CONNECT_IS_CLOSED :
-				System.out.println(name+"Á¬½Ó¹Ø±Õ=====");
+				System.out.println(name+"è¿æ¥å…³é—­=====");
 				isPause = true;
 				showConnectDevice();
 			case Constans.ERROR_START :
-				System.out.println(name+"½ÓÊÕÊı¾İ´íÎó=====");
+				System.out.println(name+"æ¥æ”¶æ•°æ®é”™è¯¯=====");
 				if (isPause) {
 					AppStaticVar.mObservable.notifyObservers();
 				} else {
@@ -332,11 +335,11 @@ public class SNRMainActivity extends BaseActivity {
 				}
 				break;
 			case Constans.TIME_OUT :
-				System.out.println(name+"Á¬½Ó³¬Ê±=====");
+				System.out.println(name+"è¿æ¥è¶…æ—¶=====");
 				if (mThread != null && !mThread.isInterrupted()) {
 					mThread.interrupt();
 				}
-				showToast("Á¬½ÓÉè±¸³¬Ê±!");
+				showToast("è¿æ¥è®¾å¤‡è¶…æ—¶!");
 				startReadParam();
 				break;
 		}
@@ -344,7 +347,7 @@ public class SNRMainActivity extends BaseActivity {
 	}
 
 	private void initHandler() {
-		mInnerHandler = new InnerHandler(this, "Ö÷Ò³Ãæ");
+		mInnerHandler = new InnerHandler(this, "ä¸»é¡µé¢");
 	}
 
 	@Override

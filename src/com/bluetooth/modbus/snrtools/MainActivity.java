@@ -6,11 +6,13 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
+import com.ab.util.AbViewUtil;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 
 public class MainActivity extends TabActivity {
@@ -43,7 +45,17 @@ public class MainActivity extends TabActivity {
 				}
 			}
 		});
-		((TextView)tabHost.getChildAt(0)).setTextSize(20);
+		int count = tabHost.getTabWidget().getChildCount();//TabHost中有一个getTabWidget()的方法
+		  for (int i = 0; i < count; i++) {
+		   View view = tabHost.getTabWidget().getChildTabViewAt(i);   
+		   view.getLayoutParams().height = 80; //tabWidget.getChildAt(i)
+		   final TextView tv = (TextView) view.findViewById(android.R.id.title);
+		   tv.setTextSize(20);
+//		   tv.setTextColor(this.getResources().getColorStateList(
+//		     android.R.color.white));
+		   view.getLayoutParams().height = (int) AbViewUtil.dip2px(this, 40); 
+
+		  }
 	}
 
 	@Override
