@@ -52,7 +52,6 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		setTitleContent("密码校验");
 		hideRightView(R.id.btnRight1);
 		hideRightView(R.id.view2);
-		showRightView(R.id.rlMenu);
 		initHandler();
 		editText1 = (EditText) findViewById(R.id.editText1);
 		editText2 = (EditText) findViewById(R.id.editText2);
