@@ -21,7 +21,7 @@ public class ModbusUtils {
 		read.setStartAddressL("10");
 		read.setCountH("00");
 		read.setCountL("1A");
-		MSG_STATUS_COUNT = Integer.parseInt("001A", 16);
+		MSG_STATUS_COUNT = Integer.parseInt("001A", 16)*4+10;
 		AppUtil.modbusWrite( className,handler, read,TIME_OUT);
 	}
 
@@ -33,7 +33,7 @@ public class ModbusUtils {
 		read.setStartAddressL("00");
 		read.setCountH("00");
 		read.setCountL("48");
-		MSG_PARAM_COUNT = Integer.parseInt("0048", 16);
+		MSG_PARAM_COUNT = Integer.parseInt("0048", 16)*4+10;
 		AppUtil.modbusWrite( className,handler, read,TIME_OUT);
 	}
 
