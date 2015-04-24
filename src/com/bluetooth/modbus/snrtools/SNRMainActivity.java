@@ -35,6 +35,7 @@ public class SNRMainActivity extends BaseActivity {
 		setRightButtonContent("设置", R.id.btnRight1);
 		hideRightView(R.id.view2);
 		hideRightView(R.id.btnRight1);
+		showRightView(R.id.rlMenu);
 		initHandler();
 	}
 
