@@ -36,6 +36,7 @@ import android.widget.TextView;
 import com.ab.http.AbFileHttpResponseListener;
 import com.ab.http.AbHttpUtil;
 import com.ab.util.AbAppUtil;
+import com.ab.util.AbFileUtil;
 import com.ab.view.progress.AbHorizontalProgressBar;
 import com.bluetooth.modbus.snrtools.adapter.DeviceListAdapter;
 import com.bluetooth.modbus.snrtools.bean.SiriListItem;
@@ -76,15 +77,15 @@ public class SelectDeviceActivity extends BaseActivity {
 	public void reconnectSuccss() {
 		hideDialog();
 		Intent intent = new Intent(mContext, MainActivity.class);
-//		Intent intent = new Intent(mContext, SNRMainActivity.class);
+		// Intent intent = new Intent(mContext, SNRMainActivity.class);
 		startActivity(intent);
 	}
 
 	@Override
 	public void BackOnClick(View v) {
 		switch (v.getId()) {
-			case R.id.ivBack :
-				onBackPressed();
+		case R.id.ivBack:
+			onBackPressed();
 		}
 	}
 
@@ -96,40 +97,37 @@ public class SelectDeviceActivity extends BaseActivity {
 		mListView.setFastScrollEnabled(true);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
-					long arg3) {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				SiriListItem item = list.get(arg2);
-				if(item == null){
+				if (item == null) {
 					return;
 				}
 				String info = item.getMessage();
 				if (NO_DEVICE_CAN_CONNECT.equals(info)) {
 					return;
 				}
-				String address = info.substring((info.length() - 17)>0?info.length() - 17:0);
-				String name = info.substring(0, (info.length() - 17)>0?info.length() - 17:0);
+				String address = info.substring((info.length() - 17) > 0 ? info.length() - 17 : 0);
+				String name = info.substring(0, (info.length() - 17) > 0 ? info.length() - 17 : 0);
 				AppStaticVar.mCurrentAddress = address;
 				AppStaticVar.mCurrentName = name;
 
-				showDialog("是否连接" + item.getMessage(),
-						new MyAlertDialogListener() {
+				showDialog("是否连接" + item.getMessage(), new MyAlertDialogListener() {
 
-							@Override
-							public void onClick(View view) {
-								switch (view.getId()) {
-									case R.id.btnCancel :
-										AppStaticVar.mCurrentAddress = null;
-										AppStaticVar.mCurrentName = null;
-										hideDialog();
-										break;
-									case R.id.btnOk :
-										setRightButtonContent("搜索",
-												R.id.btnRight1);
-										connectDevice(AppStaticVar.mCurrentAddress);
-										break;
-								}
-							}
-						});
+					@Override
+					public void onClick(View view) {
+						switch (view.getId()) {
+						case R.id.btnCancel:
+							AppStaticVar.mCurrentAddress = null;
+							AppStaticVar.mCurrentName = null;
+							hideDialog();
+							break;
+						case R.id.btnOk:
+							setRightButtonContent("搜索", R.id.btnRight1);
+							connectDevice(AppStaticVar.mCurrentAddress);
+							break;
+						}
+					}
+				});
 			}
 		});
 
@@ -143,43 +141,47 @@ public class SelectDeviceActivity extends BaseActivity {
 	@Override
 	protected void rightButtonOnClick(int id) {
 		switch (id) {
-			case R.id.btnRight1 :
-				if (AppUtil.checkBluetooth(mContext)) {
-					searchDevice();
-				}
-				break;
-			case R.id.rlMenu :
-				 showMenu(findViewById(id));
-				break;
+		case R.id.btnRight1:
+			if (AppUtil.checkBluetooth(mContext)) {
+				searchDevice();
+			}
+			break;
+		case R.id.rlMenu:
+			showMenu(findViewById(id));
+			break;
 		}
 	}
 
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.textView1 :// 新功能
-				hideMenu();
-				showDialogOne("实时监视，参数设置", null);
-				break;
-			case R.id.textView2 :// 关于
-				hideMenu();
-				showDialogOne("电话 :025-58008686\n传真 :025-86167199\n邮箱 :sinier@sinier.com.cn\n地址 :南京市江宁区谷里科技产业园兴谷路6号 ", null);
-				break;
-			case R.id.textView3 :// 版本更新
-				hideMenu();
-				downloadXml();
-				break;
-			case R.id.textView4 :// 退出
-				hideMenu();
-				onBackPressed();
-				break;
+		case R.id.textView1:// 新功能
+			hideMenu();
+			showDialogOne("实时监视，参数设置", null);
+			break;
+		case R.id.textView2:// 关于
+			hideMenu();
+			showDialogOne("电话 :025-58008686\n传真 :025-86167199\n邮箱 :sinier@sinier.com.cn\n地址 :南京市江宁区谷里科技产业园兴谷路6号 ", null);
+			break;
+		case R.id.textView3:// 版本更新
+			hideMenu();
+			downloadXml();
+			break;
+		case R.id.textView4:// 退出
+			hideMenu();
+			onBackPressed();
+			break;
+		case R.id.textView5:// 清除缓存
+			hideMenu();
+			System.out.println("删除临时文件==="+AbFileUtil.deleteFile(new File(AbFileUtil.getFileDownloadDir(mContext))));
+			System.out.println("删除下载文件==="+AbFileUtil.deleteFile(new File(Constans.Directory.DOWNLOAD)));
+			break;
 		}
 	}
 
 	private void showMenu(View v) {
 		if (mPop == null) {
 			View contentView = View.inflate(this, R.layout.main_menu, null);
-			mPop = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT,
-					LayoutParams.WRAP_CONTENT);
+			mPop = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			mPop.setBackgroundDrawable(new BitmapDrawable());
 			mPop.setOutsideTouchable(true);
 			mPop.setFocusable(true);
@@ -209,24 +211,24 @@ public class SelectDeviceActivity extends BaseActivity {
 					int eventType = xpp.getEventType();
 					while (eventType != XmlPullParser.END_DOCUMENT) {
 						switch (eventType) {
-							case XmlPullParser.START_TAG :
-								if ("version".equals(xpp.getName())) {
-									try {
-										version = Integer.parseInt(xpp.nextText());
-									} catch (NumberFormatException e1) {
-										e1.printStackTrace();
-										showToast("服务器更新版本号出错！");
-									}
+						case XmlPullParser.START_TAG:
+							if ("version".equals(xpp.getName())) {
+								try {
+									version = Integer.parseInt(xpp.nextText());
+								} catch (NumberFormatException e1) {
+									e1.printStackTrace();
+									showToast("服务器更新版本号出错！");
 								}
-								if ("url".equals(xpp.getName())) {
-									url = xpp.nextText();
-								}
-								if ("MD5".equals(xpp.getName())) {
-									md5 = xpp.nextText();
-								}
-								break;
-							default :
-								break;
+							}
+							if ("url".equals(xpp.getName())) {
+								url = xpp.nextText();
+							}
+							if ("MD5".equals(xpp.getName())) {
+								md5 = xpp.nextText();
+							}
+							break;
+						default:
+							break;
 						}
 						eventType = xpp.next();
 					}
@@ -245,11 +247,11 @@ public class SelectDeviceActivity extends BaseActivity {
 					String fileName = url.substring(url.lastIndexOf("/") + 1);
 					File apk = new File(Constans.Directory.DOWNLOAD + fileName);
 					if (md5.equals(AppUtil.getFileMD5(apk))) {
-//						Intent intent = new Intent(Intent.ACTION_VIEW);
-//						intent.setDataAndType(Uri.fromFile(apk),
-//								"application/vnd.android.package-archive");
-//						startActivity(intent);
-						AbAppUtil.installApk(mContext, file);
+						// Intent intent = new Intent(Intent.ACTION_VIEW);
+						// intent.setDataAndType(Uri.fromFile(apk),
+						// "application/vnd.android.package-archive");
+						// startActivity(intent);
+						AbAppUtil.installApk(mContext, apk);
 						return;
 					}
 					try {
@@ -262,10 +264,10 @@ public class SelectDeviceActivity extends BaseActivity {
 					}
 					mAbHttpUtil.get(url, new AbFileHttpResponseListener(apk) {
 						public void onSuccess(int statusCode, File file) {
-//							Intent intent = new Intent(Intent.ACTION_VIEW);
-//							intent.setDataAndType(Uri.fromFile(file),
-//									"application/vnd.android.package-archive");
-//							startActivity(intent);
+							// Intent intent = new Intent(Intent.ACTION_VIEW);
+							// intent.setDataAndType(Uri.fromFile(file),
+							// "application/vnd.android.package-archive");
+							// startActivity(intent);
 							AbAppUtil.installApk(mContext, file);
 						};
 
@@ -273,15 +275,12 @@ public class SelectDeviceActivity extends BaseActivity {
 						@Override
 						public void onStart() {
 							// 打开进度框
-							View v = LayoutInflater.from(mContext).inflate(
-									R.layout.progress_bar_horizontal, null,
-									false);
-							mAbProgressBar = (AbHorizontalProgressBar) v
-									.findViewById(R.id.horizontalProgressBar);
+							View v = LayoutInflater.from(mContext).inflate(R.layout.progress_bar_horizontal, null, false);
+							mAbProgressBar = (AbHorizontalProgressBar) v.findViewById(R.id.horizontalProgressBar);
 							numberText = (TextView) v.findViewById(R.id.numberText);
 							maxText = (TextView) v.findViewById(R.id.maxText);
 
-							maxText.setText(progress + "/"+ String.valueOf(max)+"%");
+							maxText.setText(progress + "/" + String.valueOf(max) + "%");
 							mAbProgressBar.setMax(max);
 							mAbProgressBar.setProgress(progress);
 
@@ -290,8 +289,7 @@ public class SelectDeviceActivity extends BaseActivity {
 
 						// 失败，调用
 						@Override
-						public void onFailure(int statusCode, String content,
-								Throwable error) {
+						public void onFailure(int statusCode, String content, Throwable error) {
 							showToast(error.getMessage());
 						}
 
@@ -303,10 +301,8 @@ public class SelectDeviceActivity extends BaseActivity {
 								showToast("下载失败!");
 								return;
 							}
-							maxText.setText(bytesWritten / (totalSize / max)
-									+ "/" + max+"%");
-							mAbProgressBar
-									.setProgress((int) (bytesWritten / (totalSize / max)));
+							maxText.setText(bytesWritten / (totalSize / max) + "/" + max + "%");
+							mAbProgressBar.setProgress((int) (bytesWritten / (totalSize / max)));
 						}
 
 						// 完成后调用，失败，成功
@@ -329,14 +325,12 @@ public class SelectDeviceActivity extends BaseActivity {
 			@Override
 			public void onStart() {
 				// 打开进度框
-				View v = LayoutInflater.from(mContext).inflate(
-						R.layout.progress_bar_horizontal, null, false);
-				mAbProgressBar = (AbHorizontalProgressBar) v
-						.findViewById(R.id.horizontalProgressBar);
+				View v = LayoutInflater.from(mContext).inflate(R.layout.progress_bar_horizontal, null, false);
+				mAbProgressBar = (AbHorizontalProgressBar) v.findViewById(R.id.horizontalProgressBar);
 				numberText = (TextView) v.findViewById(R.id.numberText);
 				maxText = (TextView) v.findViewById(R.id.maxText);
 
-				maxText.setText(progress + "/" + String.valueOf(max)+"%");
+				maxText.setText(progress + "/" + String.valueOf(max) + "%");
 				mAbProgressBar.setMax(max);
 				mAbProgressBar.setProgress(progress);
 
@@ -345,7 +339,7 @@ public class SelectDeviceActivity extends BaseActivity {
 
 			// 失败，调用
 			@Override
-			public void onFailure(int statusCode, String content,Throwable error) {
+			public void onFailure(int statusCode, String content, Throwable error) {
 				showToast(error.getMessage());
 			}
 
@@ -357,7 +351,7 @@ public class SelectDeviceActivity extends BaseActivity {
 					showToast("下载失败!");
 					return;
 				}
-				maxText.setText(bytesWritten / (totalSize / max) + "/" + max+"%");
+				maxText.setText(bytesWritten / (totalSize / max) + "/" + max + "%");
 				mAbProgressBar.setProgress((int) (bytesWritten / (totalSize / max)));
 			}
 
@@ -381,13 +375,11 @@ public class SelectDeviceActivity extends BaseActivity {
 			list.clear();
 			mAdapter.notifyDataSetChanged();
 
-			Set<BluetoothDevice> pairedDevices = AppStaticVar.mBtAdapter
-					.getBondedDevices();
+			Set<BluetoothDevice> pairedDevices = AppStaticVar.mBtAdapter.getBondedDevices();
 			if (pairedDevices.size() > 0) {
 				for (BluetoothDevice device : pairedDevices) {
-					if (device.getName().toUpperCase(Locale.ENGLISH)
-							.startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
-						list.add(new SiriListItem(device.getName() + "\n"+ device.getAddress(), true));
+					if (device.getName().toUpperCase(Locale.ENGLISH).startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
+						list.add(new SiriListItem(device.getName() + "\n" + device.getAddress(), true));
 						mAdapter.notifyDataSetChanged();
 						mListView.setSelection(list.size() - 1);
 					}
@@ -405,21 +397,7 @@ public class SelectDeviceActivity extends BaseActivity {
 
 	@Override
 	public void onBackPressed() {
-		showDialog("是否要退出程序？", new MyAlertDialogListener() {
-			@Override
-			public void onClick(View view) {
-				switch (view.getId()) {
-					case R.id.btnCancel :
-						hideDialog();
-						break;
-					case R.id.btnOk :
-						AppUtil.closeBluetooth();
-						finish();
-						System.exit(0);
-						break;
-				}
-			}
-		});
+		exitApp();
 	}
 
 	@Override
@@ -448,18 +426,16 @@ public class SelectDeviceActivity extends BaseActivity {
 		public void onReceive(Context context, Intent intent) {
 			String action = intent.getAction();
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-				BluetoothDevice device = intent
-						.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-					if (device.getName().toUpperCase(Locale.ENGLISH)
-							.startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
-						list.add(new SiriListItem(device.getName() + "\n"+ device.getAddress(), false));
+					if (device.getName().toUpperCase(Locale.ENGLISH).startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
+						list.add(new SiriListItem(device.getName() + "\n" + device.getAddress(), false));
 						mAdapter.notifyDataSetChanged();
 						mListView.setSelection(list.size() - 1);
 					}
 				}
-			} else if(BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)){
-				if(intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON){
+			} else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {
+				if (intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, -1) == BluetoothAdapter.STATE_ON) {
 					if (AppUtil.checkBluetooth(mContext)) {
 						searchDevice();
 					}

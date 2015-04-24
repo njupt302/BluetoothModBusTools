@@ -30,4 +30,13 @@ public class ActivityManager {
 			mActivitys.remove(activity);
 		}
 	}
+	
+	public void finishAll() {
+		if(mActivitys != null){
+			for(int i=0;mActivitys.size()>0;){
+				mActivitys.get(0).finish();
+				mActivitys.remove(0);
+			}
+		}
+	}
 }

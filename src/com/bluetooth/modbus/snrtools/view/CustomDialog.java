@@ -161,7 +161,7 @@ public class CustomDialog extends AlertDialog
 		try
 		{
 			this.isBlock = isBlock;
-			setCancelable(false);
+			setCancelable(isBlock);
 			super.show();
 		}
 		catch (Exception e)

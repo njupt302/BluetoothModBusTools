@@ -23,6 +23,7 @@ import com.ab.http.AbHttpUtil;
 import com.bluetooth.modbus.snrtools.manager.ActivityManager;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 import com.bluetooth.modbus.snrtools.thread.ConnectThread;
+import com.bluetooth.modbus.snrtools.uitls.AppUtil;
 import com.bluetooth.modbus.snrtools.view.CustomDialog;
 import com.bluetooth.modbus.snrtools.view.MyAlertDialog;
 import com.bluetooth.modbus.snrtools.view.MyAlertDialog.MyAlertDialogListener;
@@ -316,6 +317,26 @@ public abstract class BaseActivity extends Activity {
 		hideDialog();
 		hideDialogOne();
 		super.onDestroy();
+	}
+	
+	public void exitApp(){
+
+		showDialog("是否要退出程序？", new MyAlertDialogListener() {
+			@Override
+			public void onClick(View view) {
+				switch (view.getId()) {
+					case R.id.btnCancel :
+						hideDialog();
+						break;
+					case R.id.btnOk :
+						AppUtil.closeBluetooth();
+						ActivityManager.getInstances().finishAll();
+						System.exit(0);
+						break;
+				}
+			}
+		});
+	
 	}
 
 	public void handleMessage(Activity activity, Message msg, String name) {

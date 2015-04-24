@@ -57,6 +57,22 @@
         android:background="#B9FFE6" />
 
     <Button
+        android:id="@+id/textView5"
+        android:layout_width="130dp"
+        android:layout_height="40dp"
+        android:background="@drawable/bg_titlebar"
+        android:gravity="left|center_vertical"
+        android:onClick="onClick"
+        android:paddingLeft="5dp"
+        android:text="清除缓存"
+        android:textColor="#ffffff"
+        android:textSize="16sp" />
+        <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#B9FFE6" />
+
+    <Button
         android:id="@+id/textView4"
         android:layout_width="130dp"
         android:layout_height="40dp"

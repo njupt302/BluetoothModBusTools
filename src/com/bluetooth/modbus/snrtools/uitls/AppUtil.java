@@ -226,7 +226,7 @@ public class AppUtil {
 			mailInfo.setFromAddress(sender); // 发送的邮箱
 			mailInfo.setToAddress(to); // 发到哪个邮件去
 			mailInfo.setSubject(title);
-			mailInfo.setContent(content);
+			mailInfo.setContent("这是一份错误收集日志\n"+content);
 
 			// 这个类主要来发送邮件
 			final SimpleMailSender sms = new SimpleMailSender();

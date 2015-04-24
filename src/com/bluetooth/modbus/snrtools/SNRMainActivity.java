@@ -1,16 +1,37 @@
 package com.bluetooth.modbus.snrtools;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import org.xmlpull.v1.XmlPullParser;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.Xml;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.ab.http.AbFileHttpResponseListener;
+import com.ab.http.AbHttpUtil;
+import com.ab.util.AbAppUtil;
+import com.ab.util.AbFileUtil;
+import com.ab.view.progress.AbHorizontalProgressBar;
 import com.bluetooth.modbus.snrtools.bean.ZFLJDW;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
+import com.bluetooth.modbus.snrtools.uitls.AppUtil;
 import com.bluetooth.modbus.snrtools.uitls.ModbusUtils;
 import com.bluetooth.modbus.snrtools.uitls.NumberBytes;
 import com.bluetooth.modbus.snrtools.view.NoFocuseTextview;
@@ -25,16 +46,25 @@ public class SNRMainActivity extends BaseActivity {
 	private View mViewMore;
 	private boolean isPause = false;
 	private boolean isSetting = false;
+	private PopupWindow mPop;
+	private AbHorizontalProgressBar mAbProgressBar;
+	// 最大100
+	private int max = 100;
+	private int progress = 0;
+	private TextView numberText, maxText;
+	private AlertDialog mAlertDialog = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.snr_main_activity);
+		mAbHttpUtil = AbHttpUtil.getInstance(this);
 		initUI();
 		setTitleContent(AppStaticVar.mCurrentName);
 		setRightButtonContent("设置", R.id.btnRight1);
 		hideRightView(R.id.view2);
 		hideRightView(R.id.btnRight1);
+		showRightView(R.id.rlMenu);
 		initHandler();
 	}
 
@@ -45,6 +75,9 @@ public class SNRMainActivity extends BaseActivity {
 				isPause = true;
 				isSetting = true;
 				showProgressDialog("设备通讯中,请稍后...");
+				break;
+			case R.id.rlMenu :
+				 showMenu(findViewById(id));
 				break;
 		}
 	}
@@ -74,8 +107,229 @@ public class SNRMainActivity extends BaseActivity {
 					((Button)v).setText("收起");
 				}
 				break;
+
+			case R.id.textView1 :// 新功能
+				hideMenu();
+				showDialogOne("实时监视，参数设置", null);
+				break;
+			case R.id.textView2 :// 关于
+				hideMenu();
+				showDialogOne("电话 :025-58008686\n传真 :025-86167199\n邮箱 :sinier@sinier.com.cn\n地址 :南京市江宁区谷里科技产业园兴谷路6号 ", null);
+				break;
+			case R.id.textView3 :// 版本更新
+				hideMenu();
+				downloadXml();
+				break;
+			case R.id.textView4 :// 退出
+				hideMenu();
+				exitApp();
+				break;
+			case R.id.textView5:// 清除缓存
+				hideMenu();
+				AbFileUtil.deleteFile(new File(AbFileUtil.getFileDownloadDir(mContext)));
+				AbFileUtil.deleteFile(new File(Constans.Directory.DOWNLOAD));
+				break;
+		
 		}
 	}
+	
+	private void showMenu(View v) {
+		if (mPop == null) {
+			View contentView = View.inflate(this, R.layout.main_menu, null);
+			mPop = new PopupWindow(contentView, LayoutParams.WRAP_CONTENT,
+					LayoutParams.WRAP_CONTENT);
+			mPop.setBackgroundDrawable(new BitmapDrawable());
+			mPop.setOutsideTouchable(true);
+			mPop.setFocusable(true);
+		}
+		mPop.showAsDropDown(v, R.dimen.menu_x, 20);
+	}
+
+	private void hideMenu() {
+		if (mPop != null && mPop.isShowing()) {
+			mPop.dismiss();
+		}
+	}
+
+	private void downloadXml() {
+		String url = "http://www.sinier.com.cn/download/version.xml";
+		mAbHttpUtil.get(url, new AbFileHttpResponseListener(url) {
+			// 获取数据成功会调用这里
+			@Override
+			public void onSuccess(int statusCode, File file) {
+				int version = 0;
+				String url = "";
+				String md5 = "";
+				XmlPullParser xpp = Xml.newPullParser();
+				try {
+					xpp.setInput(new FileInputStream(file), "utf-8");
+
+					int eventType = xpp.getEventType();
+					while (eventType != XmlPullParser.END_DOCUMENT) {
+						switch (eventType) {
+							case XmlPullParser.START_TAG :
+								if ("version".equals(xpp.getName())) {
+									try {
+										version = Integer.parseInt(xpp.nextText());
+									} catch (NumberFormatException e1) {
+										e1.printStackTrace();
+										showToast("服务器更新版本号出错！");
+									}
+								}
+								if ("url".equals(xpp.getName())) {
+									url = xpp.nextText();
+								}
+								if ("MD5".equals(xpp.getName())) {
+									md5 = xpp.nextText();
+								}
+								break;
+							default :
+								break;
+						}
+						eventType = xpp.next();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				PackageManager manager;
+				PackageInfo info = null;
+				manager = getPackageManager();
+				try {
+					info = manager.getPackageInfo(getPackageName(), 0);
+				} catch (NameNotFoundException e) {
+					e.printStackTrace();
+				}
+				if (version != info.versionCode) {
+					String fileName = url.substring(url.lastIndexOf("/") + 1);
+					File apk = new File(Constans.Directory.DOWNLOAD + fileName);
+					if (md5.equals(AppUtil.getFileMD5(apk))) {
+//						Intent intent = new Intent(Intent.ACTION_VIEW);
+//						intent.setDataAndType(Uri.fromFile(apk),
+//								"application/vnd.android.package-archive");
+//						startActivity(intent);
+						AbAppUtil.installApk(mContext, apk);
+						return;
+					}
+					try {
+						if (!apk.getParentFile().exists()) {
+							apk.getParentFile().mkdirs();
+						}
+						apk.createNewFile();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					mAbHttpUtil.get(url, new AbFileHttpResponseListener(apk) {
+						public void onSuccess(int statusCode, File file) {
+//							Intent intent = new Intent(Intent.ACTION_VIEW);
+//							intent.setDataAndType(Uri.fromFile(file),
+//									"application/vnd.android.package-archive");
+//							startActivity(intent);
+							AbAppUtil.installApk(mContext, file);
+						};
+
+						// 开始执行前
+						@Override
+						public void onStart() {
+							// 打开进度框
+							View v = LayoutInflater.from(mContext).inflate(
+									R.layout.progress_bar_horizontal, null,
+									false);
+							mAbProgressBar = (AbHorizontalProgressBar) v
+									.findViewById(R.id.horizontalProgressBar);
+							numberText = (TextView) v.findViewById(R.id.numberText);
+							maxText = (TextView) v.findViewById(R.id.maxText);
+
+							maxText.setText(progress + "/"+ String.valueOf(max)+"%");
+							mAbProgressBar.setMax(max);
+							mAbProgressBar.setProgress(progress);
+
+							mAlertDialog = showDialog("正在下载", v);
+						}
+
+						// 失败，调用
+						@Override
+						public void onFailure(int statusCode, String content,
+								Throwable error) {
+							showToast(error.getMessage());
+						}
+
+						// 下载进度
+						@Override
+						public void onProgress(long bytesWritten, long totalSize) {
+							if (totalSize / max == 0) {
+								onFinish();
+								showToast("下载失败!");
+								return;
+							}
+							maxText.setText(bytesWritten / (totalSize / max)
+									+ "/" + max+"%");
+							mAbProgressBar
+									.setProgress((int) (bytesWritten / (totalSize / max)));
+						}
+
+						// 完成后调用，失败，成功
+						public void onFinish() {
+							// 下载完成取消进度框
+							if (mAlertDialog != null) {
+								mAlertDialog.cancel();
+								mAlertDialog = null;
+							}
+
+						};
+					});
+				} else {
+					showToast("已经是最新版！");
+				}
+
+			}
+
+			// 开始执行前
+			@Override
+			public void onStart() {
+				// 打开进度框
+				View v = LayoutInflater.from(mContext).inflate(
+						R.layout.progress_bar_horizontal, null, false);
+				mAbProgressBar = (AbHorizontalProgressBar) v
+						.findViewById(R.id.horizontalProgressBar);
+				numberText = (TextView) v.findViewById(R.id.numberText);
+				maxText = (TextView) v.findViewById(R.id.maxText);
+
+				maxText.setText(progress + "/" + String.valueOf(max)+"%");
+				mAbProgressBar.setMax(max);
+				mAbProgressBar.setProgress(progress);
+
+				mAlertDialog = showDialog("正在下载", v);
+			}
+
+			// 失败，调用
+			@Override
+			public void onFailure(int statusCode, String content,Throwable error) {
+				showToast(error.getMessage());
+			}
+
+			// 下载进度
+			@Override
+			public void onProgress(long bytesWritten, long totalSize) {
+				if (totalSize / max == 0) {
+					onFinish();
+					showToast("下载失败!");
+					return;
+				}
+				maxText.setText(bytesWritten / (totalSize / max) + "/" + max+"%");
+				mAbProgressBar.setProgress((int) (bytesWritten / (totalSize / max)));
+			}
+
+			// 完成后调用，失败，成功
+			public void onFinish() {
+				// 下载完成取消进度框
+				if (mAlertDialog != null) {
+					mAlertDialog.cancel();
+					mAlertDialog = null;
+				}
+			};
+		});
+	}
+
 
 	private void initUI() {
 		mParam1 = (TextView) findViewById(R.id.param1);

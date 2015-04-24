@@ -33,7 +33,7 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:text="瞬时流量:"
-                    android:textColor="#423E28"
+                    android:textColor="#6BADF6"
                     android:textSize="20sp" />
 
                 <TextView
@@ -45,7 +45,7 @@
                     android:gravity="left"
                     android:text="获取中..."
                     android:textColor="#1a1a1a"
-                    android:textSize="35sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -59,8 +59,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="right"
-                    android:text="累积差值:"
-                    android:textColor="#423E28"
+                    android:text="累积流量:"
+                    android:textColor="#6BADF6"
                     android:textSize="20sp" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:gravity="left"
                     android:text="获取中..."
                     android:textColor="#1a1a1a"
-                    android:textSize="35sp" />
+                    android:textSize="25sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -94,8 +94,8 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="瞬时流速:"
-                        android:textColor="#423E28"
-                        android:textSize="16sp" />
+                        android:textColor="#6BADF6"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/param2"
@@ -106,7 +106,7 @@
                         android:gravity="left"
                         android:text="获取中..."
                         android:textColor="#1a1a1a"
-                        android:textSize="18sp" />
+                        android:textSize="25sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -121,8 +121,8 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="流量百分比:"
-                        android:textColor="#423E28"
-                        android:textSize="16sp" />
+                        android:textColor="#6BADF6"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/param3"
@@ -133,7 +133,7 @@
                         android:gravity="left"
                         android:text="获取中..."
                         android:textColor="#1a1a1a"
-                        android:textSize="18sp" />
+                        android:textSize="25sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -147,9 +147,9 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="right"
-                        android:text="流体电导比:"
-                        android:textColor="#423E28"
-                        android:textSize="16sp" />
+                        android:text="空管比:"
+                        android:textColor="#6BADF6"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/param4"
@@ -160,7 +160,7 @@
                         android:gravity="left"
                         android:text="获取中..."
                         android:textColor="#1a1a1a"
-                        android:textSize="18sp" />
+                        android:textSize="25sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -175,8 +175,8 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="正向累积值:"
-                        android:textColor="#423E28"
-                        android:textSize="16sp" />
+                        android:textColor="#6BADF6"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/param5"
@@ -187,7 +187,7 @@
                         android:gravity="left"
                         android:text="获取中..."
                         android:textColor="#1a1a1a"
-                        android:textSize="18sp" />
+                        android:textSize="25sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -202,8 +202,8 @@
                         android:layout_weight="1"
                         android:gravity="right"
                         android:text="反向累积值:"
-                        android:textColor="#423E28"
-                        android:textSize="16sp" />
+                        android:textColor="#6BADF6"
+                        android:textSize="20sp" />
 
                     <TextView
                         android:id="@+id/param6"
@@ -214,7 +214,7 @@
                         android:gravity="left"
                         android:text="获取中..."
                         android:textColor="#1a1a1a"
-                        android:textSize="18sp" />
+                        android:textSize="25sp" />
                 </LinearLayout>
             </LinearLayout>
 
