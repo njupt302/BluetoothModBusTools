@@ -40,7 +40,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	private List<Parameter> mDataList;
 	private final static int SELECT_PARAM = 0x100001;
 	private final static int INPUT_PARAM = 0x100002;
-	/** æ˜¾ç¤ºå‚æ•°çš„æ•°é‡ */
+	/** ÏÔÊ¾²ÎÊıµÄÊıÁ¿ */
 	private int mCount = 0;
 	private boolean flag = false;
 
@@ -49,7 +49,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		super.onCreate(savedInstanceState);
 		mList = new ArrayList<Parameter>();
 		setContentView(R.layout.check_pass_activity);
-		setTitleContent("å¯†ç æ ¡éªŒ");
+		setTitleContent("ÃÜÂëĞ£Ñé");
 		hideRightView(R.id.btnRight1);
 		hideRightView(R.id.view2);
 		initHandler();
@@ -61,40 +61,40 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		initUI();
 		setListeners();
 		AppStaticVar.mObservable.addObserver(this);
-		showProgressDialog("ä¸è®¾å¤‡é€šè®¯ä¸­...");
-//		startReadParam();
+		showProgressDialog("ÓëÉè±¸Í¨Ñ¶ÖĞ...");
+		startReadParam();
 	}
 
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.button2:
 			if (AppStaticVar.mParamList == null || AppStaticVar.mParamList.size() == 0) {
-				showToast("è·å–å‚æ•°å¤±è´¥,è¯·è¿”å›é‡è¯•!");
+				showToast("»ñÈ¡²ÎÊıÊ§°Ü,Çë·µ»ØÖØÊÔ!");
 				return;
 			}
 			if (TextUtils.isEmpty(editText1.getText().toString().trim())) {
-				showToast("è¯·è¾“å…¥å¯†ç !");
+				showToast("ÇëÊäÈëÃÜÂë!");
 				return;
 			}
 			checkPsw(Long.parseLong(editText1.getText().toString().trim()));
 			if (AppStaticVar.PASSWORD_LEVEAL != -1) {
 				mViewCheckPsd.setVisibility(View.GONE);
 				mViewSetParam.setVisibility(View.VISIBLE);
-				setTitleContent("å‚æ•°è®¾ç½®");
+				setTitleContent("²ÎÊıÉèÖÃ");
 				switch (AppStaticVar.PASSWORD_LEVEAL) {
-				case 1:// å¯ä»¥è®¾ç½®1-24
+				case 1:// ¿ÉÒÔÉèÖÃ1-24
 					mCount = AppStaticVar.PASSWORD_LEVEAL1_COUNT;
 					break;
-				case 2:// å¯ä»¥è®¾ç½®1-25
+				case 2:// ¿ÉÒÔÉèÖÃ1-25
 					mCount = AppStaticVar.PASSWORD_LEVEAL2_COUNT;
 					break;
-				case 3:// å¯ä»¥è®¾ç½®1-38
+				case 3:// ¿ÉÒÔÉèÖÃ1-38
 					mCount = AppStaticVar.PASSWORD_LEVEAL3_COUNT;
 					break;
-				case 4:// å¯ä»¥è®¾ç½®1-60
+				case 4:// ¿ÉÒÔÉèÖÃ1-60
 					mCount = AppStaticVar.PASSWORD_LEVEAL4_COUNT;
 					break;
-				case 5:// // è¶…çº§å¯†ç 
+				case 5:// // ³¬¼¶ÃÜÂë
 					mCount = mList.size();
 					break;
 				}
@@ -106,20 +106,20 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 				// startActivity(intent);
 				// finish();
 			} else {
-				Toast.makeText(mContext, "å¯†ç ä¸æ­£ç¡®!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "ÃÜÂë²»ÕıÈ·!", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		case R.id.button3:
 			if (TextUtils.isEmpty(editText2.getText().toString().trim())) {
-				showToast("è¯·è¾“å…¥å¯†ç !");
+				showToast("ÇëÊäÈëÃÜÂë!");
 				return;
 			}
 			if (Constans.PasswordLevel.LEVEL_6 == Long.parseLong(editText2.getText().toString())) {
 				isClear = true;
 				editText2.setText("");
-				ModbusUtils.clearZL("æ€»é‡æ¸…é›¶", mHandler);
+				ModbusUtils.clearZL("×ÜÁ¿ÇåÁã", mHandler);
 			} else {
-				Toast.makeText(mContext, "æ€»é‡æ¸…é›¶å¯†ç ä¸æ­£ç¡®!", Toast.LENGTH_SHORT).show();
+				Toast.makeText(mContext, "×ÜÁ¿ÇåÁãÃÜÂë²»ÕıÈ·!", Toast.LENGTH_SHORT).show();
 			}
 			break;
 		}
@@ -142,33 +142,33 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case Constans.CONTACT_START:
-					showProgressDialog("ä¸è®¾å¤‡é€šè®¯ä¸­...");
-					System.out.println("=====å‚æ•°å¼€å§‹è¯»å–æ•°æ®");
+					showProgressDialog("ÓëÉè±¸Í¨Ñ¶ÖĞ...");
+					System.out.println("=====²ÎÊı¿ªÊ¼¶ÁÈ¡Êı¾İ");
 					break;
 				case Constans.NO_DEVICE_CONNECTED:
-					System.out.println("=====å‚æ•°æ²¡æœ‰è®¾å¤‡è¿æ¥");
+					System.out.println("=====²ÎÊıÃ»ÓĞÉè±¸Á¬½Ó");
 					break;
 				case Constans.DEVICE_RETURN_MSG:
 					hideProgressDialog();
-					System.out.println("å‚æ•°æ”¶åˆ°çš„æ•°æ®=====" + msg.obj.toString());
+					System.out.println("²ÎÊıÊÕµ½µÄÊı¾İ=====" + msg.obj.toString());
 
 					if (isClear) {
 						isClear = false;
 						if (msg.obj.toString().length() != 16) {
-							showToast("æ€»é‡æ¸…é›¶å¤±è´¥ï¼Œè¯·é‡è¯•!");
+							showToast("×ÜÁ¿ÇåÁãÊ§°Ü£¬ÇëÖØÊÔ!");
 							return;
 						}
-						showToast("æ€»é‡æ¸…é›¶æˆåŠŸ!");
+						showToast("×ÜÁ¿ÇåÁã³É¹¦!");
 					} else {
 						dealReturnMsg(msg.obj.toString());
 					}
 					break;
 				case Constans.CONNECT_IS_CLOSED:
-					System.out.println("=====å‚æ•°è¿æ¥æ–­å¼€");
+					System.out.println("=====²ÎÊıÁ¬½Ó¶Ï¿ª");
 					showConnectDevice();
 					break;
 				case Constans.ERROR_START:
-					System.out.println("=====å‚æ•°æ¥æ”¶é”™è¯¯");
+					System.out.println("=====²ÎÊı½ÓÊÕ´íÎó");
 					if (reconnectCount > 0) {
 						if (mThread != null && !mThread.isInterrupted()) {
 							mThread.interrupt();
@@ -177,11 +177,11 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 						reconnectCount--;
 					} else {
 						hideProgressDialog();
-						showToast("è¯»å–æ•°æ®è¶…æ—¶ï¼");
+						showToast("¶ÁÈ¡Êı¾İ³¬Ê±£¡");
 					}
 					break;
 				case Constans.TIME_OUT:
-					System.out.println("ä¸»é¡µé¢è¿æ¥è¶…æ—¶=====");
+					System.out.println("Ö÷Ò³ÃæÁ¬½Ó³¬Ê±=====");
 					if (reconnectCount > 0) {
 						if (mThread != null && !mThread.isInterrupted()) {
 							mThread.interrupt();
@@ -190,7 +190,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 						reconnectCount--;
 					} else {
 						hideProgressDialog();
-						showToast("è¯»å–æ•°æ®è¶…æ—¶ï¼");
+						showToast("¶ÁÈ¡Êı¾İ³¬Ê±£¡");
 					}
 					break;
 				}
@@ -209,20 +209,20 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		int paramIndex = 0;
 		int paramCountLabel = 1;
 		String param1,param2,param3 = "";
-		/********************************** åŸºæœ¬å‚æ•° **************************************/
-		/********************************** å‚æ•°1--è¯­è¨€ **************************************/
-		mList.add(new Parameter(true, "åŸºæœ¬å‚æ•°"));
+		/********************************** »ù±¾²ÎÊı **************************************/
+		/********************************** ²ÎÊı1--ÓïÑÔ **************************************/
+		mList.add(new Parameter(true, "»ù±¾²ÎÊı"));
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0000";
 		String param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è¯­è¨€==" + Integer.parseInt(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--ÓïÑÔ==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è¯­è¨€";
+		parameter.name = "ÓïÑÔ";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "ç®€ä½“ä¸­æ–‡";
+			parameter.value = "¼òÌåÖĞÎÄ";
 			break;
 		case 1:
 			parameter.value = "English";
@@ -231,7 +231,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "ç®€ä½“ä¸­æ–‡";
+		selector.name = "¼òÌåÖĞÎÄ";
 		selector.value = "0000";
 		selectorList.add(selector);
 
@@ -242,13 +242,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°2--æµé‡å•ä½ **************************************/
+		/********************************** ²ÎÊı2--Á÷Á¿µ¥Î» **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0001";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡å•ä½ ==" + Integer.parseInt(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿µ¥Î» ==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";//		parameter.count = "0001";
-		parameter.name = "æµé‡å•ä½";
+		parameter.name = "Á÷Á¿µ¥Î»";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -262,13 +262,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 			parameter.value = "L/s";
 			break;
 		case 3:
-			parameter.value = "mÂ³/h";
+			parameter.value = "m3/h";
 			break;
 		case 4:
-			parameter.value = "mÂ³/min";
+			parameter.value = "m3/min";
 			break;
 		case 5:
-			parameter.value = "mÂ³/s";
+			parameter.value = "m3/s";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
@@ -289,107 +289,107 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "mÂ³/h";
+		selector.name = "m3/h";
 		selector.value = "0003";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "mÂ³/min";
+		selector.name = "m3/min";
 		selector.value = "0004";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "mÂ³/s";
+		selector.name = "m3/s";
 		selector.value = "0005";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 
-		/********************************** å‚æ•°3--ä»ªè¡¨é‡ç¨‹è®¾ç½® **************************************/
+		/********************************** ²ÎÊı3--ÒÇ±íÁ¿³ÌÉèÖÃ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0002";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ä»ªè¡¨é‡ç¨‹è®¾ç½®==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--ÒÇ±íÁ¿³ÌÉèÖÃ==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "ä»ªè¡¨é‡ç¨‹è®¾ç½®";
+		parameter.name = "ÒÇ±íÁ¿³ÌÉèÖÃ";
 		parameter.type = 3;
 		parameter.maxValue = 99999;
 		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		mList.add(parameter);
-		/********************************** å‚æ•°4--æµé‡æ–¹å‘æ‹©é¡¹ **************************************/
+		/********************************** ²ÎÊı4--Á÷Á¿·½ÏòÔñÏî **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0004";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡æ–¹å‘æ‹©é¡¹==" + Integer.parseInt(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿·½ÏòÔñÏî==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡æ–¹å‘æ‹©é¡¹";
+		parameter.name = "Á÷Á¿·½ÏòÔñÏî";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "æ­£å‘";
+			parameter.value = "ÕıÏò";
 			break;
 		case 1:
-			parameter.value = "åå‘";
+			parameter.value = "·´Ïò";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "æ­£å‘";
+		selector.name = "ÕıÏò";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "åå‘";
+		selector.name = "·´Ïò";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°5--åå‘è¾“å‡ºå…è®¸ **************************************/
+		/********************************** ²ÎÊı5--·´ÏòÊä³öÔÊĞí **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0005";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--åå‘è¾“å‡ºå…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--·´ÏòÊä³öÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "åå‘è¾“å‡ºå…è®¸";
+		parameter.name = "·´ÏòÊä³öÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
 
-		/********************************** å‚æ•°6--æµé‡ç§¯ç®—å•ä½ **************************************/
+		/********************************** ²ÎÊı6--Á÷Á¿»ıËãµ¥Î» **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0006";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ç§¯ç®—å•ä½==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿»ıËãµ¥Î»==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ç§¯ç®—å•ä½";
+		parameter.name = "Á÷Á¿»ıËãµ¥Î»";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -462,13 +462,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°7--æµ‹é‡é˜»å°¼æ—¶é—´ **************************************/
+		/********************************** ²ÎÊı7--²âÁ¿×èÄáÊ±¼ä(s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0007";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµ‹é‡é˜»å°¼æ—¶é—´ ==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--²âÁ¿×èÄáÊ±¼ä(s) ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµ‹é‡é˜»å°¼æ—¶é—´";
+		parameter.name = "²âÁ¿×èÄáÊ±¼ä(s)";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -557,13 +557,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°8--å°ä¿¡å·åˆ‡é™¤ç‚¹ **************************************/
+		/********************************** ²ÎÊı8--Ğ¡ĞÅºÅÇĞ³ıµã(%) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0007";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--å°ä¿¡å·åˆ‡é™¤ç‚¹==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Ğ¡ĞÅºÅÇĞ³ıµã(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "å°ä¿¡å·åˆ‡é™¤ç‚¹";
+		parameter.name = "Ğ¡ĞÅºÅÇĞ³ıµã(%)";
 		parameter.type = 2;
 		parameter.point = 2;
 		parameter.maxValue = 99.99;
@@ -571,58 +571,58 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
-		/********************************** å‚æ•°9--è„‰å†²è¾“å‡ºæ–¹å¼ **************************************/
+		/********************************** ²ÎÊı9--Âö³åÊä³ö·½Ê½ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0009";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è„‰å†²è¾“å‡ºæ–¹å¼==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Âö³åÊä³ö·½Ê½==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è„‰å†²è¾“å‡ºæ–¹å¼";
+		parameter.name = "Âö³åÊä³ö·½Ê½";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "é¢‘ç‡";
+			parameter.value = "ÆµÂÊ";
 			break;
 		case 1:
-			parameter.value = "è„‰å†²";
+			parameter.value = "Âö³å";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "é¢‘ç‡";
+		selector.name = "ÆµÂÊ";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "è„‰å†²";
+		selector.name = "Âö³å";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°10--è„‰å†²å•ä½å½“é‡ **************************************/
+		/********************************** ²ÎÊı10--Âö³åµ¥Î»µ±Á¿ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000A";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è„‰å†²å•ä½å½“é‡==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Âö³åµ¥Î»µ±Á¿==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è„‰å†²å•ä½å½“é‡";
+		parameter.name = "Âö³åµ¥Î»µ±Á¿";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "1.0mÂ³/cp";
+			parameter.value = "1.0m3/cp";
 			break;
 		case 1:
-			parameter.value = "0.1mÂ³/cp";
+			parameter.value = "0.1m3/cp";
 			break;
 		case 2:
-			parameter.value = "0.01mÂ³/cp";
+			parameter.value = "0.01m3/cp";
 			break;
 		case 3:
-			parameter.value = "0.001mÂ³/cp";
+			parameter.value = "0.001m3/cp";
 			break;
 		case 4:
 			parameter.value = "1.0L/cp";
@@ -640,22 +640,22 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "1.0mÂ³/cp";
+		selector.name = "1.0m3/cp";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "0.1mÂ³/cp";
+		selector.name = "0.1m3/cp";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "0.01mÂ³/cp";
+		selector.name = "0.01m3/cp";
 		selector.value = "0002";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "0.001mÂ³/cp";
+		selector.name = "0.001m3/cp";
 		selector.value = "0003";
 		selectorList.add(selector);
 
@@ -681,13 +681,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°11--è„‰å†²å®½åº¦æ—¶é—´ **************************************/
+		/********************************** ²ÎÊı11--Âö³å¿í¶ÈÊ±¼ä **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000B";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è„‰å†²å®½åº¦æ—¶é—´==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Âö³å¿í¶ÈÊ±¼ä==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è„‰å†²å®½åº¦æ—¶é—´";
+		parameter.name = "Âö³å¿í¶ÈÊ±¼ä";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -776,39 +776,39 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°12--é¢‘ç‡è¾“å‡ºèŒƒå›´ **************************************/
+		/********************************** ²ÎÊı12--ÆµÂÊÊä³ö·¶Î§(Hz) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000C";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--é¢‘ç‡è¾“å‡ºèŒƒå›´==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--ÆµÂÊÊä³ö·¶Î§(Hz)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "é¢‘ç‡è¾“å‡ºèŒƒå›´";
+		parameter.name = "ÆµÂÊÊä³ö·¶Î§(Hz)";
 		parameter.type = 1;
 		parameter.maxValue = 5999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16);
 		parameter.value = Long.parseLong(param, 16) + "Hz";
 		mList.add(parameter);
-		/********************************** å‚æ•°13--æµé‡é›¶ç‚¹ä¿®æ­£ **************************************/
+		/********************************** ²ÎÊı13--Á÷Á¿ÁãµãĞŞÕı **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000D";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡é›¶ç‚¹ä¿®æ­£==" + Integer.parseInt(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ÁãµãĞŞÕı==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡é›¶ç‚¹ä¿®æ­£";
+		parameter.name = "Á÷Á¿ÁãµãĞŞÕı";
 		parameter.type = 4;
 		parameter.maxValue = 9999;
 		parameter.minValue = -9999;
 		parameter.valueIn = Long.parseLong(param, 16) < 0x8000 ? Long.parseLong(param, 16) : Long.parseLong(param, 16) - 65536;
 		parameter.value = (Long.parseLong(param, 16) < 0x8000 ? Long.parseLong(param, 16) : Long.parseLong(param, 16) - 65536) + "";
 		mList.add(parameter);
-		/********************************** å‚æ•°14--èƒŒå…‰ä¿æŒæ—¶é—´ **************************************/
+		/********************************** ²ÎÊı14--±³¹â±£³ÖÊ±¼ä **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//	parameter.address = "000E";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--èƒŒå…‰ä¿æŒæ—¶é—´==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--±³¹â±£³ÖÊ±¼ä==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "èƒŒå…‰ä¿æŒæ—¶é—´";
+		parameter.name = "±³¹â±£³ÖÊ±¼ä";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -831,7 +831,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 			parameter.value = "300s";
 			break;
 		case 6:
-			parameter.value = "å¸¸äº®";
+			parameter.value = "³£ÁÁ";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
@@ -867,32 +867,32 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "å¸¸äº®";
+		selector.name = "³£ÁÁ";
 		selector.value = "0006";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°15--é€šè®¯åœ°å€ **************************************/
+		/********************************** ²ÎÊı15--Í¨Ñ¶µØÖ· **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "000F";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--é€šè®¯åœ°å€==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Í¨Ñ¶µØÖ·==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "é€šè®¯åœ°å€";
+		parameter.name = "Í¨Ñ¶µØÖ·";
 		parameter.type = 1;
 		parameter.maxValue = 247;
 		parameter.minValue = 1;
 		parameter.valueIn = Long.parseLong(param, 16);
 		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
-		/********************************** å‚æ•°16--é€šè®¯é€Ÿç‡ **************************************/
+		/********************************** ²ÎÊı16--Í¨Ñ¶ËÙÂÊ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0010";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--é€šè®¯é€Ÿç‡==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Í¨Ñ¶ËÙÂÊ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "é€šè®¯é€Ÿç‡";
+		parameter.name = "Í¨Ñ¶ËÙÂÊ";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		selectorList = new ArrayList<Selector>();
@@ -907,13 +907,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		}
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°17--è®¾å¤‡ä½å· **************************************/
+		/********************************** ²ÎÊı17--Éè±¸Î»ºÅ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0011";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è®¾å¤‡ä½å·==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Éè±¸Î»ºÅ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è®¾å¤‡ä½å·";
+		parameter.name = "Éè±¸Î»ºÅ";
 		parameter.type = 1;
 		parameter.maxValue = 9999;
 		parameter.minValue = 1;
@@ -921,15 +921,15 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
 		AppStaticVar.PASSWORD_LEVEAL1_COUNT = mList.size();
-		/********************************** é«˜çº§å‚æ•° **************************************/
-		/********************************** å‚æ•°18--æµ‹é‡ç®¡é“å£å¾„ **************************************/
-		mList.add(new Parameter(true, "é«˜çº§å‚æ•°"));
+		/********************************** ¸ß¼¶²ÎÊı **************************************/
+		/********************************** ²ÎÊı18--²âÁ¿¹ÜµÀ¿Ú¾¶ **************************************/
+		mList.add(new Parameter(true, "¸ß¼¶²ÎÊı"));
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0012";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµ‹é‡ç®¡é“å£å¾„==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--²âÁ¿¹ÜµÀ¿Ú¾¶==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµ‹é‡ç®¡é“å£å¾„";
+		parameter.name = "²âÁ¿¹ÜµÀ¿Ú¾¶";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -1233,44 +1233,44 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°19--å…è®¸åˆ‡é™¤æ˜¾ç¤º **************************************/
+		/********************************** ²ÎÊı19--ÔÊĞíÇĞ³ıÏÔÊ¾ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0013";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--å…è®¸åˆ‡é™¤æ˜¾ç¤º==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--ÔÊĞíÇĞ³ıÏÔÊ¾==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "å…è®¸åˆ‡é™¤æ˜¾ç¤º";
+		parameter.name = "ÔÊĞíÇĞ³ıÏÔÊ¾";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°20--ä¼ æ„Ÿå™¨ç³»æ•°å€¼ **************************************/
+		/********************************** ²ÎÊı20--´«¸ĞÆ÷ÏµÊıÖµ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0014";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ä¼ æ„Ÿå™¨ç³»æ•°å€¼==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--´«¸ĞÆ÷ÏµÊıÖµ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "ä¼ æ„Ÿå™¨ç³»æ•°å€¼";
+		parameter.name = "´«¸ĞÆ÷ÏµÊıÖµ";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 5.9999;
@@ -1278,44 +1278,44 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
-		/********************************** å‚æ•°21--ç©ºç®¡æŠ¥è­¦å…è®¸ **************************************/
+		/********************************** ²ÎÊı21--¿Õ¹Ü±¨¾¯ÔÊĞí **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0015";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ç©ºç®¡æŠ¥è­¦å…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¿Õ¹Ü±¨¾¯ÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "ç©ºç®¡æŠ¥è­¦å…è®¸";
+		parameter.name = "¿Õ¹Ü±¨¾¯ÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°22--ç©ºç®¡æŠ¥è­¦é˜ˆå€¼ **************************************/
+		/********************************** ²ÎÊı22--¿Õ¹Ü±¨¾¯ãĞÖµ(%) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0016";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ç©ºç®¡æŠ¥è­¦é˜ˆå€¼==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¿Õ¹Ü±¨¾¯ãĞÖµ(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "ç©ºç®¡æŠ¥è­¦é˜ˆå€¼";
+		parameter.name = "¿Õ¹Ü±¨¾¯ãĞÖµ(%)";
 		parameter.type = 2;
 		parameter.point = 2;
 		parameter.maxValue = 599.99;
@@ -1323,44 +1323,44 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
-		/********************************** å‚æ•°23--æµé‡ä¸Šé™æŠ¥è­¦å…è®¸ **************************************/
+		/********************************** ²ÎÊı23--Á÷Á¿ÉÏÏŞ±¨¾¯ÔÊĞí **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0017";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¸Šé™æŠ¥è­¦å…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ÉÏÏŞ±¨¾¯ÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¸Šé™æŠ¥è­¦å…è®¸";
+		parameter.name = "Á÷Á¿ÉÏÏŞ±¨¾¯ÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°24--æµé‡ä¸Šé™æŠ¥è­¦æ•°å€¼ **************************************/
+		/********************************** ²ÎÊı24--Á÷Á¿ÉÏÏŞ±¨¾¯ÊıÖµ(%) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0018";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¸Šé™æŠ¥è­¦æ•°å€¼==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ÉÏÏŞ±¨¾¯ÊıÖµ(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¸Šé™æŠ¥è­¦æ•°å€¼";
+		parameter.name = "Á÷Á¿ÉÏÏŞ±¨¾¯ÊıÖµ(%)";
 		parameter.type = 2;
 		parameter.point = 2;
 		parameter.maxValue = 599.99;
@@ -1368,44 +1368,44 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
-		/********************************** å‚æ•°25--æµé‡ä¸‹é™æŠ¥è­¦å…è®¸ **************************************/
+		/********************************** ²ÎÊı25--Á÷Á¿ÏÂÏŞ±¨¾¯ÔÊĞí **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0019";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¸‹é™æŠ¥è­¦å…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ÏÂÏŞ±¨¾¯ÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¸‹é™æŠ¥è­¦å…è®¸";
+		parameter.name = "Á÷Á¿ÏÂÏŞ±¨¾¯ÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°26--æµé‡ä¸‹é™æŠ¥è­¦æ•°å€¼ **************************************/
+		/********************************** ²ÎÊı26--Á÷Á¿ÏÂÏŞ±¨¾¯ÊıÖµ(%) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001A";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¸‹é™æŠ¥è­¦æ•°å€¼==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ÏÂÏŞ±¨¾¯ÊıÖµ(%)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¸‹é™æŠ¥è­¦æ•°å€¼";
+		parameter.name = "Á÷Á¿ÏÂÏŞ±¨¾¯ÊıÖµ(%)";
 		parameter.type = 2;
 		parameter.point = 2;
 		parameter.maxValue = 599.99;
@@ -1413,45 +1413,45 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "%";
 		mList.add(parameter);
-		/********************************** å‚æ•°27--åŠ±ç£æŠ¥è­¦å…è®¸ **************************************/
+		/********************************** ²ÎÊı27--Àø´Å±¨¾¯ÔÊĞí **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001B";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--åŠ±ç£æŠ¥è­¦å…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Àø´Å±¨¾¯ÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "åŠ±ç£æŠ¥è­¦å…è®¸";
+		parameter.name = "Àø´Å±¨¾¯ÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°28--æ­£å‘æ€»é‡ **************************************/
+		/********************************** ²ÎÊı28--ÕıÏò×ÜÁ¿ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001C";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æ­£å‘æ€»é‡==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--ÕıÏò×ÜÁ¿==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "æ­£å‘æ€»é‡";
+		parameter.name = "ÕıÏò×ÜÁ¿";
 		parameter.type = 3;
 		parameter.maxValue = 999999999;
 		parameter.minValue = 0;
@@ -1459,14 +1459,14 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		AppStaticVar.ZXZLPosition = mList.size();
 		mList.add(parameter);
-		/********************************** å‚æ•°29--åå‘æ€»é‡ **************************************/
+		/********************************** ²ÎÊı29--·´Ïò×ÜÁ¿ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "001E";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--åå‘æ€»é‡==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--·´Ïò×ÜÁ¿==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "åå‘æ€»é‡";
+		parameter.name = "·´Ïò×ÜÁ¿";
 		parameter.type = 3;
 		parameter.maxValue = 999999999;
 		parameter.minValue = 0;
@@ -1474,14 +1474,14 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		AppStaticVar.FXZLPosition = mList.size();
 		mList.add(parameter);
-		/********************************** å‚æ•°30--åŸºæœ¬å‚æ•°å¯†ç  **************************************/
+		/********************************** ²ÎÊı30--»ù±¾²ÎÊıÃÜÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0020";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--åŸºæœ¬å‚æ•°å¯†ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--»ù±¾²ÎÊıÃÜÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "åŸºæœ¬å‚æ•°å¯†ç ";
+		parameter.name = "»ù±¾²ÎÊıÃÜÂë";
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
@@ -1489,14 +1489,14 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		Constans.PasswordLevel.LEVEL_1 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
-		/********************************** å‚æ•°31--é«˜çº§å‚æ•°å¯†ç  **************************************/
+		/********************************** ²ÎÊı31--¸ß¼¶²ÎÊıÃÜÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0022";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--é«˜çº§å‚æ•°å¯†ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¸ß¼¶²ÎÊıÃÜÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "é«˜çº§å‚æ•°å¯†ç ";
+		parameter.name = "¸ß¼¶²ÎÊıÃÜÂë";
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
 		parameter.type = 3;
@@ -1504,62 +1504,62 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		Constans.PasswordLevel.LEVEL_2 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
-		/********************************** å‚æ•°32--æ€»é‡æ¸…é›¶å¯†ç  **************************************/
+		/********************************** ²ÎÊı32--×ÜÁ¿ÇåÁãÃÜÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0024";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æ€»é‡æ¸…é›¶å¯†ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--×ÜÁ¿ÇåÁãÃÜÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
-		parameter.name = "æ€»é‡æ¸…é›¶å¯†ç ";
+		parameter.name = "×ÜÁ¿ÇåÁãÃÜÂë";
 		parameter.type = 3;
 		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		Constans.PasswordLevel.LEVEL_6 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		AppStaticVar.PASSWORD_LEVEAL2_COUNT = mList.size();
-		/********************************** ä¼ æ„Ÿå™¨å‚æ•° **************************************/
-		/********************************** å‚æ•°33--æµé‡ä¿®æ­£å…è®¸ **************************************/
-		mList.add(new Parameter(true, "ä¼ æ„Ÿå™¨å‚æ•°"));
+		/********************************** ´«¸ĞÆ÷²ÎÊı **************************************/
+		/********************************** ²ÎÊı33--Á÷Á¿ĞŞÕıÔÊĞí **************************************/
+		mList.add(new Parameter(true, "´«¸ĞÆ÷²ÎÊı"));
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0026";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å…è®¸";
+		parameter.name = "Á÷Á¿ĞŞÕıÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°34--æµé‡ä¿®æ­£ç‚¹1 **************************************/
+		/********************************** ²ÎÊı34--Á÷Á¿ĞŞÕıµã1(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0027";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹1==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã1(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹1";
+		parameter.name = "Á÷Á¿ĞŞÕıµã1(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1567,13 +1567,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°35--æµé‡ä¿®æ­£å€¼1 **************************************/
+		/********************************** ²ÎÊı35--Á÷Á¿ĞŞÕıÖµ1 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0028";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼1==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ1==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼1";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ1";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1581,13 +1581,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°36--æµé‡ä¿®æ­£ç‚¹2 **************************************/
+		/********************************** ²ÎÊı36--Á÷Á¿ĞŞÕıµã2(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0029";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹2==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã2(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹2";
+		parameter.name = "Á÷Á¿ĞŞÕıµã2(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1595,13 +1595,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°37--æµé‡ä¿®æ­£å€¼2 **************************************/
+		/********************************** ²ÎÊı37--Á÷Á¿ĞŞÕıÖµ2 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002A";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼2==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ2==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼2";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ2";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1609,13 +1609,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°38--æµé‡ä¿®æ­£ç‚¹3 **************************************/
+		/********************************** ²ÎÊı38--Á÷Á¿ĞŞÕıµã3(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002B";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹3==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã3(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹3";
+		parameter.name = "Á÷Á¿ĞŞÕıµã3(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1623,13 +1623,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°39--æµé‡ä¿®æ­£å€¼3 **************************************/
+		/********************************** ²ÎÊı39--Á÷Á¿ĞŞÕıÖµ3 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002C";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼3==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ3==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼3";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ3";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1637,13 +1637,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°40--æµé‡ä¿®æ­£ç‚¹4 **************************************/
+		/********************************** ²ÎÊı40--Á÷Á¿ĞŞÕıµã4(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002D";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹4==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã4(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹4";
+		parameter.name = "Á÷Á¿ĞŞÕıµã4(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1651,13 +1651,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°41--æµé‡ä¿®æ­£å€¼4 **************************************/
+		/********************************** ²ÎÊı41--Á÷Á¿ĞŞÕıÖµ4 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002E";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼4==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ4==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼4";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ4";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1665,13 +1665,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°42--æµé‡ä¿®æ­£ç‚¹5 **************************************/
+		/********************************** ²ÎÊı42--Á÷Á¿ĞŞÕıµã5(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002F";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹5==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã5(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹5";
+		parameter.name = "Á÷Á¿ĞŞÕıµã5(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1679,13 +1679,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°43--æµé‡ä¿®æ­£å€¼5 **************************************/
+		/********************************** ²ÎÊı43--Á÷Á¿ĞŞÕıÖµ5 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0030";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼5==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ5==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼5";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ5";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1693,13 +1693,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°44--æµé‡ä¿®æ­£ç‚¹6 **************************************/
+		/********************************** ²ÎÊı44--Á÷Á¿ĞŞÕıµã6(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0031";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹6==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã6(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹6";
+		parameter.name = "Á÷Á¿ĞŞÕıµã6(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1707,13 +1707,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°45--æµé‡ä¿®æ­£å€¼6 **************************************/
+		/********************************** ²ÎÊı45--Á÷Á¿ĞŞÕıÖµ6 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0032";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼6==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ6==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼6";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ6";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1721,13 +1721,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°46--æµé‡ä¿®æ­£ç‚¹7 **************************************/
+		/********************************** ²ÎÊı46--Á÷Á¿ĞŞÕıµã7(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0033";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹7==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã7(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹7";
+		parameter.name = "Á÷Á¿ĞŞÕıµã7(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1735,13 +1735,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°47--æµé‡ä¿®æ­£å€¼7 **************************************/
+		/********************************** ²ÎÊı47--Á÷Á¿ĞŞÕıÖµ7 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0034";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£å€¼7==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıÖµ7==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£å€¼7";
+		parameter.name = "Á÷Á¿ĞŞÕıÖµ7";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -1749,13 +1749,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°48--æµé‡ä¿®æ­£ç‚¹8 **************************************/
+		/********************************** ²ÎÊı48--Á÷Á¿ĞŞÕıµã8(m/s) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0035";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--æµé‡ä¿®æ­£ç‚¹8==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Á÷Á¿ĞŞÕıµã8(m/s)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "æµé‡ä¿®æ­£ç‚¹8";
+		parameter.name = "Á÷Á¿ĞŞÕıµã8(m/s)";
 		parameter.type = 2;
 		parameter.point = 3;
 		parameter.maxValue = 15;
@@ -1763,52 +1763,52 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** å‚æ•°49--åŠ±ç£æ–¹å¼é€‰æ‹© **************************************/
+		/********************************** ²ÎÊı49--Àø´Å·½Ê½Ñ¡Ôñ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0036";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--åŠ±ç£æ–¹å¼é€‰æ‹©==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Àø´Å·½Ê½Ñ¡Ôñ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "åŠ±ç£æ–¹å¼é€‰æ‹©";
+		parameter.name = "Àø´Å·½Ê½Ñ¡Ôñ";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "1/16å·¥é¢‘";
+			parameter.value = "1/16¹¤Æµ";
 			break;
 		case 1:
-			parameter.value = "1/20å·¥é¢‘";
+			parameter.value = "1/20¹¤Æµ";
 			break;
 		case 2:
-			parameter.value = "1/25å·¥é¢‘";
+			parameter.value = "1/25¹¤Æµ";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "1/16å·¥é¢‘";
+		selector.name = "1/16¹¤Æµ";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "1/20å·¥é¢‘";
+		selector.name = "1/20¹¤Æµ";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "1/25å·¥é¢‘";
+		selector.name = "1/25¹¤Æµ";
 		selector.value = "0002";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°50--åŠ±ç£ç”µæµ **************************************/
+		/********************************** ²ÎÊı50--Àø´ÅµçÁ÷ **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0037";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--åŠ±ç£ç”µæµ==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--Àø´ÅµçÁ÷==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "åŠ±ç£ç”µæµ";
+		parameter.name = "Àø´ÅµçÁ÷";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -1848,44 +1848,44 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		selectorList.add(selector);
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°51--å°–å³°æŠ‘åˆ¶å…è®¸ **************************************/
+		/********************************** ²ÎÊı51--¼â·åÒÖÖÆÔÊĞí **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0038";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--å°–å³°æŠ‘åˆ¶å…è®¸==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¼â·åÒÖÖÆÔÊĞí==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "å°–å³°æŠ‘åˆ¶å…è®¸";
+		parameter.name = "¼â·åÒÖÖÆÔÊĞí";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "å…è®¸";
+			parameter.value = "ÔÊĞí";
 			break;
 		case 1:
-			parameter.value = "ç¦æ­¢";
+			parameter.value = "½ûÖ¹";
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "å…è®¸";
+		selector.name = "ÔÊĞí";
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "ç¦æ­¢";
+		selector.name = "½ûÖ¹";
 		selector.value = "0001";
 		selectorList.add(selector);
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°52--å°–å³°æŠ‘åˆ¶ç³»æ•° **************************************/
+		/********************************** ²ÎÊı52--¼â·åÒÖÖÆÏµÊı **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0039";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--å°–å³°æŠ‘åˆ¶ç³»æ•°==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¼â·åÒÖÖÆÏµÊı==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "å°–å³°æŠ‘åˆ¶ç³»æ•°";
+		parameter.name = "¼â·åÒÖÖÆÏµÊı";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -1974,13 +1974,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°53--å°–å³°æŠ‘åˆ¶æ—¶é—´ **************************************/
+		/********************************** ²ÎÊı53--¼â·åÒÖÖÆÊ±¼ä(ms) **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003A";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--å°–å³°æŠ‘åˆ¶æ—¶é—´==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¼â·åÒÖÖÆÊ±¼ä(ms)==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "å°–å³°æŠ‘åˆ¶æ—¶é—´";
+		parameter.name = "¼â·åÒÖÖÆÊ±¼ä(ms)";
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -2029,28 +2029,28 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 
 		parameter.selectors = selectorList;
 		mList.add(parameter);
-		/********************************** å‚æ•°54--ä¼ æ„Ÿå™¨ç¼–ç  **************************************/
+		/********************************** ²ÎÊı54--´«¸ĞÆ÷±àÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003B";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ä¼ æ„Ÿå™¨ç¼–ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--´«¸ĞÆ÷±àÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "ä¼ æ„Ÿå™¨ç¼–ç ";
+		parameter.name = "´«¸ĞÆ÷±àÂë";
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		mList.add(parameter);
-		/********************************** å‚æ•°55--ä¼ æ„Ÿå™¨å‚æ•°å¯†ç  **************************************/
+		/********************************** ²ÎÊı55--´«¸ĞÆ÷²ÎÊıÃÜÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003D";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ä¼ æ„Ÿå™¨å‚æ•°å¯†ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--´«¸ĞÆ÷²ÎÊıÃÜÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "ä¼ æ„Ÿå™¨å‚æ•°å¯†ç ";
+		parameter.name = "´«¸ĞÆ÷²ÎÊıÃÜÂë";
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
@@ -2059,15 +2059,15 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		Constans.PasswordLevel.LEVEL_3 = NumberBytes.hexStrToLong(param1+param);
 		mList.add(parameter);
 		AppStaticVar.PASSWORD_LEVEAL3_COUNT = mList.size();
-		/********************************** è½¬æ¢å™¨å‚æ•° **************************************/
-		/********************************** å‚æ•°56--è½¬æ¢å™¨æ ‡å®šç³»æ•° **************************************/
-		mList.add(new Parameter(true, "è½¬æ¢å™¨å‚æ•°"));
+		/********************************** ×ª»»Æ÷²ÎÊı **************************************/
+		/********************************** ²ÎÊı56--×ª»»Æ÷±ê¶¨ÏµÊı **************************************/
+		mList.add(new Parameter(true, "×ª»»Æ÷²ÎÊı"));
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003F";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è½¬æ¢å™¨æ ‡å®šç³»æ•°==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--×ª»»Æ÷±ê¶¨ÏµÊı==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è½¬æ¢å™¨æ ‡å®šç³»æ•°";
+		parameter.name = "×ª»»Æ÷±ê¶¨ÏµÊı";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 5.9999;
@@ -2075,13 +2075,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°57--è½¬æ¢å™¨æ ‡å®šé›¶ç‚¹ **************************************/
+		/********************************** ²ÎÊı57--×ª»»Æ÷±ê¶¨Áãµã **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//	parameter.address = "0040";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è½¬æ¢å™¨æ ‡å®šé›¶ç‚¹==" + Integer.parseInt(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--×ª»»Æ÷±ê¶¨Áãµã==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
-		parameter.name = "è½¬æ¢å™¨æ ‡å®šé›¶ç‚¹";
+		parameter.name = "×ª»»Æ÷±ê¶¨Áãµã";
 		parameter.type = 4;
 		parameter.point = 4;
 		parameter.maxValue = 9999;
@@ -2090,13 +2090,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 				/ Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°58--ç©ºç®¡æ£€æµ‹é›¶ç‚¹ **************************************/
+		/********************************** ²ÎÊı58--¿Õ¹Ü¼ì²âÁãµã **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0041";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ç©ºç®¡æ£€æµ‹é›¶ç‚¹ ==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--¿Õ¹Ü¼ì²âÁãµã ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "ç©ºç®¡æ£€æµ‹é›¶ç‚¹ ";
+		parameter.name = "¿Õ¹Ü¼ì²âÁãµã ";
 		parameter.type = 1;
 		parameter.maxValue = 59999;
 		parameter.minValue = 0;
@@ -2104,13 +2104,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°59--ç”µæµé›¶ç‚¹ä¿®æ­£ **************************************/
+		/********************************** ²ÎÊı59--µçÁ÷ÁãµãĞŞÕı **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0042";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ç”µæµé›¶ç‚¹ä¿®æ­£==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--µçÁ÷ÁãµãĞŞÕı==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "ç”µæµé›¶ç‚¹ä¿®æ­£";
+		parameter.name = "µçÁ÷ÁãµãĞŞÕı";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -2118,13 +2118,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°60--ç”µæµæ»¡åº¦ä¿®æ­£ **************************************/
+		/********************************** ²ÎÊı60--µçÁ÷Âú¶ÈĞŞÕı **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0043";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ç”µæµæ»¡åº¦ä¿®æ­£==" + Long.parseLong(param, 16));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--µçÁ÷Âú¶ÈĞŞÕı==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "ç”µæµæ»¡åº¦ä¿®æ­£";
+		parameter.name = "µçÁ÷Âú¶ÈĞŞÕı";
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 3.9999;
@@ -2132,28 +2132,28 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** å‚æ•°61--ä»ªè¡¨ç¼–ç  **************************************/
+		/********************************** ²ÎÊı61--ÒÇ±í±àÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0044";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--ä»ªè¡¨ç¼–ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--ÒÇ±í±àÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "ä»ªè¡¨ç¼–ç ";
+		parameter.name = "ÒÇ±í±àÂë";
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
 		parameter.valueIn = NumberBytes.hexStrToLong(param1+param);
 		parameter.value = NumberBytes.hexStrToLong(param1+param) + "";
 		mList.add(parameter);
-		/********************************** å‚æ•°62--è½¬æ¢å™¨å¯†ç  **************************************/
+		/********************************** ²ÎÊı62--×ª»»Æ÷ÃÜÂë **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0046";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("å‚æ•°"+ paramCountLabel++ +"--è½¬æ¢å™¨å¯†ç ==" + NumberBytes.hexStrToLong(param1+param));
+		System.out.println("²ÎÊı"+ paramCountLabel++ +"--×ª»»Æ÷ÃÜÂë==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "è½¬æ¢å™¨å¯†ç ";
+		parameter.name = "×ª»»Æ÷ÃÜÂë";
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
@@ -2186,7 +2186,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	@Override
 	protected void onResume() {
 		// mViewCheckPsd.setVisibility(View.VISIBLE);
-		// setTitleContent("å¯†ç æ ¡éªŒ");
+		// setTitleContent("ÃÜÂëĞ£Ñé");
 		super.onResume();
 	}
 
@@ -2194,7 +2194,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	protected void onPause() {
 		if (!flag) {
 			mViewCheckPsd.setVisibility(View.VISIBLE);
-			setTitleContent("å¯†ç æ ¡éªŒ");
+			setTitleContent("ÃÜÂëĞ£Ñé");
 			mViewSetParam.setVisibility(View.GONE);
 		}
 		super.onPause();
@@ -2277,7 +2277,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	public void update(Observable observable, Object data) {
 		if (data != null && "showProgress".equals(data.toString())) {
 			System.out.println("-------");
-			showProgressDialog("ä¸è®¾å¤‡é€šè®¯ä¸­...");
+			showProgressDialog("ÓëÉè±¸Í¨Ñ¶ÖĞ...");
 		} else {
 			startReadParam();
 		}
