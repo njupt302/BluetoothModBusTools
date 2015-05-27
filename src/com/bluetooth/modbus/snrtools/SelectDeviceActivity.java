@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -172,8 +173,8 @@ public class SelectDeviceActivity extends BaseActivity {
 			break;
 		case R.id.textView5:// 清除缓存
 			hideMenu();
-			System.out.println("删除临时文件==="+AbFileUtil.deleteFile(new File(AbFileUtil.getFileDownloadDir(mContext))));
-			System.out.println("删除下载文件==="+AbFileUtil.deleteFile(new File(Constans.Directory.DOWNLOAD)));
+			System.out.println("删除临时文件===" + AbFileUtil.deleteFile(new File(AbFileUtil.getFileDownloadDir(mContext))));
+			System.out.println("删除下载文件===" + AbFileUtil.deleteFile(new File(Constans.Directory.DOWNLOAD)));
 			break;
 		}
 	}
@@ -427,11 +428,29 @@ public class SelectDeviceActivity extends BaseActivity {
 			String action = intent.getAction();
 			if (BluetoothDevice.ACTION_FOUND.equals(action)) {
 				BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-				if (device.getBondState() != BluetoothDevice.BOND_BONDED) {
-					if (device.getName().toUpperCase(Locale.ENGLISH).startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
-						list.add(new SiriListItem(device.getName() + "\n" + device.getAddress(), false));
-						mAdapter.notifyDataSetChanged();
-						mListView.setSelection(list.size() - 1);
+				if (device != null && device.getBondState() != BluetoothDevice.BOND_BONDED) {
+					if (device.getName() == null || device.getAddress() == null) {
+						searchDevice();
+						showDialog("如果没有搜索到设备，请在手机的蓝牙中搜索下。\n在搜索到设备并配对成功后再用程序重新搜索。", "重新搜索", "去蓝牙搜索", new MyAlertDialogListener() {
+							@Override
+							public void onClick(View view) {
+								switch (view.getId()) {
+									case R.id.btnOk:
+										Intent intent = new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+										startActivity(intent);
+										break;
+									case R.id.btnCancel:
+										searchDevice();
+										break;
+								}
+							}
+						});
+					} else {
+						if (device.getName() != null && device.getName().toUpperCase(Locale.ENGLISH).startsWith(Constans.DEVICE_NAME_START.toUpperCase(Locale.ENGLISH))) {
+							list.add(new SiriListItem(device.getName() + "\n" + device.getAddress(), false));
+							mAdapter.notifyDataSetChanged();
+							mListView.setSelection(list.size() - 1);
+						}
 					}
 				}
 			} else if (BluetoothAdapter.ACTION_STATE_CHANGED.equals(action)) {

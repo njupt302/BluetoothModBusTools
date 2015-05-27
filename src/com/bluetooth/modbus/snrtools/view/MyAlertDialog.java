@@ -223,8 +223,8 @@ public class MyAlertDialog extends Dialog implements android.view.View.OnClickLi
 	@Override
 	public void onClick(View v)
 	{
+		dismiss();
 		if(listener_ == null){
-			dismiss();
 			return;
 		}
 		listener_.onClick(v);

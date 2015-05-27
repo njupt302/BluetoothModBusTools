@@ -157,8 +157,20 @@ public abstract class BaseActivity extends Activity {
 
 	public void showDialog(String msg, MyAlertDialogListener listener) {
 		if (mDialog == null) {
-			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, listener);
+			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, null);
 		}
+		mDialog.setListener(listener);
+		mDialog.setMessage(msg);
+		mDialog.show();
+	}
+	
+	public void showDialog(String msg, String cancelText,String okText,MyAlertDialogListener listener) {
+		if (mDialog == null) {
+			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, null);
+		}
+		mDialog.setButtonContent(cancelText, MyAlertDialog.BUTTON_CANCEL);
+		mDialog.setButtonContent(okText, MyAlertDialog.BUTTON_OK);
+		mDialog.setListener(listener);
 		mDialog.setMessage(msg);
 		mDialog.show();
 	}
