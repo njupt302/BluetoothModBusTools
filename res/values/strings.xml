@@ -4,5 +4,22 @@
     <string name="app_name">仪表助手</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="string_settings">设置</string>
+    <string name="string_progressmsg1">设备通讯中，请稍后&#8230;</string>
+    <string name="string_progressmsg2">正在下载</string>
+    <string name="string_more">更多</string>
+    <string name="string_shouqi">收起</string>
+    <string name="string_menu_msg1">实时监视，参数设置</string>
+    <string name="string_menu_msg2">电话 :025&#8211;58008686\n传真 :025&#8211;86167199\n邮箱 :sinier@sinier.com.cn\n地址 :南京市江宁区谷里科技产业园兴谷路6号</string>
+    <string name="string_error_msg1">服务器更新版本号出错！</string>
+    <string name="string_error_msg2">下载失败！</string>
+    <string name="string_error_msg3">连接设备超时！</string>
+    <string name="string_tips_msg1">已经是最新版！</string>
+    <string name="string_tips_msg2">获取中&#8230;</string>
+    <string name="string_alarm_llsx">流量上限</string>
+    <string name="string_alarm_llxx">流量下限</string>
+    <string name="string_alarm_lcyc">励磁异常</string>
+    <string name="string_alarm_kgbj">空管报警</string>
+    <string name="string_main_label_ssll">瞬时流量:</string>
 
 </resources>

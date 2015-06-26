@@ -61,7 +61,7 @@ public class SNRMainActivity extends BaseActivity {
 		mAbHttpUtil = AbHttpUtil.getInstance(this);
 		initUI();
 		setTitleContent(AppStaticVar.mCurrentName);
-		setRightButtonContent("设置", R.id.btnRight1);
+		setRightButtonContent(getResources().getString(R.string.string_settings), R.id.btnRight1);
 		hideRightView(R.id.view2);
 		hideRightView(R.id.btnRight1);
 		showRightView(R.id.rlMenu);
@@ -74,7 +74,7 @@ public class SNRMainActivity extends BaseActivity {
 			case R.id.btnRight1 :
 				isPause = true;
 				isSetting = true;
-				showProgressDialog("设备通讯中,请稍后...");
+				showProgressDialog(getResources().getString(R.string.string_progressmsg1));
 				break;
 			case R.id.rlMenu :
 				 showMenu(findViewById(id));
@@ -101,20 +101,20 @@ public class SNRMainActivity extends BaseActivity {
 			case R.id.btnMore:
 				if(mViewMore.getVisibility() == View.VISIBLE){
 					mViewMore.setVisibility(View.GONE);
-					((Button)v).setText("更多");
+					((Button)v).setText(getResources().getString(R.string.string_more));
 				}else{
 					mViewMore.setVisibility(View.VISIBLE);
-					((Button)v).setText("收起");
+					((Button)v).setText(getResources().getString(R.string.string_shouqi));
 				}
 				break;
 
 			case R.id.textView1 :// 新功能
 				hideMenu();
-				showDialogOne("实时监视，参数设置", null);
+				showDialogOne(getResources().getString(R.string.string_menu_msg1), null);
 				break;
 			case R.id.textView2 :// 关于
 				hideMenu();
-				showDialogOne("电话 :025-58008686\n传真 :025-86167199\n邮箱 :sinier@sinier.com.cn\n地址 :南京市江宁区谷里科技产业园兴谷路6号 ", null);
+				showDialogOne(getResources().getString(R.string.string_menu_msg2), null);
 				break;
 			case R.id.textView3 :// 版本更新
 				hideMenu();
@@ -173,7 +173,7 @@ public class SNRMainActivity extends BaseActivity {
 										version = Integer.parseInt(xpp.nextText());
 									} catch (NumberFormatException e1) {
 										e1.printStackTrace();
-										showToast("服务器更新版本号出错！");
+										showToast(getResources().getString(R.string.string_error_msg1));
 									}
 								}
 								if ("url".equals(xpp.getName())) {
@@ -243,7 +243,7 @@ public class SNRMainActivity extends BaseActivity {
 							mAbProgressBar.setMax(max);
 							mAbProgressBar.setProgress(progress);
 
-							mAlertDialog = showDialog("正在下载", v);
+							mAlertDialog = showDialog(getResources().getString(R.string.string_progressmsg2), v);
 						}
 
 						// 失败，调用
@@ -258,7 +258,7 @@ public class SNRMainActivity extends BaseActivity {
 						public void onProgress(long bytesWritten, long totalSize) {
 							if (totalSize / max == 0) {
 								onFinish();
-								showToast("下载失败!");
+								showToast(getResources().getString(R.string.string_error_msg2));
 								return;
 							}
 							maxText.setText(bytesWritten / (totalSize / max)
@@ -278,7 +278,7 @@ public class SNRMainActivity extends BaseActivity {
 						};
 					});
 				} else {
-					showToast("已经是最新版！");
+					showToast(getResources().getString(R.string.string_tips_msg1));
 				}
 
 			}
@@ -298,7 +298,7 @@ public class SNRMainActivity extends BaseActivity {
 				mAbProgressBar.setMax(max);
 				mAbProgressBar.setProgress(progress);
 
-				mAlertDialog = showDialog("正在下载", v);
+				mAlertDialog = showDialog(getResources().getString(R.string.string_progressmsg2), v);
 			}
 
 			// 失败，调用
@@ -312,7 +312,7 @@ public class SNRMainActivity extends BaseActivity {
 			public void onProgress(long bytesWritten, long totalSize) {
 				if (totalSize / max == 0) {
 					onFinish();
-					showToast("下载失败!");
+					showToast(getResources().getString(R.string.string_error_msg2));
 					return;
 				}
 				maxText.setText(bytesWritten / (totalSize / max) + "/" + max+"%");
@@ -519,33 +519,33 @@ public class SNRMainActivity extends BaseActivity {
 		String llsxbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("流量上限报警==" + llsxbj);
 		if (Long.parseLong(llsxbj, 16) == 1) {
-			hasAlarm("流量上限");
+			hasAlarm(getResources().getString(R.string.string_alarm_llsx));
 		} else {
-			hasNoAlarm("流量上限");
+			hasNoAlarm(getResources().getString(R.string.string_alarm_llsx));
 		}
 		// 流量下限报警
 		String llxxbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("流量下限报警==" + llxxbj);
 		if (Long.parseLong(llxxbj, 16) == 1) {
-			hasAlarm("流量下限");
+			hasAlarm(getResources().getString(R.string.string_alarm_llxx));
 		} else {
-			hasNoAlarm("流量下限");
+			hasNoAlarm(getResources().getString(R.string.string_alarm_llxx));
 		}
 		// 励磁异常报警
 		String lcbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("励磁异常报警==" + lcbj);
 		if (Long.parseLong(lcbj, 16) == 1) {
-			hasAlarm("励磁异常");
+			hasAlarm(getResources().getString(R.string.string_alarm_lcyc));
 		} else {
-			hasNoAlarm("励磁异常");
+			hasNoAlarm(getResources().getString(R.string.string_alarm_lcyc));
 		}
 		// 空管报警
 		String kgbj = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("空管报警==" + kgbj);
 		if (Long.parseLong(kgbj, 16) == 1) {
-			hasAlarm("空管报警");
+			hasAlarm(getResources().getString(R.string.string_alarm_kgbj));
 		} else {
-			hasNoAlarm("空管报警");
+			hasNoAlarm(getResources().getString(R.string.string_alarm_kgbj));
 		}
 
 	}
@@ -593,7 +593,7 @@ public class SNRMainActivity extends BaseActivity {
 				if (mThread != null && !mThread.isInterrupted()) {
 					mThread.interrupt();
 				}
-				showToast("连接设备超时!");
+				showToast(getResources().getString(R.string.string_error_msg3));
 				startReadParam();
 				break;
 		}
