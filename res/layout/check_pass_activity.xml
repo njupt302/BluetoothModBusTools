@@ -44,7 +44,7 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/edittext_bg"
             android:ems="10"
-            android:hint="请输入密码"
+            android:hint="@string/string_hint2"
             android:inputType="numberPassword"
             android:textColor="#1a1a1a"
             android:textColorHint="#d9d9d9"
@@ -60,7 +60,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_0d9bf9_bg"
             android:onClick="onClick"
-            android:text="确定"
+            android:text="@string/string_ok"
             android:textColor="@color/white"
             android:textSize="18sp" />
 
@@ -73,7 +73,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/edittext_bg"
             android:ems="10"
-            android:hint="总量清零密码"
+            android:hint="@string/string_param_label32"
             android:inputType="numberPassword"
             android:textColor="#1a1a1a"
             android:textColorHint="#d9d9d9"
@@ -89,7 +89,7 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/btn_0d9bf9_bg"
             android:onClick="onClick"
-            android:text="总量清零"
+            android:text="@string/string_zlql"
             android:textColor="@color/white"
             android:textSize="18sp" />
     </LinearLayout>

@@ -92,7 +92,7 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 						break;
 					case Constans.NO_DEVICE_CONNECTED :
 						System.out.println("=====写入参数没有设备连接");
-						showToast("没有设备连接，请重新选择设备!");
+						showToast(getResources().getString(R.string.string_error_msg9));
 						break;
 					case Constans.DEVICE_RETURN_MSG :
 						hideProgressDialog();
@@ -106,7 +106,7 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 					case Constans.CONNECT_IS_CLOSED :
 						System.out.println("=====写入参数连接断开");
 						showConnectDevice();
-						showToast("连接已经断开!");
+						showToast(getResources().getString(R.string.string_error_msg10));
 						break;
 					case Constans.ERROR_START :
 						System.out.println("=====写入参数接收错误");
@@ -125,7 +125,7 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 							RECONNECT_TIME1--;
 						} else {
 							hideProgressDialog();
-							showToast("写入参数超时！");
+							showToast(getResources().getString(R.string.string_error_msg11));
 						}
 						break;
 				}
@@ -137,12 +137,12 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 					case Constans.CONTACT_START :
-						showProgressDialog("与设备通讯中...");
+						showProgressDialog(getResources().getString(R.string.string_progressmsg1));
 						System.out.println("=====参数开始读取数据");
 						break;
 					case Constans.NO_DEVICE_CONNECTED :
 						System.out.println("=====参数没有设备连接");
-						showToast("没有设备连接，请重新选择设备!");
+						showToast(getResources().getString(R.string.string_error_msg9));
 						break;
 					case Constans.DEVICE_RETURN_MSG :
 						System.out.println("参数收到的数据=====" + msg.obj.toString());
@@ -160,7 +160,7 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 					case Constans.CONNECT_IS_CLOSED :
 						System.out.println("=====参数连接断开");
 						showConnectDevice();
-						showToast("连接已经断开!");
+						showToast(getResources().getString(R.string.string_error_msg10));
 						break;
 					case Constans.ERROR_START :
 						System.out.println("=====参数接收错误");
@@ -179,7 +179,7 @@ public abstract class BaseWriteParamActivity extends BaseActivity {
 							RECONNECT_TIME1--;
 						} else {
 							hideProgressDialog();
-							showToast("写入参数超时！");
+							showToast(getResources().getString(R.string.string_error_msg11));
 						}
 						break;
 				}

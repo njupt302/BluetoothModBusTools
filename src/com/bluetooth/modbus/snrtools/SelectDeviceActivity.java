@@ -124,7 +124,7 @@ public class SelectDeviceActivity extends BaseActivity
 				AppStaticVar.mCurrentAddress = address;
 				AppStaticVar.mCurrentName = name;
 
-				showDialog(getResources().getString(R.string.string_tips_msg5) + item.getMessage(),
+				showDialog(getResources().getString(R.string.string_tips_msg5) +"\n"+ item.getMessage(),
 						new MyAlertDialogListener()
 						{
 

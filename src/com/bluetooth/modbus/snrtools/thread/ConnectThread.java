@@ -9,6 +9,7 @@ import android.os.Message;
 import android.util.Log;
 
 import com.bluetooth.modbus.snrtools.Constans;
+import com.bluetooth.modbus.snrtools.R;
 import com.bluetooth.modbus.snrtools.manager.AppStaticVar;
 
 public class ConnectThread extends Thread { 		
@@ -31,13 +32,13 @@ public class ConnectThread extends Thread {
 			}
 			AppStaticVar.mSocket = mDevice.createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
 			//连接
-			Message msg2 = new Message();
-			msg2.obj = "请稍候，正在连接服务器:"+AppStaticVar.mCurrentName;
+			Message msg2 = new Message(); 
+			msg2.obj = Constans.mApplicationContext.getResources().getString(R.string.string_progressmsg3)+AppStaticVar.mCurrentName;
 			msg2.what = Constans.CONNECTING_DEVICE;
 			mHanlder.sendMessage(msg2);
 			AppStaticVar.mSocket .connect();
 			Message msg = new Message();
-			msg.obj = "已经连接上服务端！";
+			msg.obj = Constans.mApplicationContext.getResources().getString(R.string.string_tips_msg16);
 			msg.what = Constans.CONNECT_DEVICE_SUCCESS;
 			mHanlder.sendMessage(msg);
 		} 
@@ -46,7 +47,7 @@ public class ConnectThread extends Thread {
 			Log.e("connect", "", e);
 			AppStaticVar.mSocket = null;
 			Message msg = new Message();
-			msg.obj = "与设备连接失败";
+			msg.obj = Constans.mApplicationContext.getResources().getString(R.string.string_tips_msg14);
 			msg.what = Constans.CONNECT_DEVICE_FAILED;
 			mHanlder.sendMessage(msg);
 		} 

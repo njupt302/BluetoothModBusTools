@@ -26,8 +26,8 @@
         android:paddingBottom="4.0dip"
         android:paddingRight="4.0dip"
         android:textColor="#E1B812"
-        android:text="已匹配"
-        android:textSize="12.0sp" />
+        android:text="@string/string_ypp"
+        android:textSize="14.0sp" />
 
 </RelativeLayout>
 </RelativeLayout>

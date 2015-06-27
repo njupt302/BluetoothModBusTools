@@ -1,8 +1,11 @@
 package com.bluetooth.modbus.snrtools;
 
+import android.content.Context;
 import android.os.Environment;
 
 public class Constans {
+	
+	public static Context mApplicationContext;
 	
 	/** 指定型号名称起始字段*/
 	public final static String DEVICE_NAME_START = "Sinier";

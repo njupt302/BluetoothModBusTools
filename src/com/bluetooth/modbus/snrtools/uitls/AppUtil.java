@@ -19,6 +19,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.bluetooth.modbus.snrtools.Constans;
+import com.bluetooth.modbus.snrtools.R;
 import com.bluetooth.modbus.snrtools.bean.CommandRead;
 import com.bluetooth.modbus.snrtools.bean.CommandWrite;
 import com.bluetooth.modbus.snrtools.common.CRC16;
@@ -39,7 +40,7 @@ public class AppUtil {
 			AppStaticVar.mBtAdapter = BluetoothAdapter.getDefaultAdapter();
 		}
 		if (AppStaticVar.mBtAdapter == null) {
-			Toast.makeText(context, "未检测到蓝牙设备，请开关蓝牙后重试！", Toast.LENGTH_LONG).show();
+			Toast.makeText(context, context.getResources().getString(R.string.string_tips_msg14), Toast.LENGTH_LONG).show();
 			return false;
 		}
 		if (!AppStaticVar.mBtAdapter.isEnabled()) {
@@ -67,12 +68,12 @@ public class AppUtil {
 			System.out.println("=====" + className);
 			Message msg = new Message();
 			msg.what = Constans.CONTACT_START;
-			msg.obj = "开始发送命令！";
+			msg.obj = Constans.mApplicationContext.getResources().getString(R.string.string_tips_msg15);
 			handler.sendMessage(msg);
 			if (AppStaticVar.mSocket == null) {
 				Message message = new Message();
 				message.what = Constans.NO_DEVICE_CONNECTED;
-				message.obj = "与设备连接失败，请返回重新连接！";
+				message.obj = Constans.mApplicationContext.getResources().getString(R.string.string_error_msg14);
 				handler.sendMessage(message);
 				return;
 			}
@@ -119,7 +120,7 @@ public class AppUtil {
 			} catch (IOException e) {
 				Message message = new Message();
 				message.what = Constans.CONNECT_IS_JIM;
-				message.obj = "与设备通讯堵塞，通讯失败！";
+				message.obj = Constans.mApplicationContext.getResources().getString(R.string.string_error_msg15);
 				handler.sendMessage(message);
 				e.printStackTrace();
 				return;
@@ -132,7 +133,7 @@ public class AppUtil {
 				public void run() {
 					Message message = new Message();
 					message.what = Constans.TIME_OUT;
-					message.obj = "连接超时！";
+					message.obj = Constans.mApplicationContext.getResources().getString(R.string.string_error_msg3);
 					handler.sendMessage(message);
 					return;
 				}
@@ -176,7 +177,7 @@ public class AppUtil {
 								mmInStream.close();
 							}
 							Message msg = new Message();
-							msg.obj = "连接已经断开，请重新连接！";
+							msg.obj = Constans.mApplicationContext.getResources().getString(R.string.string_error_msg10);
 							msg.what = Constans.CONNECT_IS_CLOSED;
 							if (handler != null)
 								handler.sendMessage(msg);

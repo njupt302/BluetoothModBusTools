@@ -133,9 +133,7 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	public void showDialogOne(String msg, MyAlertDialogListener listener) {
-		if (mDialogOne == null) {
-			mDialogOne = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_ONE, listener);
-		}
+		mDialogOne = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_ONE, listener);
 		mDialogOne.setMessage(msg);
 		mDialogOne.setListener(listener);
 		mDialogOne.show();
@@ -156,18 +154,16 @@ public abstract class BaseActivity extends Activity {
 	}
 
 	public void showDialog(String msg, MyAlertDialogListener listener) {
-		if (mDialog == null) {
-			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, null);
-		}
+		mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, null);
+		mDialog.setButtonContent(getResources().getString(R.string.string_cancel), MyAlertDialog.BUTTON_CANCEL);
+		mDialog.setButtonContent(getResources().getString(R.string.string_ok), MyAlertDialog.BUTTON_OK);
 		mDialog.setListener(listener);
 		mDialog.setMessage(msg);
 		mDialog.show();
 	}
-	
-	public void showDialog(String msg, String cancelText,String okText,MyAlertDialogListener listener) {
-		if (mDialog == null) {
-			mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, null);
-		}
+
+	public void showDialog(String msg, String cancelText, String okText, MyAlertDialogListener listener) {
+		mDialog = new MyAlertDialog(this, "", msg, MyAlertDialog.TYPE_TWO, null);
 		mDialog.setButtonContent(cancelText, MyAlertDialog.BUTTON_CANCEL);
 		mDialog.setButtonContent(okText, MyAlertDialog.BUTTON_OK);
 		mDialog.setListener(listener);
@@ -194,7 +190,7 @@ public abstract class BaseActivity extends Activity {
 		if (!TextUtils.isEmpty(msg)) {
 			mCustomDialog.setMessage(msg);
 		} else {
-			mCustomDialog.setTitle("加载中...");
+			mCustomDialog.setTitle(getResources().getString(R.string.string_loading));
 		}
 		mCustomDialog.show(isCancel);
 	}
@@ -207,7 +203,7 @@ public abstract class BaseActivity extends Activity {
 		if (AppStaticVar.isExit) {
 			return;
 		}
-		showDialogOne("设备连接已断开，请重新连接", new MyAlertDialogListener() {
+		showDialogOne(getResources().getString(R.string.string_error_msg12), new MyAlertDialogListener() {
 
 			@Override
 			public void onClick(View view) {
@@ -258,7 +254,7 @@ public abstract class BaseActivity extends Activity {
 			});
 			connectThread.start();
 		} else {
-			Toast.makeText(mContext, "连接设备地址不存在 !", Toast.LENGTH_SHORT).show();
+			Toast.makeText(mContext, getResources().getString(R.string.string_error_msg13), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -277,8 +273,8 @@ public abstract class BaseActivity extends Activity {
 		AlertDialog.Builder builder = new Builder(this);
 		builder.setTitle(title);
 		builder.setView(view);
-		builder.setPositiveButton("确认", mOkOnClickListener);
-		builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton(getResources().getString(R.string.string_ok), mOkOnClickListener);
+		builder.setNegativeButton(getResources().getString(R.string.string_cancel), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();
@@ -330,25 +326,25 @@ public abstract class BaseActivity extends Activity {
 		hideDialogOne();
 		super.onDestroy();
 	}
-	
-	public void exitApp(){
 
-		showDialog("是否要退出程序？", new MyAlertDialogListener() {
+	public void exitApp() {
+
+		showDialog(getResources().getString(R.string.string_exit_app), new MyAlertDialogListener() {
 			@Override
 			public void onClick(View view) {
 				switch (view.getId()) {
-					case R.id.btnCancel :
-						hideDialog();
-						break;
-					case R.id.btnOk :
-						AppUtil.closeBluetooth();
-						ActivityManager.getInstances().finishAll();
-						System.exit(0);
-						break;
+				case R.id.btnCancel:
+					hideDialog();
+					break;
+				case R.id.btnOk:
+					AppUtil.closeBluetooth();
+					ActivityManager.getInstances().finishAll();
+					System.exit(0);
+					break;
 				}
 			}
 		});
-	
+
 	}
 
 	public void handleMessage(Activity activity, Message msg, String name) {

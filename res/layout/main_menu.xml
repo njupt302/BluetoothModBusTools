@@ -13,7 +13,7 @@
         android:gravity="left|center_vertical"
         android:onClick="onClick"
         android:paddingLeft="5dp"
-        android:text="新功能介绍"
+        android:text="@string/string_menu1"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
@@ -30,7 +30,7 @@
         android:gravity="left|center_vertical"
         android:onClick="onClick"
         android:paddingLeft="5dp"
-        android:text="关于仪表助手"
+        android:text="@string/string_menu2"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
@@ -47,7 +47,7 @@
         android:gravity="left|center_vertical"
         android:onClick="onClick"
         android:paddingLeft="5dp"
-        android:text="版本升级"
+        android:text="@string/string_menu3"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 
@@ -64,7 +64,7 @@
         android:gravity="left|center_vertical"
         android:onClick="onClick"
         android:paddingLeft="5dp"
-        android:text="清除缓存"
+        android:text="@string/string_menu4"
         android:textColor="#ffffff"
         android:textSize="16sp" />
         <View
@@ -80,7 +80,7 @@
         android:gravity="left|center_vertical"
         android:onClick="onClick"
         android:paddingLeft="5dp"
-        android:text="退出"
+        android:text="@string/string_menu5"
         android:textColor="#ffffff"
         android:textSize="16sp" />
 

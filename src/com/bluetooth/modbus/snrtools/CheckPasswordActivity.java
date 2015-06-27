@@ -2067,7 +2067,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--励磁电流==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "励磁电流";
+		parameter.name =getResources().getString(R.string.string_param_label50);
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -2113,26 +2113,26 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--尖峰抑制允许==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "尖峰抑制允许";
+		parameter.name = getResources().getString(R.string.string_param_label51);
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
 		case 0:
-			parameter.value = "允许";
+			parameter.value = getResources().getString(R.string.string_param3);
 			break;
 		case 1:
-			parameter.value = "禁止";
+			parameter.value = getResources().getString(R.string.string_param4);
 			break;
 		}
 		selectorList = new ArrayList<Selector>();
 
 		selector = new Selector();
-		selector.name = "允许";
+		selector.name = getResources().getString(R.string.string_param3);
 		selector.value = "0000";
 		selectorList.add(selector);
 
 		selector = new Selector();
-		selector.name = "禁止";
+		selector.name =getResources().getString(R.string.string_param4);
 		selector.value = "0001";
 		selectorList.add(selector);
 
@@ -2144,7 +2144,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--尖峰抑制系数==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "尖峰抑制系数";
+		parameter.name = getResources().getString(R.string.string_param_label52);
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -2239,7 +2239,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--尖峰抑制时间==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "尖峰抑制时间";
+		parameter.name = getResources().getString(R.string.string_param_label53);
 		parameter.type = 1;
 		parameter.valueIn = Integer.parseInt(param, 16);
 		switch ((Integer) parameter.valueIn) {
@@ -2295,7 +2295,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--传感器编码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "传感器编码";
+		parameter.name = getResources().getString(R.string.string_param_label54);
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
@@ -2309,7 +2309,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--传感器参数密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "传感器参数密码";
+		parameter.name = getResources().getString(R.string.string_param_label55);
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
@@ -2320,13 +2320,13 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		AppStaticVar.PASSWORD_LEVEAL3_COUNT = mList.size();
 		/********************************** 转换器参数 **************************************/
 		/********************************** 参数56--转换器标定系数 **************************************/
-		mList.add(new Parameter(true, "转换器参数"));
+		mList.add(new Parameter(true, getResources().getString(R.string.string_param_type4)));
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "003F";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--转换器标定系数==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "转换器标定系数";
+		parameter.name = getResources().getString(R.string.string_param_label56);
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 5.9999;
@@ -2340,7 +2340,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--转换器标定零点==" + Integer.parseInt(param, 16));
 		parameter.count = "0001";
-		parameter.name = "转换器标定零点";
+		parameter.name = getResources().getString(R.string.string_param_label57);
 		parameter.type = 4;
 		parameter.point = 4;
 		parameter.maxValue = 9999;
@@ -2355,7 +2355,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--空管检测零点 ==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "空管检测零点 ";
+		parameter.name = getResources().getString(R.string.string_param_label58);
 		parameter.type = 1;
 		parameter.maxValue = 59999;
 		parameter.minValue = 0;
@@ -2369,7 +2369,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--电流零点修正==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "电流零点修正";
+		parameter.name = getResources().getString(R.string.string_param_label59);
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 1.9999;
@@ -2383,7 +2383,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--电流满度修正==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
-		parameter.name = "电流满度修正";
+		parameter.name =getResources().getString(R.string.string_param_label60);
 		parameter.type = 2;
 		parameter.point = 4;
 		parameter.maxValue = 3.9999;
@@ -2398,7 +2398,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--仪表编码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "仪表编码";
+		parameter.name = getResources().getString(R.string.string_param_label61);
 		parameter.type = 3;
 		parameter.maxValue = 99999999;
 		parameter.minValue = 0;
@@ -2412,7 +2412,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		param1 = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
 		System.out.println("参数"+ paramCountLabel++ +"--转换器密码==" + NumberBytes.hexStrToLong(param1+param));
 		parameter.count = "0002";
-		parameter.name = "转换器密码";
+		parameter.name = getResources().getString(R.string.string_param_label62);
 		parameter.type = 3;
 		parameter.maxValue = 999999;
 		parameter.minValue = 0;
@@ -2453,7 +2453,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	protected void onPause() {
 		if (!flag) {
 			mViewCheckPsd.setVisibility(View.VISIBLE);
-			setTitleContent("密码校验");
+			setTitleContent(getResources().getString(R.string.string_title3));
 			mViewSetParam.setVisibility(View.GONE);
 		}
 		super.onPause();
@@ -2536,7 +2536,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 	public void update(Observable observable, Object data) {
 		if (data != null && "showProgress".equals(data.toString())) {
 			System.out.println("-------");
-			showProgressDialog("与设备通讯中...");
+			showProgressDialog(getResources().getString(R.string.string_tips_msg11));
 		} else {
 			startReadParam();
 		}
