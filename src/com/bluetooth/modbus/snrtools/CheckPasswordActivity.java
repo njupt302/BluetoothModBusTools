@@ -1826,77 +1826,77 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数35--流量修正值1 **************************************/
+		/********************************** 参数35--流量修正点2 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0028";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值1==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点2==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label35);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数36--流量修正点2 **************************************/
+		/********************************** 参数36--流量修正值2 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0029";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正点2==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值2==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label36);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数37--流量修正值2 **************************************/
+		/********************************** 参数37--流量修正点3 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002A";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值2==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点3==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label37);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数38--流量修正点3 **************************************/
+		/********************************** 参数38--流量修正值3 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002B";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正点3==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值3==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label38);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数39--流量修正值3 **************************************/
+		/********************************** 参数39--流量修正点4 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002C";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值3==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点4==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label39);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数40--流量修正点4 **************************************/
+		/********************************** 参数40--流量修正值4 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002D";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
@@ -1904,119 +1904,119 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label40);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数41--流量修正值4 **************************************/
+		/********************************** 参数41--流量修正点5 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002E";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值4==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点5==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label41);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数42--流量修正点5 **************************************/
+		/********************************** 参数42--流量修正值5 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "002F";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正点5==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值5==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label42);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数43--流量修正值5 **************************************/
+		/********************************** 参数43--流量修正点6 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0030";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值5==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点6==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label43);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数44--流量修正点6 **************************************/
+		/********************************** 参数44--流量修正值6 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0031";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正点6==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值6==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label44);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数45--流量修正值6 **************************************/
+		/********************************** 参数45--流量修正点7 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0032";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值6==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点7==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label45);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数46--流量修正点7 **************************************/
+		/********************************** 参数46--流量修正值7 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0033";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正点7==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值7==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label46);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn) + "m/s";
 		mList.add(parameter);
-		/********************************** 参数47--流量修正值7 **************************************/
+		/********************************** 参数47--流量修正点8 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0034";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正值7==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正点8==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label47);
 		parameter.type = 2;
-		parameter.point = 4;
+		parameter.point = 3;
 		parameter.maxValue = 1.9999;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
 		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
 		mList.add(parameter);
-		/********************************** 参数48--流量修正点8 **************************************/
+		/********************************** 参数48--流量修正值8 **************************************/
 		parameter = new Parameter();
 		parameter.address = NumberBytes.padLeft(Integer.toHexString(paramIndex), 4, '0');//parameter.address = "0035";
 		param = msg.substring(6+4*paramIndex++, 6+4*paramIndex);
-		System.out.println("参数"+ paramCountLabel++ +"--流量修正点8==" + Long.parseLong(param, 16));
+		System.out.println("参数"+ paramCountLabel++ +"--流量修正值8==" + Long.parseLong(param, 16));
 		parameter.count = "0001";
 		parameter.name = getResources().getString(R.string.string_param_label48);
 		parameter.type = 2;
-		parameter.point = 3;
+		parameter.point = 4;
 		parameter.maxValue = 15;
 		parameter.minValue = 0;
 		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
@@ -2359,9 +2359,7 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.type = 1;
 		parameter.maxValue = 59999;
 		parameter.minValue = 0;
-		parameter.point = 5;
-		parameter.valueIn = Long.parseLong(param, 16) / Math.pow(10, parameter.point);
-		parameter.value = String.format("%." + parameter.point + "f", (Double) parameter.valueIn);
+		parameter.valueIn = Integer.parseInt(param, 16);
 		mList.add(parameter);
 		/********************************** 参数59--电流零点修正 **************************************/
 		parameter = new Parameter();
