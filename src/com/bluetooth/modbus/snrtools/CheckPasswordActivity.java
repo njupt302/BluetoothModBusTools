@@ -1,4 +1,4 @@
-package com.bluetooth.modbus.snrtools;
+﻿package com.bluetooth.modbus.snrtools;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -2359,7 +2359,8 @@ public class CheckPasswordActivity extends BaseActivity implements Observer {
 		parameter.type = 1;
 		parameter.maxValue = 59999;
 		parameter.minValue = 0;
-		parameter.valueIn = Integer.parseInt(param, 16);
+		parameter.valueIn = Long.parseLong(param, 16);
+		parameter.value = Long.parseLong(param, 16) + "";
 		mList.add(parameter);
 		/********************************** 参数59--电流零点修正 **************************************/
 		parameter = new Parameter();
